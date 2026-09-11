@@ -7,9 +7,11 @@
 
 import { loadIconSprite } from '../modules/icon-sprite.js';
 import { initThemeToggle } from '../modules/theme-toggle.js';
+import { initGuideModal } from '../modules/guide-modal.js';
+import { createSavedPaletteList } from '../modules/saved-palette-list.js';
+import { askConfirm } from '../modules/confirm-dialog.js';
 import { initOrbitDock } from '../modules/orbit-dock.js';
 import { createPaletteStore } from '../modules/palette-store.js';
-import { readLibrary } from '../utils/palette-library-store.js';
 import { buildPaletteTokens } from '../utils/palette-tokens.js';
 import {
   COMPONENTS, GROUPS, bySlug, loadMarkup, loadComponentCss, collectColorTokens,
@@ -360,48 +362,9 @@ function renderPaletteBar() {
    Modal เลือกชุดสีจากคลังที่บันทึกไว้ใน Colorground
    -------------------------------------------------------------------------- */
 
+let renderPaletteList = () => {};
+
 const stripParts = (markup) => markup.replace(/\s*data-part="[^"]*"/g, '');
-
-const sameHex = (a, b) => String(a).toLowerCase() === String(b).toLowerCase();
-
-function renderPaletteList() {
-  const entries = readLibrary();
-  const current = store.getPalette();
-
-  el.paletteEmpty.hidden = entries.length > 0;
-  el.paletteList.replaceChildren();
-
-  entries.forEach((entry) => {
-    const { palette } = entry;
-    const isCurrent = sameHex(palette.primary, current.primary)
-      && palette.accents.length === current.accents.length
-      && palette.accents.every((hex, index) => sameHex(hex, current.accents[index]));
-
-    const item = document.createElement('button');
-    item.type = 'button';
-    item.className = 'cs-palette-item';
-    if (isCurrent) item.setAttribute('aria-current', 'true');
-
-    const strip = paletteSwatches(palette)
-      .map(({ hex }) => `<span style="background:${hex}"></span>`).join('');
-
-    const saved = new Date(entry.savedAt).toLocaleDateString('th-TH', {
-      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
-    });
-
-    item.innerHTML = `
-      <span class="cs-palette-item__strip" aria-hidden="true">${strip}</span>
-      <span class="cs-palette-item__body">
-        <span class="cs-palette-item__name">${entry.name}</span>
-        <span class="cs-palette-item__meta">${palette.accents.length} สี accent · ${saved}</span>
-      </span>
-      ${isCurrent ? '<span class="cs-palette-item__now">ใช้อยู่</span>' : ''}
-    `;
-
-    item.addEventListener('click', () => store.applyPalette(palette));
-    el.paletteList.appendChild(item);
-  });
-}
 
 function onModalKeydown(event) {
   if (event.key === 'Escape') closePaletteModal();
@@ -447,6 +410,7 @@ function syncColors() {
 async function init() {
   await loadIconSprite();
   initThemeToggle();
+  initGuideModal();
 
   el.page = document.querySelector('.cs-page');
   el.catalog = document.querySelector('#catalog');
@@ -457,6 +421,13 @@ async function init() {
   el.modal = document.querySelector('#palette-modal');
   el.paletteList = document.querySelector('#palette-list');
   el.paletteEmpty = document.querySelector('#palette-empty');
+
+  renderPaletteList = createSavedPaletteList({
+    list: el.paletteList,
+    empty: el.paletteEmpty,
+    store,
+    confirm: askConfirm,
+  });
 
   el.pill.addEventListener('click', openPaletteModal);
   el.modal.querySelectorAll('[data-close]').forEach((node) => {

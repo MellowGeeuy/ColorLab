@@ -878,3 +878,161 @@
 @media (prefers-reduced-motion: reduce) {
   .ground-toast { transition: opacity 1ms linear; transform: translate(-50%, 0); }
 }
+
+/* --------------------------------------------------------------------------
+   ปุ่มคู่ในหัวการ์ดชุดสี — ส่งออกกับบันทึก คือสองทางออกของชุดเดียวกัน
+   -------------------------------------------------------------------------- */
+.auto-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   หน้าต่างส่งออกชุดสีเป็นโค้ด
+   -------------------------------------------------------------------------- */
+.xport {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+}
+
+.xport[hidden] { display: none; }
+
+.xport__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(2 6 23 / 0.55);
+}
+
+.xport__panel {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  width: min(48rem, 100%);
+  height: min(40rem, 100%);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.xport__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.xport__title {
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--lh-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.xport__sub {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  color: var(--color-text-muted);
+}
+
+.xport__row {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+}
+
+.xport__tab {
+  flex: 1;
+  height: var(--control-h-sm);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.xport__tab:hover { color: var(--color-text); }
+
+.xport__tab.is-active {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+  box-shadow: var(--shadow-xs);
+}
+
+/* แถบสีย่อบอกว่ากำลังส่งออกชุดไหน — โค้ดล้วน ๆ อ่านยากว่าเป็นชุดที่ตั้งใจหรือเปล่า */
+.xport__swatches {
+  display: flex;
+  gap: 2px;
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.xport__chip { flex: 1; }
+
+.xport__code {
+  width: 100%;
+  height: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-text);
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+  resize: none;
+  white-space: pre;
+  overflow: auto;
+}
+
+.xport__code:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.xport__foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.xport__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.xport__status { margin: 0; }
+
+@media (max-width: 640px) {
+  .xport { padding: var(--space-3); }
+  .xport__panel { padding: var(--space-4); }
+  .xport__row { flex-wrap: wrap; }
+  .xport__tab { flex: 1 1 45%; }
+
+  .xport__foot {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: stretch;
+  }
+
+  .xport__actions > .btn { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xport__tab { transition: none; }
+}

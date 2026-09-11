@@ -6,6 +6,7 @@
 
 import { loadIconSprite } from '../modules/icon-sprite.js';
 import { initThemeToggle } from '../modules/theme-toggle.js';
+import { initGuideModal } from '../modules/guide-modal.js';
 import { createPaletteStore } from '../modules/palette-store.js';
 import { initToolRail } from '../modules/tool-rail.js';
 import { initCommandPalette } from '../modules/command-palette.js';
@@ -21,6 +22,7 @@ import { initLiveCodeEditor } from '../modules/live-code-editor.js';
 import { initCodeAutocomplete } from '../modules/code-autocomplete.js';
 import { initPaletteLibrary } from '../modules/palette-library.js';
 import { initPaletteExport } from '../modules/palette-export.js';
+import { initPaletteExportDialog } from '../modules/palette-export-dialog.js';
 import { initAutoPalettePanel } from '../modules/auto-palette-panel.js';
 
 /** บอกว่างานถูกเก็บลงเครื่องแล้ว — palette store เขียน localStorage ทุกครั้งที่มีการแก้ */
@@ -43,6 +45,7 @@ function initSaveStatus(store) {
 async function init() {
   await loadIconSprite();
   initThemeToggle();
+  initGuideModal();
 
   const store = createPaletteStore();
 
@@ -58,6 +61,7 @@ async function init() {
   document.querySelector('#palette-reset')?.addEventListener('click', () => store.reset());
 
   initAutoPalettePanel(store);
+  initPaletteExportDialog(store);
 
   // เครื่องมือ 2 เป็นต้นไปถูกถอดออกจากหน้าไว้ก่อนตามที่ G สั่ง (2026-09-09) เพื่อรื้อทำใหม่ทีละตัว
   // โมดูลยังถูกเรียกไว้เหมือนเดิม ทุกตัวเช็ค element ก่อนทำงานอยู่แล้วจึงคืนค่าเงียบ ๆ เมื่อไม่มี view

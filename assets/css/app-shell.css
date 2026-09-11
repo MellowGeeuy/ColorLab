@@ -640,3 +640,322 @@ th.u-num-end { text-align: end; }
   .topnav__item--hero { width: 5.5rem; padding-inline: var(--space-2); }
   .topnav__item--hero .topnav__label { display: none; }
 }
+
+/* --------------------------------------------------------------------------
+   Guide modal — คู่มือใช้งานที่เปิดได้จากทุกหน้า
+   วางทับทุกอย่างรวมทั้ง command palette (z 60) และแผงคีย์ลัดของหน้า Layout (z 95)
+   เพราะเป็นของที่เปิดมาเพื่ออ่านตอนติดขัด จึงต้องไม่มีอะไรมาบังอีกชั้น
+   -------------------------------------------------------------------------- */
+.btn--guide {
+  color: var(--color-warning-text);
+  border-color: var(--color-warning);
+  background-color: var(--color-warning-soft);
+}
+
+.btn--guide:hover {
+  border-color: var(--color-warning);
+  background-color: var(--color-warning);
+  color: var(--neutral-950);
+}
+
+.guide {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+}
+
+.guide[hidden] { display: none; }
+
+.guide__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(2 6 23 / 0.55);
+}
+
+.guide__panel-wrap {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(62rem, 100%);
+  height: min(44rem, 100%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.guide__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.guide__mark {
+  display: grid;
+  place-items: center;
+  width: var(--control-h-md);
+  height: var(--control-h-md);
+  border-radius: var(--radius-md);
+  background-color: var(--color-warning-soft);
+  color: var(--color-warning-text);
+}
+
+.guide__title {
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--lh-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.guide__sub {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  color: var(--color-text-muted);
+}
+
+.guide__body {
+  display: grid;
+  grid-template-columns: 14rem minmax(0, 1fr);
+  min-height: 0;
+}
+
+.guide__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3);
+  border-inline-end: 1px solid var(--color-border);
+  background-color: var(--color-surface-alt);
+  overflow-y: auto;
+}
+
+.guide__tab {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.guide__tab:hover { background-color: var(--color-surface); color: var(--color-text); }
+
+.guide__tab[aria-selected="true"] {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+  box-shadow: var(--shadow-xs);
+}
+
+.guide__tab-icon { color: var(--color-text-subtle); }
+.guide__tab[aria-selected="true"] .guide__tab-icon { color: var(--color-primary); }
+
+.guide__content {
+  padding: var(--space-6);
+  overflow-y: auto;
+}
+
+.guide__panel[hidden] { display: none; }
+.guide__panel:focus-visible { outline: none; }
+
+.guide__panel-head { margin-block-end: var(--space-5); }
+
+.guide__panel-title {
+  margin: 0;
+  font-size: var(--text-xl);
+  line-height: var(--lh-xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+}
+
+.guide__lead {
+  margin: var(--space-2) 0 0;
+  max-width: 60ch;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+}
+
+.guide__block + .guide__block { margin-block-start: var(--space-5); }
+
+.guide__block-title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.guide__list,
+.guide__steps {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* หัวข้อกับคำอธิบายอยู่คนละคอลัมน์ สายตาจึงกวาดหาชื่อของที่ต้องการได้โดยไม่ต้องอ่านทุกบรรทัด */
+.guide__item,
+.guide__step {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: baseline;
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+}
+
+.guide__steps { counter-reset: guide-step; }
+
+/* เลขลำดับต้องมาจาก counter ไม่ใช่ list-item เพราะเราถอด list-style ออกเพื่อคุมคอลัมน์เอง */
+.guide__step .guide__term::before {
+  counter-increment: guide-step;
+  content: counter(guide-step) ". ";
+  color: var(--color-primary);
+}
+
+.guide__term {
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+.guide__detail { color: var(--color-text-muted); }
+
+.guide__key {
+  justify-self: start;
+  padding: 2px var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+}
+
+.guide__note {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-warning-soft);
+  color: var(--color-warning-text);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+}
+
+/* จอแคบ: หัวข้อกลายเป็นแถวนอนเลื่อนได้ เนื้อหาได้ความกว้างเต็ม
+   และคำอธิบายตกลงมาใต้ชื่อแทนการบีบสองคอลัมน์จนอ่านไม่ออก */
+@media (max-width: 860px) {
+  .guide { padding: var(--space-3); }
+
+  .guide__body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+
+  .guide__nav {
+    flex-direction: row;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--color-border);
+    overflow-x: auto;
+  }
+
+  .guide__tab { white-space: nowrap; }
+  .guide__content { padding: var(--space-4); }
+
+  .guide__item,
+  .guide__step {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide__tab { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Confirm dialog — หน้าต่างยืนยันกลางของทั้งเว็บ ใช้แทน confirm() ของเบราว์เซอร์
+   z สูงกว่าคู่มือ (100) เพราะอาจถูกเรียกจากในหน้าต่างอื่นที่เปิดค้างอยู่
+   -------------------------------------------------------------------------- */
+.ask {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  padding: var(--space-5);
+}
+
+.ask[hidden] { display: none; }
+
+.ask__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(2 6 23 / 0.55);
+}
+
+.ask__panel {
+  position: relative;
+  width: min(26rem, 100%);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  text-align: start;
+}
+
+.ask__mark {
+  display: grid;
+  place-items: center;
+  width: var(--control-h-md);
+  height: var(--control-h-md);
+  margin-block-end: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+}
+
+.ask__mark--danger {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.ask__title {
+  margin: 0;
+  font-size: var(--text-md);
+  line-height: var(--lh-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.ask__text {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+}
+
+.ask__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-block-start: var(--space-5);
+}

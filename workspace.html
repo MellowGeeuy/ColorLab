@@ -37,12 +37,6 @@
           <a class="groundnav__item" href="layout.html" style="--dot-h:150">
             <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
           </a>
-          <a class="groundnav__item" href="contrast-audit.html" style="--dot-h:196">
-            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-contrast"/></svg>Contrast Audit
-          </a>
-          <a class="groundnav__item" href="token-export.html" style="--dot-h:286">
-            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-tag"/></svg>Token Export
-          </a>
         </nav>
       </div>
 
@@ -56,6 +50,10 @@
           </button>
           <button type="button" class="btn btn--icon btn--sm" id="palette-reset" aria-label="คืนค่าชุดสีเริ่มต้น" title="คืนค่าชุดสีเริ่มต้น">
             <svg class="icon" aria-hidden="true"><use href="#i-ban"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm btn--guide" id="guide-open"
+                  aria-haspopup="dialog" aria-label="เปิดคู่มือใช้งาน" title="คู่มือใช้งาน">
+            <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
           </button>
           <button type="button" class="btn btn--icon btn--sm" id="theme-toggle" aria-label="สลับโหมดสีของหน้าเว็บ">
             <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
@@ -85,19 +83,11 @@
           <section class="tool-view is-active" data-view="auto" id="view-auto" role="tabpanel" aria-labelledby="tab-auto" tabindex="0">
             <div class="tool-view__head">
               <h1 class="tool-view__title">สร้างชุดสีอัตโนมัติ</h1>
-              <div class="tool-view__actions">
-                <button type="button" class="btn btn--sm" id="auto-from-brand">
-                  <svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg> ดึงสีแบรนด์
-                </button>
-                <button type="button" class="btn btn--sm" id="auto-random">
-                  <svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg> สุ่มสีตั้งต้น
-                </button>
-              </div>
             </div>
 
             <p class="tool-view__hint">
               จิ้มบนวงล้อเพื่อเลือกเนื้อสีและความอิ่มพร้อมกัน หรือใส่รหัสสีตรง ๆ ก็ได้
-              แล้วกด "บันทึกชุดสี" ในสูตรที่ชอบ ชุดที่บันทึกจะไปรออยู่ที่เครื่องมือบันทึก และส่งออก
+              แล้วกด "บันทึกชุดสี" ในสูตรที่ชอบ ชุดที่บันทึกจะถูกใช้ทันทีในหน้า Component Style และ Layout
             </p>
 
             <div class="auto" id="auto-palette">

@@ -8,9 +8,11 @@
 
 import { loadIconSprite } from '../modules/icon-sprite.js';
 import { initThemeToggle } from '../modules/theme-toggle.js';
+import { initGuideModal } from '../modules/guide-modal.js';
+import { createSavedPaletteList } from '../modules/saved-palette-list.js';
+import { askConfirm } from '../modules/confirm-dialog.js';
 import { initOrbitDock } from '../modules/orbit-dock.js';
 import { createPaletteStore } from '../modules/palette-store.js';
-import { readLibrary } from '../utils/palette-library-store.js';
 import { buildPaletteTokens } from '../utils/palette-tokens.js';
 import { COMPONENTS, GROUPS, bySlug, loadMarkup, loadCatalogCss } from '../modules/component-catalog.js';
 import { createCodeBlock } from '../modules/code-block.js';
@@ -1922,6 +1924,7 @@ async function openExport() {
 async function init() {
   await loadIconSprite();
   initThemeToggle();
+  initGuideModal();
 
   el.shell = document.querySelector('.lay');
   el.canvas = document.querySelector('#lay-canvas');
@@ -1954,6 +1957,19 @@ async function init() {
   el.paletteModal = document.querySelector('#lay-palette-modal');
   el.paletteList = document.querySelector('#lay-palette-list');
   el.paletteEmpty = document.querySelector('#lay-palette-empty');
+  renderPaletteList = createSavedPaletteList({
+    list: el.paletteList,
+    empty: el.paletteEmpty,
+    store,
+    confirm: askConfirm,
+    onPick: (palette, entry) => {
+      store.applyPalette(palette);
+      // ปิดให้เลย ผู้ใช้เลือกชุดสีเพื่อดูผลบนผัง ไม่ใช่เพื่ออยู่ในหน้าต่างเลือกต่อ
+      closePaletteModal();
+      el.status.textContent = `เปลี่ยนเป็นชุดสี ${entry.name} — ทุกชิ้นบนผังเปลี่ยนตามแล้ว`;
+    },
+    onStatus: (message) => { el.status.textContent = message; },
+  });
   el.themeBtns = [...document.querySelectorAll('[data-lay-theme]')];
   el.arrange = document.querySelector('#lay-arrange');
   el.flowModal = document.querySelector('#lay-flow-modal');
@@ -2387,50 +2403,8 @@ function renderSwatches() {
    เลือกชุดสีจากคลังที่บันทึกไว้ใน Colorground
    -------------------------------------------------------------------------- */
 
-const sameHex = (a, b) => String(a).toLowerCase() === String(b).toLowerCase();
-
-function renderPaletteList() {
-  const entries = readLibrary();
-  const current = store.getPalette();
-
-  el.paletteEmpty.hidden = entries.length > 0;
-  el.paletteList.replaceChildren();
-
-  entries.forEach((entry) => {
-    const { palette } = entry;
-    const isCurrent = sameHex(palette.primary, current.primary)
-      && palette.accents.length === current.accents.length
-      && palette.accents.every((hex, index) => sameHex(hex, current.accents[index]));
-
-    const item = document.createElement('button');
-    item.type = 'button';
-    item.className = 'cs-palette-item';
-    if (isCurrent) item.setAttribute('aria-current', 'true');
-
-    const strip = swatchesOf(palette).map(({ hex }) => `<span style="background:${hex}"></span>`).join('');
-    const saved = new Date(entry.savedAt).toLocaleDateString('th-TH', {
-      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
-    });
-
-    item.innerHTML = `
-      <span class="cs-palette-item__strip" aria-hidden="true">${strip}</span>
-      <span class="cs-palette-item__body">
-        <span class="cs-palette-item__name">${entry.name}</span>
-        <span class="cs-palette-item__meta">${palette.accents.length} สี accent · ${saved}</span>
-      </span>
-      ${isCurrent ? '<span class="cs-palette-item__now">ใช้อยู่</span>' : ''}
-    `;
-
-    item.addEventListener('click', () => {
-      store.applyPalette(palette);
-      // ปิดให้เลย ผู้ใช้เลือกชุดสีเพื่อดูผลบนผัง ไม่ใช่เพื่ออยู่ในหน้าต่างเลือกต่อ
-      // (หน้าต่างที่บังผังอยู่ทำให้ไม่เห็นสิ่งที่เพิ่งเปลี่ยน ซึ่งเป็นเหตุผลเดียวที่กดเข้ามา)
-      closePaletteModal();
-      el.status.textContent = `เปลี่ยนเป็นชุดสี ${entry.name} — ทุกชิ้นบนผังเปลี่ยนตามแล้ว`;
-    });
-    el.paletteList.appendChild(item);
-  });
-}
+// ตัวจริงถูกสร้างตอน init โดย createSavedPaletteList — ก่อนหน้านั้นไม่มีอะไรให้วาด
+let renderPaletteList = () => {};
 
 function onPaletteKeydown(event) {
   if (event.key === 'Escape') closePaletteModal();

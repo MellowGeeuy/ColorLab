@@ -6,7 +6,7 @@
  */
 
 import {
-  buildAutoPalettes, toPaletteSeed, randomSeedHex,
+  buildAutoPalettes, toPaletteSeed,
 } from '../utils/auto-palette.js';
 import {
   hexToHsl, hslToHex, readableTextOn, contrastRatio,
@@ -145,10 +145,19 @@ export function initAutoPalettePanel(store) {
             <h3 class="auto-card__name">${set.name}</h3>
             <p class="auto-card__thai">${set.thai}</p>
           </div>
-          <button type="button" class="btn btn--sm btn--primary auto-card__save" data-apply="${set.id}">
-            <svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg>
-            <span data-label>บันทึกชุดสี</span>
-          </button>
+          <div class="auto-card__actions">
+            <button type="button" class="btn btn--sm btn--icon" title="ส่งออกเป็นโค้ด"
+                    aria-label="ส่งออกชุด ${set.name} เป็นโค้ด"
+                    data-export-set="${set.colors.join(',')}"
+                    data-export-primary="${set.primaryHex}"
+                    data-export-name="${set.name}">
+              <svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>
+            </button>
+            <button type="button" class="btn btn--sm btn--primary auto-card__save" data-apply="${set.id}">
+              <svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg>
+              <span data-label>บันทึกชุดสี</span>
+            </button>
+          </div>
         </div>
         <div class="auto-card__row">${swatches}</div>
         <p class="auto-card__note">${set.note}</p>
@@ -164,7 +173,7 @@ export function initAutoPalettePanel(store) {
         const result = saveToLibrary(name, palette);
 
         if (!result.ok && result.reason === 'full') {
-          status.textContent = `คลังเต็มแล้ว (${MAX_LIBRARY_ENTRIES} ชุด) — ลบชุดเก่าที่เครื่องมือบันทึก & ส่งออกก่อน`;
+          status.textContent = `คลังเต็มแล้ว (${MAX_LIBRARY_ENTRIES} ชุด) — ลบชุดที่ไม่ใช้ออกก่อนได้ที่หน้า Component Style หรือ Layout`;
           return;
         }
 
@@ -178,7 +187,7 @@ export function initAutoPalettePanel(store) {
 
         status.textContent = result.ok
           ? `บันทึก "${name}" แล้ว และตั้งเป็นชุดสีที่ใช้อยู่ — ใช้ได้ทันทีในหน้า Component Style และเครื่องมืออื่น`
-          : `ตั้ง "${name}" เป็นชุดสีที่ใช้อยู่แล้ว แต่เบราว์เซอร์ไม่ให้บันทึกลงเครื่อง — ส่งออกเป็นไฟล์แทนได้`;
+          : `ตั้ง "${name}" เป็นชุดสีที่ใช้อยู่แล้ว แต่เบราว์เซอร์ไม่ให้บันทึกลงเครื่อง — ปิดหน้านี้แล้วชุดจะหาย`;
       });
 
       results.appendChild(card);
@@ -260,14 +269,6 @@ export function initAutoPalettePanel(store) {
     const current = hexToHsl(seed);
     seed = hslToHex({ ...current, l: Number(lightRange.value) });
     render();
-  });
-
-  root.querySelector('#auto-random')?.addEventListener('click', () => {
-    setSeed(randomSeedHex(), 'สุ่มสีตั้งต้นใหม่แล้ว');
-  });
-
-  root.querySelector('#auto-from-brand')?.addEventListener('click', () => {
-    setSeed(store.getPalette().primary, 'ดึงสีแบรนด์ปัจจุบันมาเป็นสีตั้งต้นแล้ว');
   });
 
   // คลิกที่ช่องสีในผลลัพธ์เพื่อคัดลอกรหัส — เร็วกว่าการพิมพ์ตาม

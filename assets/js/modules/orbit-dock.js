@@ -74,11 +74,16 @@ function bindOrbitToggle(dock) {
     closeTimer = setTimeout(() => dock.classList.remove(OPEN), 180);
   };
 
+  // เฉพาะเมาส์เท่านั้น — จอสัมผัสก็ยิง pointerover ตอนแตะ ถ้าปล่อยให้เปิดตรงนี้
+  // เมนูจะกางทันก่อน click พอดี แล้วการแตะครั้งแรกจะกลายเป็นการกดลิงก์ไปเลย
+  const byMouse = (event) => !event.pointerType || event.pointerType === 'mouse';
+
   document.addEventListener('pointerover', (event) => {
-    if (event.target.closest?.('.dock')) open();
+    if (byMouse(event) && event.target.closest?.('.dock')) open();
   });
 
   document.addEventListener('pointerout', (event) => {
+    if (!byMouse(event)) return;
     if (event.target.closest?.('.dock') && !event.relatedTarget?.closest?.('.dock')) scheduleClose();
   });
 
@@ -86,6 +91,35 @@ function bindOrbitToggle(dock) {
   dock.addEventListener('focusout', scheduleClose);
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') dock.classList.remove(OPEN);
+  });
+
+  // จอสัมผัสไม่มีการเลื่อนเมาส์เข้าออก ทุกอย่างจึงต้องตัดสินจากการแตะอย่างเดียว
+  let touching = false;
+
+  document.addEventListener('pointerdown', (event) => {
+    touching = event.pointerType !== 'mouse';
+    if (event.target.closest?.('.dock')) return;
+    // แตะที่อื่นบนหน้าจอแล้วต้องหุบเอง ไม่ใช่ค้างรอให้กดพื้นที่ว่างอีกที
+    clearTimeout(closeTimer);
+    dock.classList.remove(OPEN);
+  });
+
+  // กดเมนูแล้วต้องหุบทันที ไม่ต้องไปกดพื้นที่ว่างซ้ำ (G สั่ง 2026-09-11)
+  // ปลายทางที่เป็นหน้าเดิมไม่ได้โหลดหน้าใหม่ วงโคจรจึงค้างกางอยู่ถ้าไม่สั่งปิดเอง
+  dock.addEventListener('click', (event) => {
+    const hero = event.target.closest('.dock__hero');
+
+    // บนจอสัมผัส แตะปุ่มวงกลมครั้งแรกคือ "ขอดูเมนู" ไม่ใช่ "ไป Colorground"
+    // ไม่งั้นเมนูสี่ตัวในวงโคจรจะเข้าไม่ถึงเลยบนอุปกรณ์สัมผัส
+    if (hero && touching && !dock.classList.contains(OPEN)) {
+      event.preventDefault();
+      open();
+      return;
+    }
+
+    if (!event.target.closest('.orbit__item') && !hero) return;
+    clearTimeout(closeTimer);
+    dock.classList.remove(OPEN);
   });
 }
 

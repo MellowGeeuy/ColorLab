@@ -7,6 +7,7 @@
 
 import { loadIconSprite } from '../modules/icon-sprite.js';
 import { initThemeToggle } from '../modules/theme-toggle.js';
+import { initGuideModal } from '../modules/guide-modal.js';
 import { initTocNav } from '../modules/toc-nav.js';
 import { initOrbitDock } from '../modules/orbit-dock.js';
 import { initRevealOnView } from '../modules/reveal-on-view.js';
@@ -18,6 +19,7 @@ import { initHarmonyWheelSpin } from '../modules/harmony-wheel-spin.js';
 async function init() {
   await loadIconSprite();
   initThemeToggle();
+  initGuideModal();
   initTocNav();
   initOrbitDock(document.querySelector('.reader__main'));
   initRevealOnView();

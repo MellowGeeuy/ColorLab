@@ -58,3 +58,17 @@ export function saveToLibrary(name, palette) {
     entries: next,
   };
 }
+
+/**
+ * ลบชุดสีออกจากคลัง — อ้างด้วย savedAt เพราะเป็นค่าเดียวที่ไม่ซ้ำกันจริง
+ * (ชื่อชุดซ้ำกันได้ ถ้าบันทึกสูตรเดิมจากสีตั้งต้นเดิมสองครั้ง)
+ * @returns {{ok: boolean, entries: object[]}}
+ */
+export function removeFromLibrary(savedAt) {
+  const entries = readLibrary();
+  const next = entries.filter((entry) => entry.savedAt !== savedAt);
+
+  if (next.length === entries.length) return { ok: false, entries };
+
+  return { ok: writeLibrary(next), entries: next };
+}

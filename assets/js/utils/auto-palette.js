@@ -176,10 +176,9 @@ export function toPaletteSeed(colors, preferredPrimary) {
     ? preferredPrimary
     : colors.find(usable) ?? colors[0];
 
-  // สีที่จางเกือบขาวเป็นสีพื้น ไม่ใช่สีเน้น — ถ้าปล่อยเข้าไปจะได้ accent ที่มองไม่เห็นบนการ์ด
-  const accents = colors
-    .filter((hex) => hex !== primary && contrastRatio(hex, '#ffffff') >= 1.5)
-    .slice(0, 4);
+  // ชุดที่บันทึกต้องมีสีครบเท่าที่การ์ดแสดง ตามที่ G สั่ง (2026-09-11)
+  // เดิมกรองสีจางทิ้งและตัดเหลือ 4 ทำให้ชุดพาสเทลเซฟได้ไม่ครบ
+  const accents = colors.filter((hex) => hex !== primary);
 
   return { primary, accents };
 }
