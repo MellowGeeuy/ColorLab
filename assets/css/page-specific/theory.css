@@ -1,0 +1,404 @@
+/* ==========================================================================
+   theory.css — โหมด Theory (อ่านเนื้อหา)
+   โครง: สารบัญซ้ายกว้างคงที่ + คอลัมน์อ่านที่จำกัดความยาวบรรทัด
+   ทุก line-height มาจาก token --lh-* ซึ่งเป็น rem ที่หาร 4px ลงตัว
+   ตัวอักษรทุกขนาดจึงตกบน baseline เดียวกันตลอดหน้า
+   ========================================================================== */
+
+.reader {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--toc-rail) minmax(0, 1fr);
+  min-height: 0;
+}
+
+/* --------------------------------------------------------------------------
+   สารบัญแบบราง — ปกติเห็นเป็นจุดเรียงกัน ชี้เมื่อไรค่อยกางออกมาเป็นชื่อเต็ม
+   วางเป็น absolute ทับเนื้อหาตอนกาง ไม่ดัน layout ให้ข้อความที่กำลังอ่านขยับ
+   -------------------------------------------------------------------------- */
+.toc {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 15;
+  width: var(--toc-rail);
+  border-inline-end: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  overflow: hidden auto;
+  padding-block: var(--space-4);
+  scrollbar-width: none;
+  transition: width var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out);
+}
+
+.toc::-webkit-scrollbar { width: 0; }
+
+.toc:hover,
+.toc:focus-within {
+  width: var(--toc-w);
+  box-shadow: var(--shadow-lg);
+}
+
+/* หัวกลุ่มอ่านไม่ออกตอนหุบอยู่แล้ว — ย่อเหลือเส้นคั่นบาง ๆ แทนตัวอักษรที่ถูกตัดครึ่ง */
+.toc__group {
+  height: 1px;
+  margin: var(--space-3) var(--space-4) var(--space-2);
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--color-border);
+  color: transparent;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: height var(--duration-base) var(--ease-out),
+              color var(--duration-base) var(--ease-out);
+}
+
+.toc:hover .toc__group,
+.toc:focus-within .toc__group {
+  height: var(--lh-base);
+  margin-inline: var(--space-4);
+  background-color: transparent;
+  color: var(--color-text-subtle);
+}
+
+.toc__list { list-style: none; margin: 0; padding: 0 var(--space-2); }
+
+.toc__item { margin: 0; }
+
+.toc__link {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h-md);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.toc__link:hover {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+/* จุดคือตัวแทนหัวข้อตอนหุบ — วงกลมกลวงเมื่อยังไม่ถึง ทึบเมื่อกำลังอ่านอยู่
+   ขนาดกับความทึบเป็นตัวบอกสถานะ ไม่ได้ใช้สีเป็นช่องทางเดียว
+
+   แต่ละหัวข้อมี hue ของตัวเองไล่รอบวงล้อ — สารบัญของเว็บทฤษฎีสีควรเป็นตัวอย่าง
+   ของสิ่งที่มันสอนเสียเอง ความสว่างตรึงไว้ที่ 42% ทุกจุดเพื่อให้ทุกสีหนักเท่ากัน
+   ไม่มีจุดไหนเด่นกว่าเพื่อนเพราะเนื้อสีบังเอิญสว่างกว่า */
+.toc__dot {
+  justify-self: center;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: var(--radius-full);
+  border: 2px solid hsl(var(--dot-h, 225) 55% 42%);
+  transition: background-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.toc__link:hover .toc__dot { background-color: hsl(var(--dot-h, 225) 55% 42% / 0.3); }
+
+.toc__link.is-active .toc__dot {
+  background-color: hsl(var(--dot-h, 225) 60% 42%);
+  transform: scale(1.3);
+}
+
+/* หัวข้อที่กำลังอ่านใช้สีของตัวเองแทนสีแบรนด์ ให้แถบที่ไฮไลต์กับจุดเป็นเรื่องเดียวกัน */
+.toc__link.is-active {
+  background-color: hsl(var(--dot-h, 225) 60% 42% / 0.1);
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+}
+
+/* ชื่อหัวข้อมีที่ยืนเฉพาะตอนรางกางออกแล้ว */
+.toc__text {
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.toc:hover .toc__text,
+.toc:focus-within .toc__text { opacity: 1; }
+
+/* --------------------------------------------------------------------------
+   คอลัมน์อ่าน
+   -------------------------------------------------------------------------- */
+/* ต้องระบุคอลัมน์เอง เพราะสารบัญเป็น absolute แล้วไม่กินช่อง grid ของตัวเอง
+   ถ้าไม่ระบุ คอลัมน์อ่านจะไปตกในช่องแรกที่กว้างเท่ารางจุด (56px) */
+.reader__main {
+  grid-column: 2;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* คอลัมน์กว้างพอให้การ์ดและเครื่องมือกางได้ แต่ตัว "ข้อความ" ยังถูกจำกัด
+   ความยาวบรรทัดแยกต่างหาก — ถ้าจำกัดที่ container เดียว การ์ดสามใบจะโดนบีบ
+   เหลือสองคอลัมน์และเสียจังหวะการอ่าน */
+.prose {
+  max-width: 66rem;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-8) var(--space-10);
+}
+
+.prose > * { margin-block: 0 var(--space-4); }
+
+.prose p,
+.prose > ul,
+.prose > ol,
+.page-head__lead,
+.section__intro {
+  max-width: 68ch;
+}
+
+.prose p {
+  font-size: var(--text-base);
+  line-height: var(--lh-lg);
+}
+
+/* --------------------------------------------------------------------------
+   Hero ของหน้า
+   -------------------------------------------------------------------------- */
+.page-head { margin-block-end: var(--space-8); }
+
+.page-head__eyebrow {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary-text);
+  margin-block-end: var(--space-3);
+}
+
+.page-head__title {
+  font-size: var(--text-3xl);
+  line-height: var(--lh-3xl);
+  margin-block-end: var(--space-4);
+}
+
+.page-head__lead {
+  font-size: var(--text-lg);
+  line-height: var(--lh-lg);
+  color: var(--color-text-muted);
+  margin-block-end: var(--space-6);
+}
+
+.page-head__strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  height: var(--space-2);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Section — แต่ละเรื่องต้องอ่านออกว่าเริ่มตรงไหนจบตรงไหนโดยไม่ต้องอ่านหัวข้อ
+   ใช้เส้นคั่นเต็มความกว้างกับเลขเรื่องตัวโต แทนการทิ้งระยะเฉย ๆ
+   (ระยะอย่างเดียวไม่พอเมื่อในเรื่องหนึ่งมีภาพหลายกรอบซ้อนกัน)
+   -------------------------------------------------------------------------- */
+.section {
+  scroll-margin-top: var(--space-6);
+  padding-block-start: var(--space-8);
+  margin-block-end: var(--space-10);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.section:first-of-type { border-block-start: 0; padding-block-start: 0; }
+
+.section__head { margin-block-end: var(--space-4); }
+
+.section__kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-end: var(--space-2);
+}
+
+/* เลขเรื่องเป็นตัวโตสีจาง — บอกตำแหน่งในลำดับโดยไม่แย่งสายตาไปจากหัวข้อ */
+.section__no {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-lg);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-subtle);
+}
+
+.section__rule {
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+.section__title {
+  font-size: var(--text-2xl);
+  line-height: var(--lh-2xl);
+}
+
+.section__intro {
+  font-size: var(--text-md);
+  line-height: var(--lh-lg);
+  color: var(--color-text-muted);
+  margin-block-end: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   Section
+   scroll-margin ให้หัวข้อไม่ถูก top bar บังเวลากระโดดมาจากสารบัญ
+   -------------------------------------------------------------------------- */
+.section {
+  scroll-margin-top: var(--space-6);
+  margin-block-end: var(--space-8);
+}
+
+.section__head { margin-block-end: var(--space-4); }
+
+.section__kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  margin-block-end: var(--space-2);
+}
+
+.section__title {
+  font-size: var(--text-2xl);
+  line-height: var(--lh-2xl);
+}
+
+.section__intro {
+  font-size: var(--text-md);
+  line-height: var(--lh-lg);
+  color: var(--color-text-muted);
+  margin-block-end: var(--space-6);
+}
+
+.prose h3 {
+  font-size: var(--text-lg);
+  line-height: var(--lh-lg);
+  margin-block: var(--space-6) var(--space-3);
+}
+
+/* --------------------------------------------------------------------------
+   สะพานไปโหมด Workspace
+   วางท้ายหัวข้อที่มีเครื่องมือรองรับ — อ่านจบแล้วลงมือต่อได้ทันที
+   -------------------------------------------------------------------------- */
+.try-it {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin-block: var(--space-5);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary-soft);
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.try-it:hover { text-decoration: none; box-shadow: var(--shadow-sm); }
+
+.try-it__icon {
+  display: grid;
+  place-items: center;
+  width: var(--control-h-lg);
+  height: var(--control-h-lg);
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary);
+  color: var(--neutral-0);
+  flex-shrink: 0;
+}
+
+.try-it__body { min-width: 0; }
+
+.try-it__title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-sm);
+}
+
+.try-it__hint {
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  color: var(--color-text-muted);
+}
+
+.try-it__arrow { margin-inline-start: auto; color: var(--color-primary); flex-shrink: 0; }
+
+/* --------------------------------------------------------------------------
+   ความคืบหน้าการอ่าน
+   -------------------------------------------------------------------------- */
+.read-progress {
+  position: absolute;
+  inset-block-start: var(--topbar-h);
+  inset-inline: 0;
+  height: 2px;
+  background-color: transparent;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.read-progress__bar {
+  height: 100%;
+  width: 0;
+  background-color: var(--color-primary);
+  transition: width var(--duration-fast) linear;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive — สารบัญกลายเป็น drawer
+   -------------------------------------------------------------------------- */
+.toc-toggle { display: none; }
+
+@media (max-width: 900px) {
+  .reader { grid-template-columns: minmax(0, 1fr); }
+  .reader__main { grid-column: 1; }
+
+  /* จอแคบไม่มีที่ให้รางจุด — กลับไปเป็น drawer เต็มใบที่เปิดด้วยปุ่มเหมือนเดิม */
+  .toc {
+    position: fixed;
+    inset-block: var(--topbar-h) 0;
+    inset-inline-start: 0;
+    width: var(--toc-w);
+    transform: translateX(-100%);
+    transition: transform var(--duration-slow) var(--ease-out);
+    box-shadow: var(--shadow-lg);
+    z-index: 30;
+  }
+
+  .toc.is-open { transform: translateX(0); }
+  .toc .toc__text { opacity: 1; }
+  .toc .toc__group { height: var(--lh-base); margin-inline: var(--space-4); background-color: transparent; color: var(--color-text-subtle); }
+
+  .toc-scrim {
+    position: fixed;
+    inset: 0;
+    background-color: rgb(2 6 23 / 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-base) var(--ease-out);
+    z-index: 25;
+  }
+
+  .toc-scrim.is-open { opacity: 1; pointer-events: auto; }
+
+  .toc-toggle { display: inline-flex; }
+
+  .prose { padding: var(--space-5) var(--space-5) var(--space-10); }
+}

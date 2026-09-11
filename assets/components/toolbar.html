@@ -1,0 +1,85 @@
+<!-- @card -->
+<div class="ui-toolbar">
+  <div class="ui-search">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input class="ui-search__input" type="search" placeholder="ค้นหารายชื่อ" aria-label="ค้นหา">
+  </div>
+  <button type="button" class="ui-btn ui-btn--sm" data-part="p1">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>
+    สร้าง
+  </button>
+</div>
+<div class="ui-chip-row">
+  <button type="button" class="ui-chip" aria-pressed="true" data-part="p2">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+    รอดำเนินการ
+  </button>
+  <button type="button" class="ui-chip" aria-pressed="false" data-part="p3">เลยกำหนด</button>
+  <button type="button" class="ui-chip" aria-pressed="false" data-part="p4">เดือนนี้</button>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-toolbar">
+  <div class="ui-search">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <label class="u-visually-hidden" for="demo-search">ค้นหาชื่อหรือรหัสรายการ</label>
+    <input class="ui-search__input" id="demo-search" type="search" placeholder="ค้นหาชื่อหรือรหัสรายการ">
+  </div>
+
+  <div class="ui-toolbar__filters">
+    <button type="button" class="ui-chip" aria-pressed="true" data-part="p1">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+      รอดำเนินการ
+    </button>
+    <button type="button" class="ui-chip" aria-pressed="true" data-part="p2">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+      เลยกำหนด
+    </button>
+    <button type="button" class="ui-chip" aria-pressed="false" data-part="p3">ร่าง</button>
+    <button type="button" class="ui-chip" aria-pressed="false" data-part="p4">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18l-7 8.2V20l-4 1.5v-8.3Z"/></svg>
+      ตัวกรองเพิ่มเติม
+    </button>
+  </div>
+
+  <div class="ui-toolbar__end">
+    <span class="ui-toolbar__count">เลือกไว้ 2 รายการ</span>
+    <button type="button" class="ui-btn ui-btn--secondary ui-btn--sm" data-part="p5">ส่งออก</button>
+    <button type="button" class="ui-btn ui-btn--sm" data-part="p6">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>
+      สร้างรายการ
+    </button>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ตัวกรองที่เลือก — มีเครื่องหมายถูกกำกับ ไม่บอกด้วยสีอย่างเดียว">
+  <div class="ui-chip-row">
+    <button type="button" class="ui-chip" aria-pressed="true" data-part="p1">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+      รอดำเนินการ
+    </button>
+    <button type="button" class="ui-chip" aria-pressed="false" data-part="p2">เลยกำหนด</button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ช่องค้นหา">
+  <div class="ui-search">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <label class="u-visually-hidden" for="v-search">ค้นหา</label>
+    <input class="ui-search__input" id="v-search" type="search" placeholder="ค้นหา">
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="แถบเมื่อมีรายการถูกเลือก">
+  <div class="ui-toolbar">
+    <span class="ui-toolbar__count">เลือกไว้ 2 รายการ</span>
+    <div class="ui-toolbar__end">
+      <button type="button" class="ui-btn ui-btn--ghost ui-btn--sm" data-part="p3">ยกเลิกการเลือก</button>
+      <button type="button" class="ui-btn ui-btn--danger ui-btn--sm" data-part="p4">ลบที่เลือก</button>
+    </div>
+  </div>
+</div>
+<!-- @end -->

@@ -1,0 +1,88 @@
+<!-- @card -->
+<div class="ui-stack">
+  <div class="ui-row">
+    <span class="ui-badge ui-badge--success"><span class="ui-badge__dot" aria-hidden="true"></span>เสร็จแล้ว</span>
+    <span class="ui-badge ui-badge--warning"><span class="ui-badge__dot" aria-hidden="true"></span>รอดำเนินการ</span>
+    <span class="ui-badge ui-badge--danger"><span class="ui-badge__dot" aria-hidden="true"></span>เลยกำหนด</span>
+  </div>
+  <div class="ui-row">
+    <span class="ui-badge ui-badge--info"><span class="ui-badge__dot" aria-hidden="true"></span>กำลังตรวจสอบ</span>
+    <span class="ui-badge"><span class="ui-badge__dot" aria-hidden="true"></span>ร่าง</span>
+    <span class="ui-badge ui-badge--brand">แผนใหม่</span>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-table-wrap">
+  <table class="ui-table">
+    <caption class="u-visually-hidden">สถานะของรายการในรอบนี้</caption>
+    <thead>
+      <tr>
+        <th scope="col">เอกสาร</th>
+        <th scope="col">รายชื่อ</th>
+        <th scope="col" class="ui-table__num">จำนวน</th>
+        <th scope="col">สถานะ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="u-mono">ID-2043</td>
+        <td>รายการ A</td>
+        <td class="ui-table__num">120,000.00</td>
+        <td><span class="ui-badge ui-badge--success"><span class="ui-badge__dot" aria-hidden="true"></span>เสร็จแล้ว</span></td>
+      </tr>
+      <tr>
+        <td class="u-mono">ID-2044</td>
+        <td>รายการ B</td>
+        <td class="ui-table__num">4,500.00</td>
+        <td><span class="ui-badge ui-badge--warning"><span class="ui-badge__dot" aria-hidden="true"></span>รอดำเนินการ</span></td>
+      </tr>
+      <tr>
+        <td class="u-mono">ID-2045</td>
+        <td>รายการ C</td>
+        <td class="ui-table__num">1,200.00</td>
+        <td><span class="ui-badge ui-badge--danger"><span class="ui-badge__dot" aria-hidden="true"></span>เลยกำหนด 7 วัน</span></td>
+      </tr>
+      <tr>
+        <td class="u-mono">ID-2046</td>
+        <td>รายการ D</td>
+        <td class="ui-table__num">18,900.00</td>
+        <td><span class="ui-badge"><span class="ui-badge__dot" aria-hidden="true"></span>ร่าง</span></td>
+      </tr>
+      <tr>
+        <td class="u-mono">ID-2047</td>
+        <td>รายการ E</td>
+        <td class="ui-table__num">62,400.00</td>
+        <td><span class="ui-badge ui-badge--info"><span class="ui-badge__dot" aria-hidden="true"></span>รอตรวจสอบ</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="Neutral — สถานะที่ยังไม่มีผลลัพธ์">
+  <span class="ui-badge"><span class="ui-badge__dot" aria-hidden="true"></span>ร่าง</span>
+</div>
+
+<div class="cs-variant" data-variant-label="Success — จบแล้วและถูกต้อง">
+  <span class="ui-badge ui-badge--success"><span class="ui-badge__dot" aria-hidden="true"></span>เสร็จแล้ว</span>
+</div>
+
+<div class="cs-variant" data-variant-label="Warning — ต้องทำอะไรสักอย่างแต่ยังไม่สาย">
+  <span class="ui-badge ui-badge--warning"><span class="ui-badge__dot" aria-hidden="true"></span>รอดำเนินการ</span>
+</div>
+
+<div class="cs-variant" data-variant-label="Danger — สายแล้วหรือผิดพลาด">
+  <span class="ui-badge ui-badge--danger"><span class="ui-badge__dot" aria-hidden="true"></span>เลยกำหนด</span>
+</div>
+
+<div class="cs-variant" data-variant-label="Info — กำลังดำเนินการโดยระบบ">
+  <span class="ui-badge ui-badge--info"><span class="ui-badge__dot" aria-hidden="true"></span>กำลังตรวจสอบ</span>
+</div>
+
+<div class="cs-variant" data-variant-label="Brand — ป้ายของระบบ ไม่ใช่สถานะของข้อมูล">
+  <span class="ui-badge ui-badge--brand">แผนใหม่</span>
+</div>
+<!-- @end -->

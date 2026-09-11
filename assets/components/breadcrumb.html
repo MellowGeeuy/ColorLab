@@ -1,0 +1,81 @@
+<!-- @card -->
+<nav class="ui-crumb" aria-label="เส้นทาง">
+  <ol class="ui-crumb__list">
+    <li><a class="ui-crumb__link" href="#" data-part="p1">หน้าแรก</a></li>
+    <li aria-hidden="true" class="ui-crumb__sep">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+    </li>
+    <li><a class="ui-crumb__link" href="#" data-part="p2">รายการ</a></li>
+    <li aria-hidden="true" class="ui-crumb__sep">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+    </li>
+    <li><span class="ui-crumb__current" aria-current="page">ID-2043</span></li>
+  </ol>
+</nav>
+<!-- @end -->
+
+<!-- @preview -->
+<nav class="ui-crumb" aria-label="เส้นทางของหน้านี้">
+  <ol class="ui-crumb__list">
+    <li>
+      <a class="ui-crumb__link" href="#" data-part="p1">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>
+        หน้าแรก
+      </a>
+    </li>
+    <li class="ui-crumb__sep" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+    </li>
+    <li><a class="ui-crumb__link" href="#" data-part="p2">การเงิน</a></li>
+    <li class="ui-crumb__sep" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+    </li>
+    <li><a class="ui-crumb__link" href="#" data-part="p3">รายการ</a></li>
+    <li class="ui-crumb__sep" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+    </li>
+    <li><span class="ui-crumb__current" aria-current="page">ID-2043 รายการ A</span></li>
+  </ol>
+</nav>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ปกติ — ระดับสุดท้ายไม่ใช่ลิงก์">
+  <nav class="ui-crumb" aria-label="ตัวอย่าง 1">
+    <ol class="ui-crumb__list">
+      <li><a class="ui-crumb__link" href="#" data-part="p1">หน้าแรก</a></li>
+      <li class="ui-crumb__sep" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></li>
+      <li><a class="ui-crumb__link" href="#" data-part="p2">รายชื่อ</a></li>
+      <li class="ui-crumb__sep" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></li>
+      <li><span class="ui-crumb__current" aria-current="page">รายการ A</span></li>
+    </ol>
+  </nav>
+</div>
+
+<div class="cs-variant" data-variant-label="ย่อกลางทาง — ใช้เมื่อชั้นลึกเกินสี่ระดับ">
+  <nav class="ui-crumb" aria-label="ตัวอย่าง 2">
+    <ol class="ui-crumb__list">
+      <li><a class="ui-crumb__link" href="#" data-part="p3">หน้าแรก</a></li>
+      <li class="ui-crumb__sep" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></li>
+      <li><button type="button" class="ui-crumb__more" aria-label="แสดงระดับที่ซ่อนไว้">...</button></li>
+      <li class="ui-crumb__sep" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></li>
+      <li><a class="ui-crumb__link" href="#" data-part="p4">รายการ</a></li>
+      <li class="ui-crumb__sep" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></li>
+      <li><span class="ui-crumb__current" aria-current="page">ID-2043</span></li>
+    </ol>
+  </nav>
+</div>
+
+<div class="cs-variant" data-variant-label="พร้อมปุ่มย้อนกลับ — ใช้ในแอปที่เข้าหน้านี้จากหลายทาง">
+  <div class="ui-crumb ui-crumb--withback">
+    <button type="button" class="ui-iconbtn" aria-label="ย้อนกลับ">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+    </button>
+    <ol class="ui-crumb__list">
+      <li><a class="ui-crumb__link" href="#" data-part="p5">รายการ</a></li>
+      <li class="ui-crumb__sep" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></li>
+      <li><span class="ui-crumb__current" aria-current="page">ID-2043</span></li>
+    </ol>
+  </div>
+</div>
+<!-- @end -->

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component Style — ColorLab</title>
+  <meta name="description" content="คอมโพเนนต์จริงภายใต้ชุดสีที่ตั้งไว้ใน Colorground พร้อมโค้ดที่คัดลอกไปใช้ได้ทันที">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/app-shell.css">
+  <link rel="stylesheet" href="assets/css/component-catalog.css">
+  <link rel="stylesheet" href="assets/css/page-specific/component-style.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="topbar">
+      <div class="topbar__side">
+        <a class="topbar__brand" href="index.html">
+          <span class="topbar__logo" aria-hidden="true"></span>
+          <span class="topbar__name">ColorLab</span>
+        </a>
+
+        <nav class="groundnav" aria-label="เมนูหลัก">
+          <a class="groundnav__item" href="index.html" style="--dot-h:8">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-book"/></svg>Color Theory
+          </a>
+          <a class="groundnav__item" href="component-style.html" style="--dot-h:92" aria-current="page">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-layers"/></svg>Component Style
+          </a>
+          <a class="groundnav__item" href="layout.html" style="--dot-h:150">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
+          </a>
+          <a class="groundnav__item" href="contrast-audit.html" style="--dot-h:196">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-contrast"/></svg>Contrast Audit
+          </a>
+          <a class="groundnav__item" href="token-export.html" style="--dot-h:286">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-tag"/></svg>Token Export
+          </a>
+        </nav>
+      </div>
+
+      <div class="topbar__side topbar__side--end">
+        <div class="topbar__actions">
+          <button type="button" class="btn btn--icon btn--sm" id="theme-toggle" aria-label="สลับโหมดสีของหน้าเว็บ">
+            <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+          </button>
+
+          <a class="topnav__item topnav__item--hero" href="workspace.html" aria-label="Colorground" title="Colorground">
+            <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+            <span class="topnav__label">Colorground</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="cs-page">
+
+      <button type="button" class="cs-palette-pill" id="palette-pill"
+              aria-haspopup="dialog" aria-label="ชุดสีที่ใช้อยู่ กดเพื่อเปลี่ยนชุดสี">
+        <span class="cs-swatches" id="palette-swatches" aria-hidden="true"></span>
+      </button>
+
+      <div id="catalog-view">
+        <div class="cs-intro">
+          <span class="cs-intro__eyebrow">
+            <svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg>
+            ชุดคอมโพเนนต์
+          </span>
+          <h1 class="cs-intro__title">Component Style<span class="cs-intro__sub">ทุกรูปแบบ ทุกสถานะ พร้อมโค้ดที่คัดลอกไปใช้ได้ทันที ภายใต้ชุดสีจาก Colorground</span></h1>
+        </div>
+
+        <div id="catalog"></div>
+      </div>
+
+      <div id="detail" hidden></div>
+
+    </main>
+
+    <!-- ===================== MODAL เลือกชุดสี ===================== -->
+    <div class="cs-modal" id="palette-modal" hidden>
+      <div class="cs-modal__scrim" data-close></div>
+
+      <div class="cs-modal__panel" role="dialog" aria-modal="true" aria-labelledby="palette-modal-title">
+        <header class="cs-modal__head">
+          <h2 class="cs-modal__title" id="palette-modal-title">
+            เลือกชุดสี<span class="cs-modal__sub">ชุดที่บันทึกไว้จาก Colorground เลือกแล้วทุกคอมโพเนนต์เปลี่ยนตามทันที</span>
+          </h2>
+          <button type="button" class="btn btn--icon btn--sm" data-close aria-label="ปิดหน้าต่างเลือกชุดสี">
+            <svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>
+          </button>
+        </header>
+
+        <div class="cs-modal__body">
+          <div class="cs-modal__section">
+            <span class="cs-modal__label">ธีมของพื้นที่ตัวอย่าง</span>
+            <div class="cs-themeswitch" role="group" aria-label="ธีมของพื้นที่ตัวอย่าง">
+              <button type="button" class="cs-themeswitch__btn" data-preview-theme="light" aria-pressed="false">
+                <svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg>
+                สว่าง
+              </button>
+              <button type="button" class="cs-themeswitch__btn" data-preview-theme="dark" aria-pressed="false">
+                <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+                มืด
+              </button>
+            </div>
+          </div>
+
+          <div class="cs-modal__section">
+            <span class="cs-modal__label">ชุดสีที่บันทึกไว้</span>
+            <div class="cs-palette-list" id="palette-list"></div>
+            <p class="cs-modal__empty" id="palette-empty" hidden>
+              ยังไม่มีชุดสีที่บันทึกไว้ — สร้างได้ที่ Colorground แล้วกดบันทึกชุดสี
+            </p>
+          </div>
+        </div>
+
+        <footer class="cs-modal__foot">
+          <a class="btn btn--primary btn--sm" href="workspace.html">
+            <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+            ไปสร้างชุดสีที่ Colorground
+          </a>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="assets/js/pages/component-style.js"></script>
+</body>
+</html>

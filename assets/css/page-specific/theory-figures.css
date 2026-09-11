@@ -1,0 +1,1309 @@
+/* ==========================================================================
+   theory-figures.css — ภาพประกอบและอนิเมชันของหน้า Color Theory
+   แยกจาก theory.css เพราะไฟล์นั้นดูแล "โครงการอ่าน" (สารบัญ/คอลัมน์/ระยะ)
+   ส่วนไฟล์นี้ดูแล "ของที่ใช้อธิบายแทนข้อความ" ล้วน ๆ
+
+   ทุกอนิเมชันในไฟล์นี้เป็นงานอธิบาย ไม่ใช่ feedback ของ control
+   จึงยาวกว่า 300ms ได้ตาม GRules และต้องหยุดเมื่อผู้ใช้ขอลดการเคลื่อนไหว
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   กรอบภาพประกอบมาตรฐาน
+   -------------------------------------------------------------------------- */
+/* margin ต้องเขียนครบทั้งสี่ด้าน — <figure> มี margin-inline: 40px ติดมาจาก default ของเบราว์เซอร์
+   ถ้าตั้งแค่ margin-block ทุกกรอบภาพจะเยื้องเข้ามา 40px ไม่ตรงแนวกับข้อความและตารางในเรื่องเดียวกัน */
+.figure {
+  margin: var(--space-4) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  overflow: hidden;
+}
+
+.figure__stage {
+  padding: var(--space-4);
+  background-color: var(--color-surface-sunken);
+}
+
+.figure__caption {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-block-start: 1px solid var(--color-border);
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+}
+
+.figure__caption .icon { flex-shrink: 0; color: var(--color-text-subtle); margin-block-start: 2px; }
+
+/* ภาพที่ "ตัวอย่างในนั้นคือเนื้อหาที่กำลังสอน" ต้องคงพื้นสว่างไว้ทั้งสองธีม
+   ไม่งั้นพอสลับเป็นธีมมืด ตัวอย่างที่จงใจทำให้คอนทราสต์ต่ำจะกลายเป็นแถวที่อ่านง่ายที่สุด
+   ในภาพ แล้วภาพจะสอนกลับด้านกับคำบรรยาย
+   override เป็น token ภายใน scope ไม่ใช่ hardcode ทีละที่ ของข้างในจึงไม่ต้องรู้เรื่องนี้เลย */
+.figure--fixed .figure__stage {
+  --color-surface: #ffffff;
+  --color-surface-alt: #f1f5f9;
+  --color-surface-sunken: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-text: #0f172a;
+  --color-text-muted: #475569;
+  --color-text-subtle: #94a3b8;
+  --color-success: #059669;
+  --color-success-soft: #ecfdf5;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fef2f2;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* ข้อความเน้นแบบไม่มีกล่อง — แทน callout ที่มีแถบสีข้างและพื้นสี
+   ในหน้าที่ภาพประกอบเป็นตัวเล่าเรื่อง กล่องสีกลายเป็นก้อนสีอีกก้อนที่แย่งสายตากับภาพ
+   ทั้งที่เนื้อในเป็นแค่หมายเหตุหนึ่งประโยค */
+/* กล่องกว้างเท่าบล็อกอื่นในเรื่องเดียวกัน แต่บรรทัดข้างในยังจำกัดความยาวไว้
+   ถ้าจำกัดที่ตัวกล่อง ขอบขวาของพื้นสีจะจบไม่ตรงกับกรอบภาพและตารางที่อยู่ติดกัน */
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-block: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--lh-base);
+}
+
+.note .icon {
+  flex-shrink: 0;
+  margin-block-start: 3px;
+  color: var(--color-text-subtle);
+}
+
+.note p { margin: 0; max-width: 68ch; font-size: inherit; line-height: inherit; }
+
+/* เคล็ดลับ — พื้นเหลืองอ่อนกับไอคอนหลอดไฟ ให้แยกออกจากคำอธิบายทั่วไปด้วยตาในครั้งเดียว */
+.note--tip {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+.note--tip .icon { color: var(--color-warning); }
+
+/* ไฮไลต์คำในประโยค ใช้ชุดสีเดียวกับ tip */
+.u-mark {
+  padding: 1px 4px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent-soft);
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+}
+
+/* ป้ายบอกว่าฝั่งไหนคือแบบไหน ใช้ร่วมกันหลายภาพ */
+.fig-label {
+  display: block;
+  margin-block-end: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ป้าย 12px ต้องผ่าน 4.5:1 บนพื้น sunken ด้วย — สี semantic ระดับ 600 ยังไม่พอ
+   จึงลงมาอีกขั้นเฉพาะที่ใช้เป็นตัวอักษรเล็ก (พื้นหลังยังใช้ระดับเดิม) */
+.fig-label--bad  { color: var(--color-danger-text); }
+.fig-label--good { color: var(--color-success-text); }
+
+/* --------------------------------------------------------------------------
+   01 · สายตาไปไหนก่อน
+   จอสองใบเนื้อหาเหมือนกันทุกอย่าง ต่างกันแค่มีสีนำสายตาหรือไม่
+   จุดวงกลมคือสายตาผู้ใช้ — ฝั่งซ้ายไล่หาไปทีละบล็อก ฝั่งขวาพุ่งไปที่ปุ่มทันที
+   -------------------------------------------------------------------------- */
+.gaze {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--space-4);
+}
+
+.gaze__screen {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-4);
+  min-height: 9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+}
+
+.gaze__bar {
+  height: var(--space-3);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-alt);
+}
+
+.gaze__bar--title { height: var(--space-4); width: 55%; background-color: var(--color-border-strong); }
+.gaze__bar--short { width: 70%; }
+
+.gaze__row {
+  display: flex;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+}
+
+.gaze__btn {
+  height: var(--control-h-md);
+  flex: 0 0 6.5rem;
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border-strong);
+}
+
+/* จอที่มีระบบสี: ปุ่มหลักเป็นชิ้นเดียวที่มีพื้นทึบ */
+.gaze__screen--system .gaze__btn--primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.gaze__dot {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-text);
+  background-color: rgb(148 163 184 / 0.25);
+  opacity: 0;
+}
+
+.is-in-view .gaze__dot { animation: gaze-hunt 6s var(--ease-out) infinite; opacity: 1; }
+.is-in-view .gaze__screen--system .gaze__dot { animation-name: gaze-direct; }
+
+/* ฝั่งไม่มีระบบสี — ไล่อ่านทีละบล็อกก่อนจะเจอปุ่ม */
+@keyframes gaze-hunt {
+  0%   { transform: translate(1.5rem, 1.5rem); }
+  15%  { transform: translate(9rem, 1.5rem); }
+  30%  { transform: translate(2rem, 4rem); }
+  45%  { transform: translate(8rem, 5.5rem); }
+  60%  { transform: translate(2.5rem, 7rem); }
+  75%  { transform: translate(7rem, 9.5rem); }
+  90%, 100% { transform: translate(2.5rem, 9.5rem); }
+}
+
+/* ฝั่งมีระบบสี — พุ่งไปที่ปุ่มแล้วอยู่ตรงนั้น */
+@keyframes gaze-direct {
+  0%   { transform: translate(1.5rem, 1.5rem); }
+  25%  { transform: translate(2.5rem, 9.5rem); }
+  100% { transform: translate(2.5rem, 9.5rem); }
+}
+
+/* --------------------------------------------------------------------------
+   02 · สามแกนของสี
+   แต่ละแถบขยับทีละแกนโดยล็อกอีกสองแกนไว้ ให้เห็นว่าแกนนั้นเปลี่ยนอะไรจริง ๆ
+   -------------------------------------------------------------------------- */
+.axes { display: grid; gap: var(--space-4); }
+
+.axis {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr) 3.5rem;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.axis__name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-sm);
+}
+
+.axis__name small {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+}
+
+.axis__track {
+  position: relative;
+  height: var(--space-6);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+}
+
+.axis__track--hue {
+  background: linear-gradient(90deg,
+    hsl(0 75% 55%), hsl(60 75% 55%), hsl(120 75% 55%),
+    hsl(180 75% 55%), hsl(240 75% 55%), hsl(300 75% 55%), hsl(360 75% 55%));
+}
+
+.axis__track--sat { background: linear-gradient(90deg, hsl(225 0% 55%), hsl(225 100% 55%)); }
+.axis__track--light { background: linear-gradient(90deg, hsl(225 75% 4%), hsl(225 75% 55%), hsl(225 75% 96%)); }
+
+/* ตำแหน่งลูกบิดกับสีของชิปมาจากตัวแปรตัวเดียวกัน จึงตรงกันเป๊ะทุกเฟรม
+   ถ้าแยกเป็นสอง keyframes อย่างที่ทำตอนแรก สองอย่างจะไหลคนละจังหวะทันทีที่ใส่ delay ต่างกัน */
+@property --axis-t {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: true;
+}
+
+.axis { --axis-t: 0; }
+
+.is-in-view .axis { animation: axis-sweep 5s ease-in-out infinite alternate; }
+.is-in-view .axis--sat { animation-delay: 0.4s; }
+.is-in-view .axis--light { animation-delay: 0.8s; }
+
+@keyframes axis-sweep { to { --axis-t: 1; } }
+
+.axis__knob {
+  position: absolute;
+  inset-block: -3px;
+  inline-size: var(--space-3);
+  inset-inline-start: calc(4% + var(--axis-t) * 84%);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-surface);
+  background-color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.axis__chip {
+  height: var(--control-h-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+/* ชิปท้ายหลอดคือ "สีที่ได้จริง ณ ตำแหน่งลูกบิดตอนนี้" ของแกนนั้น */
+.axis--hue .axis__chip   { background-color: hsl(calc(10 + var(--axis-t) * 320) 75% 55%); }
+.axis--sat .axis__chip   { background-color: hsl(225 calc(4% + var(--axis-t) * 92%) 55%); }
+.axis--light .axis__chip { background-color: hsl(225 75% calc(12% + var(--axis-t) * 80%)); }
+
+/* --------------------------------------------------------------------------
+   03 · HSL เทียบ OKLCH
+   แถบล่างคือแถบเดียวกันที่ถอดสีออกเหลือแต่ความสว่าง — เห็นทันทีว่า HSL
+   สว่างไม่เท่ากันตลอดแถบ (ช่วงเหลืองสว่างพุ่ง) ส่วน OKLCH เรียบสม่ำเสมอ
+   -------------------------------------------------------------------------- */
+.ramps { display: grid; gap: var(--space-4); }
+
+.ramp-row { display: grid; gap: var(--space-2); }
+
+.ramp-bar {
+  height: var(--space-8);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.ramp-bar--hsl {
+  background: linear-gradient(90deg in hsl,
+    hsl(265 85% 55%), hsl(120 85% 55%), hsl(60 85% 55%), hsl(20 85% 55%));
+}
+
+.ramp-bar--oklch {
+  background: linear-gradient(90deg in oklch,
+    oklch(55% 0.23 292), oklch(55% 0.23 145), oklch(55% 0.23 95), oklch(55% 0.23 40));
+}
+
+.ramp-bar--mono { filter: grayscale(1); height: var(--space-6); }
+
+.ramp-row__note {
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   04 · สูตร harmony คือรูปทรงบนวงล้อ ไม่ใช่ชุดสีตายตัว
+   จุดทั้งชุดหมุนไปพร้อมกัน — เห็นว่าระยะห่างระหว่างจุดต่างหากที่เป็นตัวสูตร
+   หมุนไปตกที่เนื้อสีไหนก็ยังเข้ากันอยู่
+   -------------------------------------------------------------------------- */
+/* เจ็ดสูตรจัดเป็นสามใบบน สี่ใบล่าง — กริด 12 ช่องหารด้วย 3 และ 4 ลงตัวทั้งคู่
+   จึงได้สองแถวที่กว้างเท่ากันพอดี ไม่มีใบไหนเหลือค้างท้ายแถว */
+/* 7 ใบลงตัวเป็น 4 บน 3 ล่าง โดยแถวล่างเยื้องครึ่งช่องให้แกนกลางของสองแถวตรงกัน
+   (24 ช่อง ใบละ 6 ช่อง แถวล่างเริ่มช่องที่ 4 → กินช่อง 4-21 ซึ่งมีกึ่งกลางที่ 12.5 เท่ากับทั้งแถว)
+   เดิมเป็น 3 บน 4 ล่าง คนละความกว้าง วงล้อสองแถวจึงไม่ตรงคอลัมน์กันสักใบ */
+.wheels {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
+  justify-items: center;
+}
+
+.wheels > * { grid-column: span 6; }
+.wheels > :nth-child(5) { grid-column: 4 / span 6; }
+
+@media (max-width: 860px) {
+  .wheels { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .wheels > * { grid-column: span 2; }
+  .wheels > :nth-child(5) { grid-column: 2 / span 2; }
+}
+
+@media (max-width: 560px) {
+  .wheels { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .wheels > * { grid-column: span 2; }
+  .wheels > :nth-child(5) { grid-column: span 2; }
+  .wheels > :nth-child(7) { grid-column: 2 / span 2; }
+}
+
+/* subgrid ทำให้ชิปสี ชื่อสูตร และคำอธิบายของทุกใบตกเส้นเดียวกัน
+   แม้ชื่อจะยาวไม่เท่ากัน — ระยะระหว่างแถวการ์ดมาจาก margin ของการ์ดเอง
+   เพราะ row-gap ของกริดแม่ถูกใช้เป็นระยะระหว่างบรรทัดในการ์ดไปแล้ว */
+.wheel-card {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  justify-items: center;
+  margin-block-end: var(--space-5);
+  text-align: center;
+}
+
+/* วงล้อศิลปะ (RYB) ชุดเดียวกับ .wheel และ .harmony-explorer__disc
+   ตัวเลขต้นทางอยู่ที่ RYB_TO_RGB_HUE ใน assets/js/utils/color-utils.js */
+.wheel-card__disc {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+  border-radius: var(--radius-full);
+  background: conic-gradient(
+    hsl(0 80% 55%) 0deg,     hsl(8 80% 55%) 15deg,    hsl(17 80% 55%) 30deg,
+    hsl(26 80% 55%) 45deg,   hsl(34 80% 55%) 60deg,   hsl(41 80% 55%) 75deg,
+    hsl(48 80% 55%) 90deg,   hsl(54 80% 55%) 105deg,  hsl(60 80% 55%) 120deg,
+    hsl(81 80% 55%) 135deg,  hsl(103 80% 55%) 150deg, hsl(123 80% 55%) 165deg,
+    hsl(138 80% 55%) 180deg, hsl(155 80% 55%) 195deg, hsl(171 80% 55%) 210deg,
+    hsl(187 80% 55%) 225deg, hsl(204 80% 55%) 240deg, hsl(219 80% 55%) 255deg,
+    hsl(234 80% 55%) 270deg, hsl(251 80% 55%) 285deg, hsl(267 80% 55%) 300deg,
+    hsl(282 80% 55%) 315deg, hsl(298 80% 55%) 330deg, hsl(329 80% 55%) 345deg,
+    hsl(360 80% 55%) 360deg);
+}
+
+/* เจาะกลางให้เป็นวงแหวน อ่านตำแหน่งจุดง่ายกว่าจานทึบ */
+.wheel-card__disc::after {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+}
+
+.wheel-card__pins { position: absolute; inset: 0; }
+
+/* เดิมหมุนทั้งจานพร้อมจุด สีใต้จุดจึงไม่เคยเปลี่ยน ชิปข้างล่างก็นิ่งตามไปด้วย
+   ตอนนี้จานอยู่นิ่ง หมุนเฉพาะวงจุด แล้วให้ harmony-wheel-spin.js คำนวณเนื้อสี
+   ของตำแหน่งใหม่ทุกครั้งที่มุมขยับ — ต้องคำนวณใน JS เพราะมุมบนวงล้อศิลปะ
+   ไม่ได้สัมพันธ์กับ hue แบบเชิงเส้น (ตาราง RYB_TO_RGB_HUE ใน color-utils.js) */
+.wheel-card__pin {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  width: var(--space-4);
+  height: var(--space-4);
+  margin: calc(var(--space-4) / -2);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transform: rotate(calc(var(--pin-a) + var(--spin, 0deg))) translateY(-2.8rem);
+  background-color: hsl(var(--pin-h0) 80% 55%);
+}
+
+/* ชุดสีที่ได้จากสูตร ณ วินาทีนั้น — เปลี่ยนพร้อมจุดบนวง เห็นว่าชุดสีไหลไปเรื่อย ๆ
+   แต่ความสัมพันธ์ระหว่างสีในชุดไม่เคยเปลี่ยน */
+.wheel-card__set { display: flex; gap: 3px; }
+
+/* --pin-l มีไว้ให้ Monochromatic ซึ่งใช้เนื้อสีเดียวแล้วต่างกันที่ความสว่าง */
+.wheel-card__chip {
+  width: 1.5rem;
+  height: 1.25rem;
+  border-radius: var(--radius-sm);
+  background-color: hsl(var(--pin-h0) 80% var(--pin-l, 55%));
+}
+
+.wheel-card__name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-sm);
+}
+
+.wheel-card__hint {
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   04 · เลือกสูตร Harmony เอง — วงล้อศิลปะ (RYB) ที่ลากได้จริง
+   ตัวเลของศาของ gradient เป็นชุดเดียวกับ .wheel ใน design-system.css
+   และกับ RYB_TO_RGB_HUE ใน color-utils.js
+   -------------------------------------------------------------------------- */
+
+.harmony-explorer {
+  margin-block: var(--space-6);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.harmony-explorer__head { margin-bottom: var(--space-4); }
+
+.harmony-explorer__title {
+  font-size: var(--text-md);
+  line-height: var(--lh-lg);
+  margin-bottom: var(--space-1);
+}
+
+.harmony-explorer__sub {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+}
+
+.harmony-explorer__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.harmony-explorer__chip {
+  height: var(--control-h-sm);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: border-color var(--duration-fast, 150ms) ease, color var(--duration-fast, 150ms) ease;
+}
+
+.harmony-explorer__chip:hover { border-color: var(--color-primary); color: var(--color-primary-text); }
+
+.harmony-explorer__chip:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* สูตรที่เลือกอยู่บอกด้วยพื้น ขอบ และน้ำหนักตัวอักษร ไม่ใช่สีอย่างเดียว */
+.harmony-explorer__chip.is-active {
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary-text);
+  font-weight: var(--weight-semibold);
+}
+
+.harmony-explorer__body {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: center;
+}
+
+.harmony-explorer__disc {
+  position: relative;
+  width: 13rem;
+  height: 13rem;
+  border-radius: var(--radius-full);
+  cursor: crosshair;
+  touch-action: none;
+  background: conic-gradient(
+    hsl(0 85% 55%) 0deg,     hsl(8 85% 55%) 15deg,    hsl(17 85% 55%) 30deg,
+    hsl(26 85% 55%) 45deg,   hsl(34 85% 55%) 60deg,   hsl(41 85% 55%) 75deg,
+    hsl(48 85% 55%) 90deg,   hsl(54 85% 55%) 105deg,  hsl(60 85% 55%) 120deg,
+    hsl(81 85% 55%) 135deg,  hsl(103 85% 55%) 150deg, hsl(123 85% 55%) 165deg,
+    hsl(138 85% 55%) 180deg, hsl(155 85% 55%) 195deg, hsl(171 85% 55%) 210deg,
+    hsl(187 85% 55%) 225deg, hsl(204 85% 55%) 240deg, hsl(219 85% 55%) 255deg,
+    hsl(234 85% 55%) 270deg, hsl(251 85% 55%) 285deg, hsl(267 85% 55%) 300deg,
+    hsl(282 85% 55%) 315deg, hsl(298 85% 55%) 330deg, hsl(329 85% 55%) 345deg,
+    hsl(360 85% 55%) 360deg);
+}
+
+.harmony-explorer__disc::after {
+  content: "";
+  position: absolute;
+  inset: 28%;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.harmony-explorer__disc:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.harmony-explorer__pin {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: -0.625rem 0 0 -0.625rem;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--neutral-0);
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+}
+
+.harmony-explorer__pin--main {
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: -0.875rem 0 0 -0.875rem;
+  border-width: 3px;
+}
+
+.harmony-explorer__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.harmony-explorer__hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.harmony-explorer__set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.harmony-explorer__swatch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.5rem;
+  height: var(--control-h-lg);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.harmony-explorer__preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.harmony-explorer__preview-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.harmony-explorer__preview-text {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+}
+
+.harmony-explorer__preview-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.harmony-explorer__fake-btn {
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h-md);
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+
+.harmony-explorer__fake-btn--ghost {
+  background-color: transparent;
+  border: 2px solid currentColor;
+}
+
+@media (max-width: 720px) {
+  .harmony-explorer__body { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+}
+
+/* --------------------------------------------------------------------------
+   05 · สีแบรนด์เปลี่ยน ความรู้สึกเปลี่ยน
+   การ์ดใบเดียวกันทุกตัวอักษร เปลี่ยนแค่ hue ของสีแบรนด์
+   -------------------------------------------------------------------------- */
+.mood { display: grid; gap: var(--space-4); --mood-text-l: 42%; }
+
+/* ธีมมืด: ตัวอักษรที่ผูกกับ hue ของตัวอย่างต้องสว่างขึ้น ไม่งั้นจมไปกับพื้นการ์ด */
+[data-theme="dark"] .mood { --mood-text-l: 72%; }
+
+/* ต้องเป็น containing block ให้ radio ที่ซ่อนอยู่ข้างใน — ถ้าไม่มี relative ตรงนี้
+   radio จะไปยึดกับ viewport แล้วดันความสูงของ <html> ตามระยะที่หน้าเลื่อนไป
+   กลายเป็น scrollbar เส้นที่สองซ้อนกับ scrollbar ของคอลัมน์อ่าน */
+.mood__picker { position: relative; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.mood__radio {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mood__option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-md);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.mood__dot {
+  width: var(--space-3);
+  height: var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: hsl(var(--mood-h) 70% 50%);
+}
+
+.mood__radio:checked + .mood__option {
+  border-color: hsl(var(--mood-h) 70% 50%);
+  background-color: hsl(var(--mood-h) 70% 50% / 0.12);
+  font-weight: var(--weight-medium);
+}
+
+.mood__radio:focus-visible + .mood__option { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+.mood__card {
+  --mood-h: 225;
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  transition: background-color var(--duration-slow) var(--ease-out);
+}
+
+/* :has ทำให้การ์ดรับค่า hue จากตัวเลือกที่ถูกเลือก โดยไม่ต้องมี JS มาคอยฟัง */
+.mood:has(#mood-blue:checked)   .mood__card { --mood-h: 225; }
+.mood:has(#mood-green:checked)  .mood__card { --mood-h: 150; }
+.mood:has(#mood-red:checked)    .mood__card { --mood-h: 5; }
+.mood:has(#mood-purple:checked) .mood__card { --mood-h: 280; }
+
+.mood__eyebrow {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: hsl(var(--mood-h) 65% var(--mood-text-l, 42%));
+}
+
+.mood__title { font-size: var(--text-lg); line-height: var(--lh-lg); font-weight: var(--weight-semibold); }
+.mood__text { font-size: var(--text-sm); line-height: var(--lh-base); color: var(--color-text-muted); }
+
+.mood__actions { display: flex; gap: var(--space-2); align-items: center; }
+
+.mood__btn {
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h-md);
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: hsl(var(--mood-h) 70% 45%);
+  color: var(--neutral-0);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.mood__btn--ghost {
+  background-color: transparent;
+  color: hsl(var(--mood-h) 65% var(--mood-text-l, 42%));
+  border: 1px solid hsl(var(--mood-h) 55% 65%);
+}
+
+/* --------------------------------------------------------------------------
+   06 · สี่บทบาทของสีในหน้าจอเดียว
+   หน้าจอจำลองที่ไฮไลต์ทีละบทบาทวนไป — เห็นสัดส่วนจริงว่าบทบาทไหนกินพื้นที่เท่าไร
+   -------------------------------------------------------------------------- */
+.roles {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.roles__screen {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+}
+
+.roles__part { border-radius: var(--radius-sm); transition: opacity var(--duration-base) var(--ease-out); }
+
+.roles__topline { display: flex; align-items: center; gap: var(--space-3); }
+.roles__logo { width: var(--control-h-md); height: var(--control-h-md); border-radius: var(--radius-md); background-color: var(--color-primary); }
+.roles__nav { flex: 1; height: var(--space-3); background-color: var(--color-surface-alt); }
+
+.roles__body { display: grid; gap: var(--space-2); }
+.roles__line { height: var(--space-3); background-color: var(--color-surface-alt); }
+.roles__line--60 { width: 60%; }
+.roles__line--80 { width: 80%; }
+
+.roles__states { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.roles__pill {
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h-sm);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+}
+
+.roles__pill--success { background-color: var(--color-success-soft); color: var(--color-success-text); }
+.roles__pill--warning { background-color: var(--color-warning-soft); color: var(--color-warning-text); }
+.roles__pill--danger  { background-color: var(--color-danger-soft);  color: var(--color-danger-text); }
+
+.roles__chart { display: flex; align-items: flex-end; gap: var(--space-2); height: var(--space-12); }
+.roles__col { flex: 1; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+
+.roles__cta {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h-md);
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.roles__legend { display: grid; gap: var(--space-2); }
+
+.roles__key {
+  display: grid;
+  grid-template-columns: var(--space-3) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  opacity: 0.45;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.roles__swatch { width: var(--space-3); height: var(--space-3); border-radius: var(--radius-sm); margin-block-start: 4px; }
+.roles__swatch--primary  { background-color: var(--color-primary); }
+.roles__swatch--neutral  { background-color: var(--color-border-strong); }
+.roles__swatch--semantic { background-color: var(--color-success); }
+.roles__swatch--accent   { background-color: var(--color-accent); }
+
+.roles__key small { display: block; color: var(--color-text-muted); }
+
+/* ไฮไลต์ทีละบทบาท: หรี่ทุกส่วนที่ไม่ใช่บทบาทที่กำลังพูดถึง
+   รอบละ 10 วินาที (บทบาทละ 2.5s) — ของเดิม 16s ช้าจนผู้อ่านเลื่อนผ่านไปก่อนจะครบรอบ */
+.is-in-view .roles__part { animation: role-dim 10s linear infinite; }
+
+/* คำอธิบายฝั่งขวาต้องสว่างขึ้นพร้อมกับชิ้นที่กำลังถูกไฮไลต์บนหน้าจอ
+   ใช้เวลาและ delay ชุดเดียวกันเป๊ะ จึงไม่มีทางหลุดจังหวะ */
+.is-in-view .roles__key { animation: role-focus 10s linear infinite; }
+
+/* ต้องประกาศ delay หลัง shorthand ทั้งสองบรรทัดข้างบน — `animation:` เป็น shorthand
+   ที่รีเซ็ต animation-delay กลับเป็น 0 ถ้าวางไว้ก่อน ทุกบทบาทจะกะพริบพร้อมกันหมด */
+.is-in-view [data-role="primary"]  { animation-delay: 0s; }
+.is-in-view [data-role="neutral"]  { animation-delay: 2.5s; }
+.is-in-view [data-role="semantic"] { animation-delay: 5s; }
+.is-in-view [data-role="accent"]   { animation-delay: 7.5s; }
+
+@keyframes role-dim {
+  0%, 22%   { opacity: 1; }
+  25%, 97%  { opacity: 0.14; }
+  100%      { opacity: 1; }
+}
+
+@keyframes role-focus {
+  0%, 22%   { opacity: 1; background-color: var(--color-accent-soft); }
+  25%, 97%  { opacity: 0.4; background-color: transparent; }
+  100%      { opacity: 1; background-color: var(--color-accent-soft); }
+}
+
+/* --------------------------------------------------------------------------
+   07 · สเกล 11 ขั้น
+   ขั้นทยอยโผล่จากอ่อนไปเข้ม ให้เห็นว่าสีเดียวกลายเป็นระบบได้อย่างไร
+   -------------------------------------------------------------------------- */
+/* เลือกสีตั้งต้นได้ 4 สี — สเกลทั้งแถวคำนวณจาก hue เดียวที่เลือกไว้
+   ทำด้วย :has() ล้วน ไม่ต้องมี JS มาคอยฟังการเปลี่ยนค่า */
+.ramp-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-end: var(--space-3);
+}
+
+.ramp-picker__radio {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ramp-picker__option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-md);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ramp-picker__dot {
+  width: var(--space-3);
+  height: var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: hsl(var(--ramp-h) 70% 50%);
+}
+
+.ramp-picker__radio:checked + .ramp-picker__option {
+  border-color: hsl(var(--ramp-h) 70% 50%);
+  background-color: hsl(var(--ramp-h) 70% 50% / 0.12);
+  font-weight: var(--weight-medium);
+}
+
+.ramp-picker__radio:focus-visible + .ramp-picker__option { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+.steps {
+  --ramp-h: 243;
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.scale-demo:has(#ramp-indigo:checked)  .steps { --ramp-h: 243; }
+.scale-demo:has(#ramp-emerald:checked) .steps { --ramp-h: 160; }
+.scale-demo:has(#ramp-rose:checked)    .steps { --ramp-h: 347; }
+.scale-demo:has(#ramp-amber:checked)   .steps { --ramp-h: 38; }
+
+/* ปลายสว่างและปลายมืดต้องลดความสด ไม่งั้นขั้นปลายจะดูขุ่น — เป็นกฎที่คำบรรยายใต้ภาพพูดถึงพอดี */
+.steps__cell:nth-child(1)  { background-color: hsl(var(--ramp-h) 72% 96%); color: hsl(var(--ramp-h) 60% 24%); }
+.steps__cell:nth-child(2)  { background-color: hsl(var(--ramp-h) 76% 91%); color: hsl(var(--ramp-h) 60% 24%); }
+.steps__cell:nth-child(3)  { background-color: hsl(var(--ramp-h) 80% 84%); color: hsl(var(--ramp-h) 60% 22%); }
+.steps__cell:nth-child(4)  { background-color: hsl(var(--ramp-h) 82% 75%); color: hsl(var(--ramp-h) 60% 20%); }
+.steps__cell:nth-child(5)  { background-color: hsl(var(--ramp-h) 84% 66%); color: hsl(var(--ramp-h) 62% 16%); }
+.steps__cell:nth-child(6)  { background-color: hsl(var(--ramp-h) 84% 58%); color: #ffffff; }
+.steps__cell:nth-child(7)  { background-color: hsl(var(--ramp-h) 80% 50%); color: #ffffff; }
+.steps__cell:nth-child(8)  { background-color: hsl(var(--ramp-h) 76% 42%); color: #ffffff; }
+.steps__cell:nth-child(9)  { background-color: hsl(var(--ramp-h) 72% 34%); color: #ffffff; }
+.steps__cell:nth-child(10) { background-color: hsl(var(--ramp-h) 66% 26%); color: hsl(var(--ramp-h) 70% 88%); }
+.steps__cell:nth-child(11) { background-color: hsl(var(--ramp-h) 58% 16%); color: hsl(var(--ramp-h) 70% 82%); }
+
+.steps__cell {
+  display: grid;
+  place-items: center;
+  min-height: var(--space-10);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transform: translateY(var(--space-2));
+}
+
+.is-in-view .steps__cell { animation: step-in var(--duration-slow) var(--ease-out) forwards; }
+.is-in-view .steps__cell:nth-child(1)  { animation-delay: 0.05s; }
+.is-in-view .steps__cell:nth-child(2)  { animation-delay: 0.10s; }
+.is-in-view .steps__cell:nth-child(3)  { animation-delay: 0.15s; }
+.is-in-view .steps__cell:nth-child(4)  { animation-delay: 0.20s; }
+.is-in-view .steps__cell:nth-child(5)  { animation-delay: 0.25s; }
+.is-in-view .steps__cell:nth-child(6)  { animation-delay: 0.30s; }
+.is-in-view .steps__cell:nth-child(7)  { animation-delay: 0.35s; }
+.is-in-view .steps__cell:nth-child(8)  { animation-delay: 0.40s; }
+.is-in-view .steps__cell:nth-child(9)  { animation-delay: 0.45s; }
+.is-in-view .steps__cell:nth-child(10) { animation-delay: 0.50s; }
+.is-in-view .steps__cell:nth-child(11) { animation-delay: 0.55s; }
+
+@keyframes step-in {
+  to { opacity: 1; transform: none; }
+}
+
+.steps__use {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-3);
+  margin-block-start: var(--space-4);
+}
+
+.steps__use-item {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+}
+
+.steps__use-item b { display: block; font-family: var(--font-mono); color: var(--color-primary-text); }
+
+/* --------------------------------------------------------------------------
+   08 · เส้นแบ่งที่อ่านออก / อ่านไม่ออก
+   ข้อความชุดเดียวกันไล่จากคอนทราสต์ต่ำไปสูง พร้อมป้ายบอกว่าผ่านเกณฑ์ตรงไหน
+   -------------------------------------------------------------------------- */
+.legibility { display: grid; gap: var(--space-2); }
+
+.legibility__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 5rem 4.5rem;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  font-size: var(--text-base);
+}
+
+.legibility__ratio {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  color: var(--color-text-muted);
+}
+
+.legibility__row--1 { color: hsl(225 8% 72%); }
+.legibility__row--2 { color: hsl(225 8% 60%); }
+.legibility__row--3 { color: hsl(225 10% 46%); }
+.legibility__row--4 { color: hsl(225 14% 30%); }
+
+/* --------------------------------------------------------------------------
+   09 · ธีมมืดที่ทำถูก / ทำผิด
+   -------------------------------------------------------------------------- */
+.themes { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: var(--space-4); }
+
+/* ป้ายกำกับกับการ์ดเป็นสองแถวของกริดเดียวกัน การ์ดจึงกินความสูงที่เหลือเท่ากันทั้งสองฝั่ง
+   ไม่งั้นใบที่ข้อความสั้นกว่าจะเตี้ยกว่า แล้วดูเหมือนเรากำลังบอกว่ามันด้อยกว่า
+   ทั้งที่ภาพนี้เปรียบเทียบเรื่องสีอย่างเดียว */
+.themes > * {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-2);
+}
+
+.theme-card {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+}
+
+/* ค่าสีในภาพนี้เป็น "ตัวอย่างที่กำลังอธิบาย" ไม่ใช่สีของ UI จริง
+   จึงเขียนตรงเพื่อให้ตรงกับตัวเลขที่พูดถึงในคำบรรยาย ไม่ผูกกับธีมของหน้า */
+.theme-card--wrong { background-color: #000000; border-color: #262626; }
+.theme-card--right { background-color: #0f1729; border-color: #1e293b; }
+
+.theme-card__title { font-size: var(--text-sm); font-weight: var(--weight-semibold); }
+.theme-card--wrong .theme-card__title { color: #ffffff; }
+.theme-card--right .theme-card__title { color: #e2e8f0; }
+
+.theme-card__text { font-size: var(--text-sm); line-height: var(--lh-base); }
+.theme-card--wrong .theme-card__text { color: #ffffff; }
+.theme-card--right .theme-card__text { color: #94a3b8; }
+
+.theme-card__btn {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h-md);
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.theme-card--wrong .theme-card__btn { background-color: #4f46e5; color: #ffffff; }
+.theme-card--right .theme-card__btn { background-color: #818cf8; color: #0f172a; }
+
+.theme-card__meta { font-family: var(--font-mono); font-size: 0.625rem; color: #94a3b8; }
+
+/* --------------------------------------------------------------------------
+   10 · สัดส่วน 60 / 30 / 10
+   -------------------------------------------------------------------------- */
+.ratio { display: grid; gap: var(--space-3); }
+
+.ratio__bar {
+  display: flex;
+  height: var(--space-10);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.ratio__seg {
+  display: grid;
+  place-items: center;
+  width: 0;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* สามส่วนนี้ต้องแยกออกจากกันด้วยตาในภาพเดียว จึงไล่จากเทาอ่อนไปเทาเข้ม
+   ก่อนจบที่สีแบรนด์ — ถ้าหยิบ surface-alt กับ border-strong มาวางติดกัน
+   ทั้งสองจะกลืนกับพื้นของกรอบภาพจนดูเหมือนแถบเดียว */
+.ratio__seg--base   { background-color: var(--neutral-200); color: var(--neutral-600); }
+.ratio__seg--second { background-color: var(--neutral-400); color: var(--neutral-900); }
+.ratio__seg--accent { background-color: var(--color-primary); color: var(--color-on-primary); }
+
+.ratio__real span:nth-child(1) { background-color: var(--neutral-200); }
+.ratio__real span:nth-child(2) { background-color: var(--color-primary); }
+
+.is-in-view .ratio__seg--base   { animation: grow-60 var(--duration-sweep) var(--ease-out) forwards; }
+.is-in-view .ratio__seg--second { animation: grow-30 var(--duration-sweep) var(--ease-out) 0.15s forwards; }
+.is-in-view .ratio__seg--accent { animation: grow-10 var(--duration-sweep) var(--ease-out) 0.3s forwards; }
+
+@keyframes grow-60 { to { width: 60%; } }
+@keyframes grow-30 { to { width: 30%; } }
+@keyframes grow-10 { to { width: 10%; } }
+
+.ratio__real {
+  display: flex;
+  height: var(--space-6);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.ratio__real span:nth-child(1) { flex: 90; }
+.ratio__real span:nth-child(2) { flex: 10; }
+
+/* --------------------------------------------------------------------------
+   10 (ตัวอย่าง) · หน้าจอเดียวกันที่ใช้สีแบรนด์คนละสัดส่วน
+   ฝั่งซ้ายสีแบรนด์โผล่จุดเดียว ฝั่งขวาโผล่เกือบทุกชิ้น — เนื้อหาเท่ากันเป๊ะทั้งสองฝั่ง
+   -------------------------------------------------------------------------- */
+.proof {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-4);
+}
+
+.proof__screen {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+}
+
+.proof__bar { display: flex; align-items: center; gap: var(--space-2); }
+
+.proof__logo {
+  width: var(--space-6);
+  height: var(--space-6);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-primary);
+}
+
+.proof__navline {
+  flex: 1;
+  height: var(--space-2);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-alt);
+}
+
+.proof__body { display: grid; gap: var(--space-2); }
+
+.proof__line {
+  height: var(--space-2);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-alt);
+}
+
+.proof__line--80 { width: 80%; }
+.proof__line--60 { width: 60%; }
+
+.proof__row { display: flex; gap: var(--space-2); }
+
+.proof__btn {
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h-sm);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-strong);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.proof__btn--solid {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* ฝั่งที่ใส่สีแบรนด์เกินพอดี — ทุกชิ้นแย่งกันเด่นจนไม่มีชิ้นไหนเด่น */
+.proof__screen--loud .proof__body {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-soft);
+}
+
+.proof__screen--loud .proof__navline,
+.proof__screen--loud .proof__line { background-color: var(--color-primary); opacity: 0.45; }
+
+.proof__screen--loud .proof__btn {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* --------------------------------------------------------------------------
+   11 · ลากเทียบก่อนแก้ / หลังแก้
+   ภาพสองใบซ้อนกันสนิท ใบบนถูกตัดตามตำแหน่งของ range ที่ผู้ใช้ลาก
+   -------------------------------------------------------------------------- */
+.compare {
+  --compare-pos: 50%;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.compare__frame {
+  position: relative;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  min-height: 6.5rem;
+}
+
+.compare__side {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  gap: var(--space-2);
+  align-content: center;
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+}
+
+.compare__side--after { clip-path: inset(0 0 0 var(--compare-pos)); }
+
+.compare__tag {
+  position: absolute;
+  inset-block-start: var(--space-2);
+  font-size: 0.625rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+}
+
+.compare__side--before .compare__tag { inset-inline-start: var(--space-2); background-color: var(--color-danger-soft); color: var(--color-danger-text); }
+.compare__side--after .compare__tag  { inset-inline-end: var(--space-2);   background-color: var(--color-success-soft); color: var(--color-success-text); }
+
+/* เส้นแบ่งวางทับตรงตำแหน่งที่ตัด ทำให้รู้ว่ากำลังเทียบที่จุดไหน */
+.compare__divider {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--compare-pos);
+  width: 2px;
+  background-color: var(--color-primary);
+  pointer-events: none;
+}
+
+.compare__range { width: 100%; }
+
+/* ตัวเลขผลลัพธ์ของแต่ละฝั่ง — ลากเทียบด้วยตาแล้วยังต้องรู้ว่าต่างกันเท่าไรเป็นตัวเลข */
+.compare__stat {
+  display: inline-block;
+  justify-self: start;
+  margin-block-start: var(--space-2);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  line-height: var(--lh-xs);
+}
+
+.compare__stat--bad  { background-color: var(--color-danger-soft);  color: var(--color-danger-text); }
+.compare__stat--good { background-color: var(--color-success-soft); color: var(--color-success-text); }
+
+.compare__label { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+/* ตัวอย่างที่ใช้ในกรอบเทียบ */
+.demo-text--faint { color: hsl(225 12% 78%); }
+.demo-text--fixed { color: var(--color-text); }
+.demo-text { font-size: var(--text-base); line-height: var(--lh-lg); }
+
+.demo-fill--loud { background-color: hsl(265 95% 55%); }
+.demo-fill--calm { background-color: hsl(265 30% 92%); }
+.demo-fill { height: var(--space-12); border-radius: var(--radius-md); }
+
+.demo-buttons { display: flex; gap: var(--space-2); }
+
+.demo-btn {
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h-md);
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.demo-btn--solid { background-color: var(--color-primary); color: var(--color-on-primary); }
+.demo-btn--ghost { border: 1px solid var(--color-border-strong); color: var(--color-text-muted); }
+
+/* --------------------------------------------------------------------------
+   ผู้ใช้ที่ขอลดการเคลื่อนไหว — ให้เห็นสถานะปลายทางแบบนิ่ง ๆ ไม่ใช่ไม่เห็นอะไรเลย
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .is-in-view .gaze__dot,
+  .is-in-view .axis__knob,
+  .is-in-view .axis__chip,
+  .is-in-view .roles__part,
+  .is-in-view .roles__key,
+  .is-in-view .steps__cell,
+  .is-in-view .ratio__seg { animation: none; }
+
+  .is-in-view .steps__cell { opacity: 1; transform: none; }
+  .is-in-view .ratio__seg--base   { width: 60%; }
+  .is-in-view .ratio__seg--second { width: 30%; }
+  .is-in-view .ratio__seg--accent { width: 10%; }
+  .is-in-view .gaze__dot { opacity: 1; transform: translate(2.5rem, 9.5rem); }
+}
+
+@media (max-width: 720px) {
+  .figure__stage { padding: var(--space-4); }
+  .axis { grid-template-columns: 5rem minmax(0, 1fr) 2.75rem; gap: var(--space-2); }
+  .steps { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .legibility__row { grid-template-columns: minmax(0, 1fr) 4.5rem; }
+  .legibility__row .badge { display: none; }
+}

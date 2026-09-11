@@ -1,0 +1,128 @@
+<!-- @card -->
+<nav class="ui-sidenav">
+  <span class="ui-sidenav__title">เมนู</span>
+  <a class="ui-sidenav__item" href="#" aria-current="page" data-part="p1">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    ภาพรวม
+  </a>
+  <a class="ui-sidenav__item" href="#" data-part="p2">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg>
+    รายการ
+    <span class="ui-sidenav__count">12</span>
+  </a>
+</nav>
+<!-- @end -->
+
+<!-- @preview -->
+<nav class="ui-sidenav" aria-label="เมนูของแผงควบคุม">
+  <div class="ui-sidenav__group">
+    <span class="ui-sidenav__title" id="sidenav-work">งานประจำวัน</span>
+    <ul class="ui-sidenav__list" aria-labelledby="sidenav-work">
+      <li>
+        <a class="ui-sidenav__item" href="#" aria-current="page" data-part="p1">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          ภาพรวม
+        </a>
+      </li>
+      <li>
+        <a class="ui-sidenav__item" href="#" data-part="p2">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg>
+          รายการ
+          <span class="ui-sidenav__count">12</span>
+        </a>
+      </li>
+      <li>
+        <a class="ui-sidenav__item" href="#" data-part="p3">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12h-6l-2 3h-2l-2-3H3"/><path d="M5.5 5h13l2.5 7v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6Z"/></svg>
+          กล่องงานที่ค้าง
+          <span class="ui-sidenav__count ui-sidenav__count--alert">3</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ui-sidenav__group">
+    <span class="ui-sidenav__title" id="sidenav-master">ข้อมูลหลัก</span>
+    <ul class="ui-sidenav__list" aria-labelledby="sidenav-master">
+      <li>
+        <a class="ui-sidenav__item" href="#" data-part="p4">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>
+          รายชื่อ
+        </a>
+      </li>
+      <li>
+        <a class="ui-sidenav__item" href="#" data-part="p5">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18l-7 8.2V20l-4 1.5v-8.3Z"/></svg>
+          หมวดสินค้า
+        </a>
+      </li>
+      <li>
+        <a class="ui-sidenav__item is-disabled" href="#" aria-disabled="true" tabindex="-1" data-part="p6">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          สิทธิ์ผู้ใช้
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ui-sidenav__foot">
+    <a class="ui-sidenav__item" href="#" data-part="p7">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H1a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 2.6 7a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 8 2.6h.1A2 2 0 1 1 12 2.6"/></svg>
+      ตั้งค่า
+    </a>
+  </div>
+</nav>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="รายการปกติ กับรายการที่เปิดอยู่">
+  <nav class="ui-sidenav" aria-label="ตัวอย่างสถานะ">
+    <a class="ui-sidenav__item" href="#" aria-current="page" data-part="p1">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      หน้าที่เปิดอยู่
+    </a>
+    <a class="ui-sidenav__item" href="#" data-part="p2">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg>
+      หน้าปกติ
+    </a>
+  </nav>
+</div>
+
+<div class="cs-variant" data-variant-label="มีตัวเลขค้าง — ตัวเลขปกติกับตัวเลขที่ต้องรีบ">
+  <nav class="ui-sidenav" aria-label="ตัวอย่างตัวเลข">
+    <a class="ui-sidenav__item" href="#" data-part="p3">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg>
+      รอตรวจ
+      <span class="ui-sidenav__count">12</span>
+    </a>
+    <a class="ui-sidenav__item" href="#" data-part="p4">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3.1l-8-14a2 2 0 0 0-3.4 0Z"/><path d="M12 9.5v4M12 17.2h.01"/></svg>
+      เลยกำหนด
+      <span class="ui-sidenav__count ui-sidenav__count--alert">3</span>
+    </a>
+  </nav>
+</div>
+
+<div class="cs-variant" data-variant-label="ปิดใช้งาน — ยังเห็นว่ามีเมนูนี้อยู่ แต่กดไม่ได้">
+  <nav class="ui-sidenav" aria-label="ตัวอย่างปิดใช้งาน">
+    <a class="ui-sidenav__item is-disabled" href="#" aria-disabled="true" tabindex="-1" data-part="p5">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      ต้องมีสิทธิ์ผู้ดูแล
+    </a>
+  </nav>
+</div>
+
+<div class="cs-variant" data-variant-label="แบบไอคอนอย่างเดียว — ใช้เมื่อพับเมนู">
+  <nav class="ui-sidenav ui-sidenav--rail" aria-label="ตัวอย่างแบบพับ">
+    <a class="ui-sidenav__item" href="#" aria-current="page" aria-label="ภาพรวม" title="ภาพรวม" data-part="p6">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    </a>
+    <a class="ui-sidenav__item" href="#" aria-label="รายการ" title="รายการ" data-part="p7">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg>
+    </a>
+    <a class="ui-sidenav__item" href="#" aria-label="รายชื่อ" title="รายชื่อ" data-part="p8">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>
+    </a>
+  </nav>
+</div>
+<!-- @end -->

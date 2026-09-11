@@ -1,0 +1,126 @@
+<!-- @card -->
+<div class="ui-modal-demo">
+  <div class="ui-modal">
+    <div class="ui-modal__head">
+      <h3 class="ui-modal__title">ยกเลิกรายการ</h3>
+    </div>
+    <div class="ui-modal__body">ยกเลิก ID-2043 แล้วเอากลับคืนไม่ได้</div>
+    <div class="ui-modal__foot">
+      <button type="button" class="ui-btn ui-btn--ghost ui-btn--sm" data-part="p1">ไม่ยกเลิก</button>
+      <button type="button" class="ui-btn ui-btn--sm ui-btn--danger" data-part="p2">ยกเลิกเอกสาร</button>
+    </div>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-modal-demo">
+  <div class="ui-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
+    <div class="ui-modal__head">
+      <span class="ui-modal__mark ui-modal__mark--danger" aria-hidden="true">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3.1l-8-14a2 2 0 0 0-3.4 0Z"/><path d="M12 9.5v4M12 17.2h.01"/></svg>
+      </span>
+      <div class="ui-modal__heading">
+        <h2 class="ui-modal__title" id="modal-title">ยกเลิกรายการ ID-2043</h2>
+        <p class="ui-modal__sub" id="modal-desc">รายการ A จำนวน 120,000.00</p>
+      </div>
+      <button type="button" class="ui-modal__close" aria-label="ปิดหน้าต่าง">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="ui-modal__body">
+      <p>
+        สิ่งที่ยกเลิกแล้วจะยังอยู่ในระบบเพื่อการตรวจสอบ แต่ไม่นับในยอดรวม
+        และไม่สามารถเปลี่ยนกลับเป็นสถานะรอดำเนินการได้อีก
+      </p>
+
+      <div class="ui-field">
+        <label class="ui-field__label" for="modal-reason">เหตุผลที่ยกเลิก</label>
+        <select class="ui-select" id="modal-reason">
+          <option>ผู้เกี่ยวข้องขอแก้ไขรายละเอียด</option>
+          <option>ออกเอกสารซ้ำ</option>
+          <option>ยกเลิกคำสั่งซื้อ</option>
+        </select>
+      </div>
+
+      <label class="ui-check">
+        <input class="ui-checkbox" type="checkbox">
+        แจ้งผู้เกี่ยวข้องว่ารายการถูกยกเลิก
+      </label>
+    </div>
+
+    <div class="ui-modal__foot">
+      <button type="button" class="ui-btn ui-btn--ghost" data-part="p1">ไม่ยกเลิก</button>
+      <button type="button" class="ui-btn ui-btn--danger" data-part="p2">ยกเลิกเอกสาร</button>
+    </div>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ยืนยันการทำลาย — ปุ่มหลักเป็นสีอันตราย">
+  <div class="ui-modal-demo ui-modal-demo--sm">
+    <div class="ui-modal" role="dialog" aria-modal="true" aria-label="ยืนยันการลบ">
+      <div class="ui-modal__head">
+        <span class="ui-modal__mark ui-modal__mark--danger" aria-hidden="true">
+          <svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7h16M10 4h4M6 7l1 13h10l1-13"/></svg>
+        </span>
+        <div class="ui-modal__heading">
+          <h3 class="ui-modal__title">ลบรายชื่อนี้</h3>
+          <p class="ui-modal__sub">ลบแล้วเอกสารเดิมยังอยู่ แต่จะไม่มีข้อมูลผู้ติดต่อ</p>
+        </div>
+      </div>
+      <div class="ui-modal__foot">
+        <button type="button" class="ui-btn ui-btn--ghost ui-btn--sm" data-part="p1">ยกเลิก</button>
+        <button type="button" class="ui-btn ui-btn--sm ui-btn--danger" data-part="p2">ลบ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ยืนยันทั่วไป — ปุ่มหลักเป็นสีแบรนด์">
+  <div class="ui-modal-demo ui-modal-demo--sm">
+    <div class="ui-modal" role="dialog" aria-modal="true" aria-label="ยืนยันการส่ง">
+      <div class="ui-modal__head">
+        <span class="ui-modal__mark" aria-hidden="true">
+          <svg class="ui-icon" viewBox="0 0 24 24"><path d="M21 12h-6l-2 3h-2l-2-3H3"/><path d="M5.5 5h13l2.5 7v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6Z"/></svg>
+        </span>
+        <div class="ui-modal__heading">
+          <h3 class="ui-modal__title">ส่งรายการ 12 ชิ้น</h3>
+          <p class="ui-modal__sub">ส่งถึงผู้รับแต่ละรายทันที</p>
+        </div>
+      </div>
+      <div class="ui-modal__foot">
+        <button type="button" class="ui-btn ui-btn--ghost ui-btn--sm" data-part="p3">ยังไม่ส่ง</button>
+        <button type="button" class="ui-btn ui-btn--sm" data-part="p4">ส่งเลย</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="มีฟอร์มข้างใน — เนื้อในเลื่อนได้ ปุ่มยังอยู่กับที่">
+  <div class="ui-modal-demo ui-modal-demo--sm">
+    <div class="ui-modal" role="dialog" aria-modal="true" aria-label="แก้ไขที่อยู่">
+      <div class="ui-modal__head">
+        <div class="ui-modal__heading">
+          <h3 class="ui-modal__title">แก้ไขที่อยู่สำหรับอ้างอิง</h3>
+        </div>
+        <button type="button" class="ui-modal__close" aria-label="ปิดหน้าต่าง">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="ui-modal__body">
+        <div class="ui-field">
+          <label class="ui-field__label" for="modal-addr">ที่อยู่</label>
+          <textarea class="ui-input ui-input--area" id="modal-addr" rows="2">99/1 ถนนสุขุมวิท แขวงคลองเตย</textarea>
+        </div>
+      </div>
+      <div class="ui-modal__foot">
+        <button type="button" class="ui-btn ui-btn--ghost ui-btn--sm" data-part="p5">ยกเลิก</button>
+        <button type="button" class="ui-btn ui-btn--sm" data-part="p6">บันทึก</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- @end -->

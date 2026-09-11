@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Export — ColorLab</title>
+  <meta name="description" content="ส่งออกชุดสีเป็น design token พร้อมใช้ — CSS Custom Properties, Tailwind config, JSON">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/app-shell.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="topbar">
+      <div class="topbar__side">
+        <a class="topbar__brand" href="index.html">
+          <span class="topbar__logo" aria-hidden="true"></span>
+          <span class="topbar__name">ColorLab</span>
+        </a>
+
+        <nav class="groundnav" aria-label="เมนูหลัก">
+          <a class="groundnav__item" href="index.html" style="--dot-h:8">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-book"/></svg>Color Theory
+          </a>
+          <a class="groundnav__item" href="component-style.html" style="--dot-h:92">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-layers"/></svg>Component Style
+          </a>
+          <a class="groundnav__item" href="layout.html" style="--dot-h:150">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
+          </a>
+          <a class="groundnav__item" href="contrast-audit.html" style="--dot-h:196">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-contrast"/></svg>Contrast Audit
+          </a>
+          <a class="groundnav__item" href="token-export.html" style="--dot-h:286" aria-current="page">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-tag"/></svg>Token Export
+          </a>
+        </nav>
+      </div>
+
+      <div class="topbar__side topbar__side--end">
+        <div class="topbar__actions">
+          <button type="button" class="btn btn--icon btn--sm" id="theme-toggle" aria-label="สลับโหมดสีของหน้าเว็บ">
+            <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+          </button>
+
+          <a class="topnav__item topnav__item--hero" href="workspace.html" aria-label="Colorground" title="Colorground">
+            <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+            <span class="topnav__label">Colorground</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="placeholder">
+      <span class="badge badge--brand">กำลังสร้าง</span>
+      <h1 class="placeholder__title">Token Export</h1>
+      <p class="placeholder__text">
+        พื้นที่นี้จะแปลงชุดสีที่วางไว้เป็น design token พร้อมวางลงโปรเจกต์ —
+        CSS Custom Properties, Tailwind config และ JSON โดยตั้งชื่อตามบทบาทของสี ไม่ใช่ตามชื่อสี
+      </p>
+      <a class="btn btn--primary" href="workspace.html">
+        <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+        ไปตั้งชุดสีที่ Colorground
+      </a>
+    </main>
+
+  </div>
+
+  <script type="module" src="assets/js/pages/placeholder.js"></script>
+</body>
+</html>

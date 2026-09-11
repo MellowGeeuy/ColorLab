@@ -1,0 +1,2163 @@
+/* ==========================================================================
+   Layout — ประกอบผังหน้าบนกริดจากคอมโพเนนต์จริง
+
+   แคนวาสคือพระเอกของหน้านี้ แผงสองข้างจึงแคบและพับเก็บได้
+   เครื่องมืออยู่ในแถบลอยเหนือแคนวาส ไม่กินความสูงของพื้นที่ทำงาน
+   ========================================================================== */
+
+/* หน้านี้แคนวาสกินพื้นที่แนวตั้งทั้งหมด แถบบนจึงเตี้ยกว่าหน้าอ่าน 8px
+   ยังสูงพอครอบปุ่ม Colorground (36px) ได้โดยไม่ต้องแก้ตัวปุ่ม */
+.app { --topbar-h: 3rem; }
+
+.lay {
+  display: grid;
+  /* 13rem ไม่ใช่ 11.5rem เพราะแถวเลเยอร์ต้องมีที่พอให้ชื่อ ปุ่มตา และกุญแจอยู่บรรทัดเดียวกัน */
+  grid-template-columns: var(--lib-w, 13rem) minmax(0, 1fr) var(--insp-w, 14rem);
+  min-height: 0;
+  background-color: var(--color-bg);
+  transition: grid-template-columns var(--duration-base) var(--ease-out);
+}
+
+/* พับแล้วเหลือแค่แถบหัวแนวตั้งกว้างพอให้กดกางกลับ */
+.lay[data-library="closed"] { --lib-w: 2.75rem; }
+.lay[data-inspector="closed"] { --insp-w: 2.75rem; }
+
+/* --------------------------------------------------------------------------
+   หัวแผงสองข้าง
+   -------------------------------------------------------------------------- */
+
+.lay-panel__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 2.75rem;
+  padding-inline: var(--space-3);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.lay-panel__title {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.lay-panel__toggle {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+
+.lay-panel__toggle:hover { background-color: var(--color-surface-alt); color: var(--color-text); }
+
+.lay-panel__toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.lay[data-library="closed"] .lay-lib .lay-panel__title,
+.lay[data-library="closed"] .lay-lib .lay-panel__tabs,
+.lay[data-inspector="closed"] .lay-insp .lay-panel__title { display: none; }
+
+.lay[data-library="closed"] .lay-lib .lay-panel__toggle,
+.lay[data-inspector="closed"] .lay-insp .lay-panel__toggle { transform: rotate(180deg); }
+
+.lay[data-library="closed"] .lay-lib__pane,
+.lay[data-inspector="closed"] .lay-insp__body { display: none; }
+
+/* --------------------------------------------------------------------------
+   แท็บของแผงซ้าย — คลัง กับ เลเยอร์
+   -------------------------------------------------------------------------- */
+
+.lay-panel__tabs {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+}
+
+.lay-panel__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: 3px var(--space-2);
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.lay-panel__tab .icon { width: 14px; height: 14px; flex: none; }
+
+.lay-panel__tab:hover { color: var(--color-text); background-color: var(--color-surface-alt); }
+
+.lay-panel__tab.is-active {
+  color: var(--color-primary-text);
+  background-color: var(--color-primary-soft);
+}
+
+.lay-panel__tab:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+
+/* --------------------------------------------------------------------------
+   คลังคอมโพเนนต์ — ซ้าย
+   -------------------------------------------------------------------------- */
+
+.lay-lib {
+  display: grid;
+  /* ต้องกำหนดคอลัมน์เป็น minmax(0, 1fr) ไม่ใช่ปล่อย auto
+     คอลัมน์ auto จะโตตาม min-content ของแถวที่ยาวที่สุด (216px) แล้วล้นออกนอกแผง 200px
+     ไปทับแถบสถานะกลางจอ ทั้งที่ตัวแผงเองกว้าง 200 ถูกต้องแล้ว */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  /* แผงกว้างตายตัว 12.5rem ของข้างในที่ย่อไม่ได้จะล้นไปทับแถบสถานะกลางจอ
+     กันที่ตัวแผงเองครั้งเดียว ไม่ต้องไล่แก้ทีละชิ้นที่ล้น */
+  min-width: 0;
+  overflow: hidden;
+  border-inline-end: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+/* แต่ละแท็บจัดแถวของตัวเอง: ช่องค้นหา · (แถบปุ่ม) · ลิสต์ที่เลื่อนได้ · แถบล่าง */
+.lay-lib__pane {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+.lay-lib__pane#lay-pane-layers { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+
+.lay-lib__pane[hidden] { display: none; }
+
+.lay-lib__body {
+  overflow-y: auto;
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.lay-lib__title {
+  margin: 0 0 var(--space-1);
+  padding-inline: var(--space-2);
+  font-size: 0.6875rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.lay-lib__items { display: flex; flex-direction: column; gap: 2px; }
+
+.lay-lib__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  height: var(--control-h-md);
+  padding-inline: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: start;
+  cursor: grab;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.lay-lib__item:hover {
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-primary);
+}
+
+.lay-lib__item:active { cursor: grabbing; }
+
+.lay-lib__item:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+
+.lay-lib__icon { color: var(--color-text-subtle); flex: none; }
+
+.lay-lib__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lay-lib__add {
+  display: inline-flex;
+  flex: none;
+  color: var(--color-primary-text);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.lay-lib__item:hover .lay-lib__add { opacity: 1; }
+
+.lay-lib__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.lay-lib__foot .cs-swatches { flex-wrap: wrap; min-width: 0; }
+
+/* แผงแคบลงแล้วจุดสีกับคำจะตกคนละบรรทัด ทำให้แถบล่างสูงขึ้นเท่าตัว
+   ย่อจุดสีลงเหลือ 16px แทนการยอมให้ตัด */
+.lay-lib__foot { padding-inline: var(--space-2); }
+.lay-lib__foot .cs-swatch { width: 16px; height: 16px; }
+
+.lay-lib__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-start: auto;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.lay-lib__link:hover { color: var(--color-primary-text); }
+
+/* --------------------------------------------------------------------------
+   แผงเลเยอร์ — ลำดับเนื้อหาของหน้าที่กำลังแก้
+
+   ลิสต์กลับหัวจาก items array: บนสุด = ชิ้นที่อยู่หน้าสุด และเป็นตัวท้ายของ DOM
+   -------------------------------------------------------------------------- */
+
+.lay-layers__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-1) var(--space-2);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.lay-layers__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-text-subtle);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.lay-layers__btn--wide {
+  width: auto;
+  min-width: 0;
+  padding-inline: var(--space-2);
+  margin-inline-start: auto;
+}
+
+.lay-layers__btn:hover:not(:disabled) { background-color: var(--color-surface-alt); color: var(--color-text); }
+.lay-layers__btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+.lay-layers__btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.lay-layers__list {
+  overflow-y: auto;
+  padding: var(--space-1);
+  min-height: 0;
+}
+
+.lay-layers__empty {
+  margin: 0;
+  padding: var(--space-3) var(--space-2);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.lay-layers__foot {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.lay-layers__foot:not(:has(.lay-layers__note:not([hidden]))) { border-block-start: 0; }
+
+/* ป้ายเตือนว่าลำดับ DOM ของไฟล์ที่ส่งออกไม่ตรงกับลำดับที่ตาอ่าน */
+.lay-layers__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-2);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--color-warning-text, var(--color-text-muted));
+  background-color: var(--color-warning-soft, var(--color-surface-alt));
+}
+
+.lay-layer { display: block; }
+
+.lay-layer__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: 1.75rem;
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.lay-layer__row:hover { background-color: var(--color-surface-alt); }
+
+.lay-layer[aria-selected="true"] > .lay-layer__row {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary-text);
+}
+
+.lay-layer:focus { outline: none; }
+
+.lay-layer:focus-visible > .lay-layer__row {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.lay-layer__twist {
+  display: grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  border: 0;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.lay-layer__twist .icon { width: 12px; height: 12px; }
+
+.lay-layer--group[aria-expanded="false"] > .lay-layer__row .lay-layer__twist { transform: rotate(-90deg); }
+
+.lay-layer__kind {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--color-text-subtle);
+}
+
+.lay-layer[aria-selected="true"] > .lay-layer__row .lay-layer__kind { color: inherit; }
+
+.lay-layer__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-xs);
+}
+
+.lay-layer__input {
+  width: 100%;
+  height: 1.25rem;
+  padding-inline: 2px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-xs);
+}
+
+.lay-layer__count {
+  flex: none;
+  padding-inline: 4px;
+  border-radius: var(--radius-pill, 999px);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-subtle);
+  font-size: 0.625rem;
+  line-height: 1.4;
+}
+
+.lay-layer__mark { display: inline-flex; flex: none; color: var(--color-text-subtle); }
+.lay-layer__mark .icon { width: 12px; height: 12px; }
+
+/* ปุ่มตากับกุญแจโผล่ตอนชี้ ตามแบบเครื่องมือออกแบบ — แต่ค้างให้เห็นเมื่อมันถูกเปิดไว้จริง */
+.lay-layer__flag {
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  border: 0;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.lay-layer__flag .icon { width: 13px; height: 13px; }
+
+.lay-layer__row:hover .lay-layer__flag,
+.lay-layer:focus-visible .lay-layer__flag,
+.lay-layer__flag[aria-pressed="true"] { opacity: 1; }
+
+.lay-layer__flag:hover:not(:disabled) { color: var(--color-text); background-color: var(--color-surface); }
+.lay-layer__flag[aria-pressed="true"] { color: var(--color-primary-text); }
+.lay-layer__flag:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.lay-layer[data-hidden="true"] > .lay-layer__row .lay-layer__name { opacity: 0.5; }
+.lay-layer[data-locked="true"] > .lay-layer__row .lay-layer__name { font-style: italic; }
+
+.lay-layer__kids {
+  /* เส้นตั้งบอกขอบเขตของกลุ่ม อ่านง่ายกว่าการเยื้องอย่างเดียวเมื่อกลุ่มยาว */
+  margin-inline-start: 0.85rem;
+  border-inline-start: 1px solid var(--color-border);
+  padding-inline-start: 2px;
+}
+
+.lay-layer.is-dragging > .lay-layer__row { opacity: 0.5; }
+
+.lay-layer.is-drop-before > .lay-layer__row { box-shadow: inset 0 2px 0 0 var(--color-primary); }
+.lay-layer.is-drop-after > .lay-layer__row { box-shadow: inset 0 -2px 0 0 var(--color-primary); }
+
+/* คำเตือนเรื่องของที่ถูกซ่อน — ขึ้นเหนือโค้ดในหน้าต่างส่งออก */
+.lay-export__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-warning-soft);
+  color: var(--color-warning-text);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.lay-export__note .icon { flex: none; margin-block-start: 2px; }
+
+/* --------------------------------------------------------------------------
+   แคนวาส — กลาง
+   -------------------------------------------------------------------------- */
+
+.lay-main {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+.lay-stage {
+  overflow: auto;
+  min-height: 0;
+  padding: var(--space-6) var(--space-6) 5.5rem;
+  background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* กล่องครอบทำหน้าที่จองพื้นที่เท่าขนาดหลังย่อ/ขยาย
+   ถ้าย่อที่ตัวแคนวาสตรง ๆ พื้นที่เลื่อนจะยังเท่าเดิมและเหลือที่ว่างค้างอยู่ */
+/* --canvas-w คือความกว้างจริงที่ผู้ใช้ตั้งไว้ (เช่น 1366px) หรือ 100% เมื่อให้ยืดเต็มพื้นที่
+   ผังกว้างเท่าที่ตั้งเสมอ ไม่หดตามพื้นที่ เพราะต้องเห็นสัดส่วนจริงของอุปกรณ์นั้น
+   ถ้ากว้างเกินพื้นที่ ให้ใช้การย่อ (zoom) ดูแทน — ระบบย่อให้เองตอนเลือกขนาด */
+/* frame จองพื้นที่เท่ากับขนาดหลังย่อ ผังที่กว้างกว่าจอจึงจัดกึ่งกลางได้และเลื่อนได้พอดีตัว
+   ถ้าย่อที่ตัวผังตรง ๆ พื้นที่เลื่อนจะยังเท่าขนาดเต็ม แล้วเหลือที่ว่างค้างอยู่ครึ่งจอ */
+.lay-canvas-frame {
+  width: calc(var(--canvas-w, 100%) * var(--zoom, 1));
+  margin-inline: auto;
+  transition: width var(--duration-base) var(--ease-out);
+}
+
+.lay-canvas-wrap {
+  transform-origin: top left;
+  transform: scale(var(--zoom, 1));
+  width: var(--canvas-w, 100%);
+  transition: transform var(--duration-fast) var(--ease-out),
+              width var(--duration-base) var(--ease-out);
+}
+
+/* เต็มพื้นที่: frame กินเต็มความกว้าง แล้วให้ผังกว้างเผื่อไว้เท่าที่ย่อลงไป
+   ย่อแล้วจึงพอดีขอบพอดี ไม่หดซ้อนกันสองชั้น */
+.lay-canvas-frame.is-fluid { width: 100%; }
+.lay-canvas-frame.is-fluid .lay-canvas-wrap { width: calc(100% / var(--zoom, 1)); }
+
+.lay-chip__px {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  opacity: 0.7;
+}
+
+.lay-canvas {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 12), minmax(0, 1fr));
+  grid-auto-rows: var(--grid-row-h, 40px);
+  gap: var(--grid-gap, 16px);
+  padding: var(--grid-gap, 16px);
+  min-height: 30rem;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  touch-action: none;
+}
+
+/* แถบคอลัมน์นั่งอยู่บนกริดเดียวกับของที่วาง จึงกว้างและเว้นช่องไฟเท่ากันเป๊ะเสมอ
+   ไม่ว่าจะเปลี่ยนจำนวนคอลัมน์หรือช่องไฟเป็นเท่าไร */
+.lay-guides {
+  display: grid;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* แถบคอลัมน์ใช้สีกลางของระบบ ไม่ใช่สีแบรนด์ เพราะพื้นที่นี้ต้องไม่แข่งสายตากับสีของ component
+   ที่กำลังพิจารณาอยู่ — เข้มขึ้นเล็กน้อยตอนกำลังลากของเข้ามา */
+.lay-guides span {
+  border-radius: var(--radius-sm);
+  background-color: color-mix(in srgb, var(--color-text) 3%, transparent);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.lay-canvas.is-dropping .lay-guides span {
+  background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+/* เส้นแถวใช้พื้นหลังของแคนวาส เพราะแถวสูงเท่ากันทุกแถวและเริ่มหลัง padding พอดี */
+.lay-canvas::before {
+  content: "";
+  position: absolute;
+  inset: var(--grid-gap) var(--grid-gap) auto;
+  height: calc(100% - var(--grid-gap) * 2);
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-border) 60%, transparent) 0,
+    color-mix(in srgb, var(--color-border) 60%, transparent) 1px,
+    transparent 1px,
+    transparent calc(var(--grid-row-h) + var(--grid-gap))
+  );
+  z-index: 0;
+}
+
+.lay-item { z-index: 1; }
+
+.lay-canvas.is-dropping {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+/* เส้นรอยพับ: ทุกอย่างที่อยู่ต่ำกว่าเส้นนี้ ผู้ใช้ต้องเลื่อนถึงจะเห็น
+   ตำแหน่งคำนวณจากความสูงหนึ่งหน้าจอของอุปกรณ์ที่เลือก */
+.lay-canvas.has-fold::after {
+  content: "รอยพับหน้าจอ";
+  position: absolute;
+  inset-inline: 0;
+  top: calc(var(--grid-gap) + var(--fold-row) * (var(--grid-row-h) + var(--grid-gap)) - var(--grid-gap) / 2);
+  height: 0;
+  border-top: 2px dashed var(--color-warning);
+  color: var(--color-warning-text);
+  font-size: 0.625rem;
+  line-height: 1;
+  padding-inline-start: var(--space-2);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.lay-item {
+  position: relative;
+  min-width: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: grab;
+  overflow: hidden;
+}
+
+.lay-item:hover { border-color: var(--color-border-strong); }
+
+.lay-item.is-selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+}
+
+/* ตัวที่เลือกร่วมในชุด เส้นบางกว่าตัวหลัก เพราะแผงคุณสมบัติทำงานกับตัวหลักตัวเดียว */
+.lay-item.is-selected-extra {
+  border-style: dashed;
+  box-shadow: none;
+}
+
+/* ชี้ที่แถวในแผงเลเยอร์แล้วรู้ทันทีว่าคือชิ้นไหน โดยไม่ต้องคลิกให้เสียการเลือกเดิม */
+.lay-item.is-peek { border-color: var(--color-primary); }
+
+.lay-item.is-locked {
+  cursor: default;
+  border-style: dotted;
+  border-color: var(--color-border-strong);
+}
+
+.lay-item:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+/* เนื้อ component ข้างในไม่รับเมาส์ การลากจึงจับที่กล่อง ไม่ใช่ปุ่มข้างใน */
+.lay-item__stage {
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  font-size: var(--text-sm);
+}
+
+/* ชิ้นที่เลือกไว้แล้วเท่านั้นที่ยอมให้จิ้มถึงส่วนย่อยข้างใน — คลิกแรกจึงยังเป็นการเลือกทั้งชิ้น
+   เปิดให้เฉพาะตัวที่มีธง data-part ของอื่นในนั้นยังโปร่งต่อเมาส์เหมือนเดิม
+   การลากทั้งชิ้นยังทำได้จากบนส่วนย่อย เพราะ pointerdown บับเบิลขึ้นไปถึงแคนวาสอยู่ดี */
+.lay-item.is-selected .lay-item__stage { pointer-events: auto; }
+.lay-item.is-selected .lay-item__stage * { pointer-events: none; }
+.lay-item.is-selected .lay-item__stage [data-part] { pointer-events: auto; cursor: pointer; }
+
+/* ส่วนที่กดได้ต้องมองเห็นได้ก่อนกด ไม่ใช่ให้ผู้ใช้ไล่จิ้มหาเอง */
+.lay-item.is-selected .lay-item__stage [data-part]:hover {
+  outline: 1px dashed var(--color-primary);
+  outline-offset: 2px;
+}
+
+.lay-item__stage [data-part].is-part-selected {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* กำลังแก้ส่วนย่อยอยู่ กรอบของทั้งชิ้นจึงถอยไปเป็นเส้นจาง ไม่แย่งความสนใจกับส่วนที่เลือก */
+.lay-item.is-part-mode {
+  box-shadow: 0 0 0 2px var(--color-primary-soft);
+}
+
+/* --------------------------------------------------------------------------
+   สิ่งที่ผู้ใช้แต่งลงบนส่วนย่อย
+   ค่าสีมาจาก --part-tone / --part-on ที่ JS เขียนไว้ ซึ่งชี้กลับไปที่ token ของชุดสีเสมอ
+   -------------------------------------------------------------------------- */
+
+[data-part][data-tone] {
+  --cs-btn-bg: var(--part-tone);
+  --cs-btn-fg: var(--part-on);
+}
+
+[data-part][data-tone].ui-badge,
+[data-part][data-tone].ui-chip {
+  background-color: var(--part-tone);
+  color: var(--part-on);
+  border-color: transparent;
+}
+
+[data-part][data-tone].ui-badge .ui-badge__dot { background-color: currentColor; }
+
+[data-part][data-tone].ui-btn {
+  background-color: var(--part-tone);
+  color: var(--part-on);
+  border-color: transparent;
+}
+
+[data-part][data-tone].ui-navbar__link,
+[data-part][data-tone].ui-sidenav__item,
+[data-part][data-tone].ui-crumb__link,
+[data-part][data-tone].ui-footer__link,
+[data-part][data-tone].ui-tab { color: var(--part-tone); }
+
+/* ขนาดเป็นระดับ ไม่ใช่พิกเซล — ค่าจริงยังมาจาก token ของ component ชุดเดิม
+   ตัวเลขจึงเปลี่ยนตามระบบ ไม่ใช่ตัวเลขที่ผังตั้งขึ้นมาเองแล้วหลุดจากที่อื่น */
+[data-part][data-size="sm"] { font-size: var(--cs-text-xs); }
+[data-part][data-size="lg"] { font-size: var(--cs-text-base); }
+
+[data-part][data-size="sm"].ui-btn,
+[data-part][data-size="sm"].ui-chip { height: var(--cs-h-sm); }
+
+[data-part][data-size="lg"].ui-btn,
+[data-part][data-size="lg"].ui-chip {
+  height: var(--cs-h-lg);
+  padding-inline: var(--cs-space-5, 20px);
+}
+
+/* ของที่เป็นกล่องบรรจุ ยืดเต็มกล่องที่ผู้ใช้ลากไว้ ขนาดที่เห็นจึงเป็นขนาดจริง */
+.lay-item__stage[data-fill="true"] > *,
+.lay-frame__item[data-fill="true"] > * { height: 100%; }
+
+/* ของที่มีความสูงของตัวเอง ยืดแล้วผิดรูป จัดกึ่งกลางกล่องแทนเพื่อให้ยังดูตั้งใจวาง */
+.lay-item__stage[data-fill="false"],
+.lay-frame__item[data-fill="false"] {
+  display: grid;
+  align-content: center;
+}
+
+.lay-item__size {
+  position: absolute;
+  inset-block-start: var(--space-1);
+  inset-inline-end: var(--space-1);
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+  pointer-events: none;
+}
+
+.lay-item:hover .lay-item__size,
+.lay-item.is-selected .lay-item__size { opacity: 1; }
+
+.lay-item__handle {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  width: 16px;
+  height: 16px;
+  border-start-start-radius: var(--radius-sm);
+  background-color: var(--color-primary);
+  opacity: 0;
+  cursor: nwse-resize;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.lay-item:hover .lay-item__handle,
+.lay-item.is-selected .lay-item__handle { opacity: 1; }
+
+/* --------------------------------------------------------------------------
+   แถบเครื่องมือลอย
+   -------------------------------------------------------------------------- */
+
+.lay-dock {
+  position: absolute;
+  inset-block-end: var(--space-6);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-lg);
+  max-width: calc(100% - var(--space-8));
+}
+
+.lay-dock__group { display: flex; align-items: center; gap: 2px; }
+
+.lay-dock__divider {
+  width: 1px;
+  height: 1.25rem;
+  background-color: var(--color-border);
+}
+
+.lay-dock__btn {
+  display: grid;
+  place-items: center;
+  width: var(--control-h-md);
+  height: var(--control-h-md);
+  border: 0;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.lay-dock__btn:hover:not(:disabled) {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+}
+
+.lay-dock__btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.lay-dock__btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+
+.lay-dock__zoom {
+  min-width: 3.5rem;
+  height: var(--control-h-md);
+  border: 0;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.lay-dock__zoom:hover { background-color: var(--color-surface-alt); }
+
+.lay-dock__summary {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  padding-inline: var(--space-2);
+}
+
+.lay-dock__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-md);
+  padding-inline: var(--space-4);
+  white-space: nowrap;
+  border: 0;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+}
+
+.lay-dock__cta:hover { background-color: var(--color-primary-hover); }
+
+.lay-status {
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-block-start: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  min-height: 1.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   คุณสมบัติ — ขวา
+   -------------------------------------------------------------------------- */
+
+.lay-insp {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  border-inline-start: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.lay-insp__body {
+  overflow-y: auto;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.lay-empty-note {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+}
+
+.lay-insp__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.lay-insp__title {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-sm);
+}
+
+.lay-insp__sub {
+  margin: 2px 0 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lay-insp__head .btn { margin-inline-start: auto; flex: none; }
+
+.lay-insp__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.lay-insp__grid .field__label { font-size: 0.6875rem; }
+.lay-insp__grid .input { height: var(--control-h-md); font-size: var(--text-sm); }
+
+.lay-insp__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+}
+
+.lay-insp__label { font-size: 0.6875rem; color: var(--color-text-muted); }
+.lay-insp__value { font-size: var(--text-xs); }
+
+.lay-insp__quick { display: flex; flex-direction: column; gap: var(--space-2); }
+.lay-insp__chips { display: flex; flex-wrap: wrap; gap: 4px; }
+
+.lay-chip {
+  height: var(--control-h-sm);
+  padding-inline: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.6875rem;
+  cursor: pointer;
+}
+
+.lay-chip:hover:not([disabled]) { border-color: var(--color-primary); color: var(--color-primary-text); }
+
+.lay-chip[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+.lay-chip .icon { width: 0.75rem; height: 0.75rem; }
+
+.lay-chip--danger { color: var(--color-danger-text, var(--color-text-muted)); }
+
+.lay-chip--danger:hover:not([disabled]) {
+  border-color: var(--color-danger);
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger-text, var(--color-text));
+}
+
+.lay-part__restore { margin-block-start: var(--space-2); }
+
+/* --------------------------------------------------------------------------
+   แผงของส่วนย่อย
+   -------------------------------------------------------------------------- */
+
+.lay-part__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-block-end: var(--space-1);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.6875rem;
+  cursor: pointer;
+}
+
+.lay-part__back:hover { color: var(--color-primary-text); }
+.lay-part__back .icon { width: 0.875rem; height: 0.875rem; }
+
+.lay-part__block { margin-block-start: var(--space-4); }
+
+.lay-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+
+/* จุดสีคือตัวชุดสีเอง ไม่ใช่ชื่อบทบาท — ผู้ใช้จิ้มสีที่เห็น ไม่ต้องแปลจากคำเป็นสีในหัว */
+.lay-dot {
+  position: relative;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-full);
+  background-color: var(--dot, var(--color-surface-alt));
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.lay-dot:hover { transform: scale(1.1); }
+
+.lay-dot.is-active {
+  border-color: var(--color-text);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12), 0 0 0 2px var(--color-surface);
+}
+
+.lay-dot:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+/* ตัวเลือกแรกคือ "ไม่ทับสีเดิม" จึงเป็นวงว่างที่มีกากบาท ไม่ใช่สีใดสีหนึ่ง */
+.lay-dot--off {
+  display: grid;
+  place-items: center;
+  background-color: transparent;
+  border: 1px dashed var(--color-border-strong, var(--color-border));
+  box-shadow: none;
+  color: var(--color-text-subtle);
+}
+
+.lay-dot--off .icon { width: 0.75rem; height: 0.75rem; }
+
+/* ดาวมุมบนบอกว่าอันไหนคือสีที่ระบบแนะนำ ก่อนผู้ใช้จะอ่านเหตุผลข้างล่าง */
+.lay-dot__star {
+  position: absolute;
+  inset-block-start: -3px;
+  inset-inline-end: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-text);
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+.lay-part__advice {
+  display: flex;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+  font-size: 0.6875rem;
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+}
+
+.lay-part__advice .icon {
+  flex: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--color-warning-text, var(--color-text-muted));
+}
+
+.lay-part__advice strong { color: var(--color-text); }
+
+.lay-part__advice--action {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary-text);
+}
+
+.lay-part__advice--action .icon { color: var(--color-primary); }
+
+.lay-part__arg { margin-block-start: var(--space-2); }
+
+.lay-chip.is-active {
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary-text);
+  font-weight: var(--weight-semibold);
+}
+
+/* modal ส่งออกใช้โครงเดียวกับหน้า Component Style เพียงกว้างกว่า */
+.cs-modal__panel--wide { width: min(860px, 100%); }
+
+/* --------------------------------------------------------------------------
+   จอแคบ
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  .lay { grid-template-columns: var(--lib-w, 11rem) minmax(0, 1fr); }
+  .lay-insp { grid-column: 1 / -1; border-inline-start: none; border-block-start: 1px solid var(--color-border); }
+}
+
+@media (max-width: 760px) {
+  .lay { grid-template-columns: minmax(0, 1fr); }
+  .lay-lib { border-inline-end: none; border-block-end: 1px solid var(--color-border); }
+  .lay-dock { flex-wrap: wrap; justify-content: center; border-radius: var(--radius-lg); }
+  .lay-dock__summary { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   ท่าทางแบบเครื่องมือออกแบบ: เงาปลายทาง หมุดยืดสามจุด เลื่อนผัง และแผงคีย์ลัด
+   -------------------------------------------------------------------------- */
+
+/* เงาบอกช่องปลายทางระหว่างลาก — เห็นผลก่อนปล่อยมือ */
+.lay-ghost {
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--color-primary);
+  background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.lay-ghost[hidden] { display: none; }
+
+/* ระหว่างลาก ตัวที่กำลังลากจางลงเพื่อให้เห็นเงาปลายทางชัด */
+.lay-canvas.is-dragging .lay-item.is-selected { opacity: 0.55; }
+
+.lay-stage.is-pannable { cursor: grab; }
+.lay-stage.is-panning { cursor: grabbing; }
+.lay-stage.is-panning .lay-item { pointer-events: none; }
+
+/* หมุดยืดสามจุด: ขอบขวา ขอบล่าง และมุม ตรงกับที่เครื่องมือออกแบบทั่วไปให้มา */
+.lay-item__handle {
+  position: absolute;
+  background-color: var(--color-primary);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+  z-index: 3;
+}
+
+/* หมุดที่เห็นคือแท่งบาง แต่พื้นที่ที่เมาส์จับได้ต้องกว้างกว่านั้นมาก
+   ขยายด้วย ::before ที่โปร่งใส แทนการทำแท่งให้หนาขึ้น — ผังจึงยังดูสะอาดเหมือนเดิม
+   แต่เล็งครั้งเดียวติด ไม่ต้องขยับเมาส์หาขอบทีละพิกเซล */
+.lay-item__handle::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+
+.lay-item__handle--e {
+  inset-block: 18%;
+  inset-inline-end: -4px;
+  width: 8px;
+  border-radius: var(--radius-full);
+  cursor: ew-resize;
+}
+
+.lay-item__handle--s {
+  inset-inline: 18%;
+  inset-block-end: -4px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  cursor: ns-resize;
+}
+
+.lay-item__handle--se {
+  inset-block-end: -6px;
+  inset-inline-end: -6px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-surface);
+  border-radius: 5px;
+  cursor: nwse-resize;
+}
+
+/* มุมเป็นหมุดที่ใช้บ่อยที่สุด จึงกินพื้นที่จับมากกว่าอีกสองตัว */
+.lay-item__handle--se::before { inset: -10px; }
+
+.lay-item:hover .lay-item__handle,
+.lay-item.is-selected .lay-item__handle { opacity: 1; }
+
+/* --------------------------------------------------------------------------
+   แผงคีย์ลัด
+   -------------------------------------------------------------------------- */
+
+.lay-keys {
+  position: absolute;
+  inset-block-end: 5.5rem;
+  inset-inline-end: var(--space-6);
+  z-index: 40;
+  width: 19rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: color-mix(in srgb, var(--color-surface) 96%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-lg);
+}
+
+.lay-keys[hidden] { display: none; }
+
+.lay-keys__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.lay-keys__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.lay-keys__list > div {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.lay-keys__list dt {
+  flex: none;
+  width: 9.5rem;
+  font-size: var(--text-xs);
+  color: var(--color-text);
+}
+
+.lay-keys__list dd {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.lay-keys kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid var(--color-border);
+  border-block-end-width: 2px;
+  border-radius: 4px;
+  background-color: var(--color-surface-alt);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+}
+
+/* ปุ่มเครื่องมือมือตอนเปิดใช้งาน — ต้องเห็นชัดว่าอยู่คนละโหมดกับการเลือกของ */
+.lay-dock__btn.is-active {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.lay-dock__btn.is-active:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  color: var(--color-on-primary);
+}
+
+/* อยู่ในโหมดมือแล้ว ของบนผังไม่ควรรับเมาส์ ไม่งั้นลากทีเดียวได้ทั้งเลื่อนผังและย้ายของ */
+.lay-stage.is-pannable .lay-item { pointer-events: none; }
+.lay-stage.is-pannable .lay-canvas { cursor: grab; }
+.lay-stage.is-panning .lay-canvas { cursor: grabbing; }
+
+/* --------------------------------------------------------------------------
+   หลายหน้าจอและโหมดทดลอง
+   -------------------------------------------------------------------------- */
+
+/* แถบหน้าจอเป็นแถวแรกของพื้นที่ทำงาน แคนวาสยังได้ 1fr ที่เหลือเหมือนเดิม */
+.lay-screens {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.lay-screen {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 30px;
+  padding-inline: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.lay-screen:hover {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+}
+
+.lay-screen:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.lay-screen.is-active {
+  border-color: var(--color-primary);
+  background-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  color: var(--color-primary-strong, var(--color-primary));
+  font-weight: 600;
+}
+
+.lay-screen__flag { width: 13px; height: 13px; }
+
+.lay-screen__count {
+  min-width: 18px;
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  font-size: 0.625rem;
+  line-height: 16px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.lay-screen.is-active .lay-screen__count {
+  background-color: color-mix(in srgb, var(--color-primary) 18%, transparent);
+  color: inherit;
+}
+
+.lay-screen--add {
+  color: var(--color-text-subtle);
+  border-style: dashed;
+  border-color: var(--color-border);
+}
+
+.lay-screen--add .icon { width: 13px; height: 13px; }
+
+/* ปุ่มทดลองเป็นการกระทำคนละชนิดกับเครื่องมือแก้ผัง จึงย้อมสีให้แยกออกตั้งแต่ยังไม่กด */
+.lay-dock__btn--play { color: var(--color-primary); }
+
+.lay-dock__btn--play.is-active {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary, #fff);
+}
+
+/* --- ตอนแก้ผัง: บอกว่าชิ้นไหนผูกลิงก์ไว้แล้ว --- */
+
+.lay-item[data-link]::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-end: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-surface);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* --- ตอนทดลอง --- */
+
+/* ผังต้องดูเหมือนหน้าเว็บจริง เครื่องมือทุกอย่างของโหมดแก้ผังจึงถูกถอดออกหมด */
+/* --------------------------------------------------------------------------
+   ออกแบบใหม่ v.0025 — สามชั้นความลึกและเครื่องมือที่อยู่ใกล้มือ
+   ที่มาของรูปแบบ: docs/research/layout-redesign-research.md
+
+   ความลึกมีสามชั้นพอ ไม่ต้องมากกว่านี้
+   1 พื้นเวที (จมที่สุด)  2 กรอบหน้า (ลอยขึ้นมา)  3 แถบเครื่องมือ (ลอยสูงสุด)
+   -------------------------------------------------------------------------- */
+
+.lay-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.lay-topbar .lay-screens {
+  flex: 1;
+  min-width: 0;
+  border-bottom: 0;
+  background-color: transparent;
+}
+
+.lay-viewswitch {
+  display: flex;
+  gap: 2px;
+  flex: none;
+  margin-inline-end: var(--space-6);
+  padding: 3px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-alt);
+}
+
+.lay-viewswitch__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 26px;
+  padding-inline: var(--space-3);
+  border: 0;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.lay-viewswitch__btn .icon { width: 14px; height: 14px; }
+
+.lay-viewswitch__btn:hover { color: var(--color-text); }
+
+.lay-viewswitch__btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.lay-viewswitch__btn.is-active {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm, 0 1px 2px rgb(0 0 0 / 0.12));
+}
+
+/* ชั้นที่ 1 — พื้นเวทีจมลงไป เงาด้านในบอกว่าเป็นหลุมที่ของลอยอยู่ข้างบน */
+.lay-stage {
+  position: relative;
+  background-color: var(--color-surface-alt);
+  box-shadow: inset 0 1px 4px -1px rgb(0 0 0 / 0.1);
+}
+
+/* ชั้นที่ 2 — ผังลอยเหนือพื้น เงาสองชั้น ชั้นบางคุมรูปทรง ชั้นกว้างสร้างระยะ */
+.lay-canvas {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-border) 70%, transparent),
+    0 1px 2px rgb(0 0 0 / 0.06),
+    0 18px 40px -24px rgb(0 0 0 / 0.35);
+}
+
+/* ค้นหาในคลัง */
+.lay-lib__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 var(--space-3) var(--space-2);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+}
+
+.lay-lib__search .icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--color-text-subtle);
+}
+
+.lay-lib__input {
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-xs);
+}
+
+.lay-lib__input:focus { outline: none; }
+
+.lay-lib__search:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 16%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   มุมมองบอร์ด
+   -------------------------------------------------------------------------- */
+
+.lay-boardwrap[hidden] { display: none; }
+
+.lay-boardwrap {
+  width: calc(var(--board-w, 100%) * var(--zoom, 1));
+  height: calc(var(--board-h, 0px) * var(--zoom, 1));
+  /* เว้นที่ให้ป้ายชื่อที่ลอยอยู่เหนือกรอบแถวแรก ป้ายคงขนาดบนจอ ระยะนี้จึงคงที่ด้วย */
+  margin: 32px auto 0;
+}
+
+.lay-board {
+  position: relative;
+  transform-origin: top left;
+  transform: scale(var(--zoom, 1));
+}
+
+.lay-frame { position: absolute; }
+
+/* ป้ายชื่ออยู่เหนือกรอบตามธรรมเนียมของเครื่องมือออกแบบ และเป็นที่จับสำหรับลากย้าย
+   ต้องคงขนาดเท่าเดิมบนจอเสมอ จึงหักล้างการย่อของบอร์ดด้วย scale ผกผัน
+   ถ้าปล่อยให้ย่อตาม ที่ 36% ตัวอักษรจะเหลือราวสี่พิกเซล ชื่อกับขนาดเบียดกันจนอ่านไม่ออก */
+.lay-frame__label {
+  position: absolute;
+  inset-block-end: 100%;
+  inset-inline-start: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: max-content;
+  margin-block-end: 6px;
+  padding-inline: var(--space-1);
+  transform-origin: bottom left;
+  transform: scale(calc(1 / var(--zoom, 1)));
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  cursor: grab;
+  user-select: none;
+}
+
+.lay-frame__label:active { cursor: grabbing; }
+
+.lay-frame__start {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  padding: 2px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary, #fff);
+  cursor: pointer;
+}
+
+.lay-frame__name {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.lay-frame__size {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-text-subtle);
+}
+
+.lay-frame__open {
+  height: 22px;
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.lay-frame:hover .lay-frame__open,
+.lay-frame__open:focus-visible { opacity: 1; }
+
+.lay-frame__body {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-border) 70%, transparent),
+    0 2px 4px rgb(0 0 0 / 0.06),
+    0 24px 48px -28px rgb(0 0 0 / 0.4);
+  overflow: hidden;
+}
+
+.lay-frame.is-active .lay-frame__body {
+  box-shadow:
+    0 0 0 2px var(--color-primary),
+    0 2px 4px rgb(0 0 0 / 0.06),
+    0 24px 48px -28px rgb(0 0 0 / 0.4);
+}
+
+.lay-frame__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 12), minmax(0, 1fr));
+  grid-auto-rows: var(--grid-row-h, 40px);
+  gap: var(--grid-gap, 16px);
+  padding: var(--grid-gap, 16px);
+  height: 100%;
+  background-color: var(--color-bg);
+}
+
+.lay-frame__item {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.lay-frame__item[data-link]::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-end: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+/* เส้นเชื่อมวาดบนชั้นบนสุดของบอร์ด แต่ไม่รับเมาส์ จะได้ไม่บังการลากกรอบ */
+.lay-board__wires {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* เส้นที่ไม่เกี่ยวกับหน้าที่กำลังทำงานอยู่เป็นฉากหลัง ไม่ใช่ของที่ต้องอ่าน
+   ผังห้าหน้าที่ทุกหน้ามีเมนูเหมือนกันมีเส้นหลายสิบเส้น ถ้าเข้มเท่ากันหมดจะอ่านไม่ออกสักเส้น */
+.lay-wire {
+  fill: none;
+  stroke: var(--color-text-subtle);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: 0.28;
+}
+
+.lay-wire.is-focused {
+  stroke: var(--color-primary);
+  stroke-width: 2;
+  opacity: 0.9;
+}
+
+.lay-wire__dot { fill: var(--color-primary); opacity: 0.65; }
+
+.lay-wire__head { fill: var(--color-primary); opacity: 0.65; }
+
+/* --------------------------------------------------------------------------
+   แถบคำสั่งลอยของชิ้นที่เลือก
+   -------------------------------------------------------------------------- */
+
+.lay-hud[hidden] { display: none; }
+
+.lay-hud {
+  position: absolute;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 24px -14px rgb(0 0 0 / 0.5);
+  white-space: nowrap;
+}
+
+.lay-hud__name {
+  padding-inline: var(--space-2);
+  color: var(--color-text);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.lay-hud__sep {
+  width: 1px;
+  height: 16px;
+  background-color: var(--color-border);
+}
+
+.lay-hud__group { display: flex; gap: 2px; }
+
+.lay-hud__chip {
+  min-width: 26px;
+  height: 24px;
+  padding-inline: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.lay-hud__chip:hover { background-color: var(--color-surface-alt); color: var(--color-text); }
+
+.lay-hud__chip.is-active {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary, #fff);
+}
+
+.lay-hud__select {
+  height: 24px;
+  max-width: 130px;
+  padding-inline: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.6875rem;
+}
+
+.lay-hud__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-primary);
+}
+
+.lay-hud__link .icon { width: 13px; height: 13px; }
+
+.lay-hud__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.lay-hud__btn .icon { width: 14px; height: 14px; }
+
+.lay-hud__btn:hover { background-color: var(--color-surface-alt); color: var(--color-text); }
+
+.lay-hud__btn--danger:hover {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.lay-hud__chip:focus-visible,
+.lay-hud__btn:focus-visible,
+.lay-hud__select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+/* --------------------------------------------------------------------------
+   เพิ่มของด้วยการพิมพ์
+   -------------------------------------------------------------------------- */
+
+.lay-quick[hidden] { display: none; }
+
+.lay-quick {
+  position: absolute;
+  inset-block-start: 96px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  z-index: 45;
+  width: min(360px, 80%);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: color-mix(in srgb, var(--color-surface) 96%, transparent);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 48px -20px rgb(0 0 0 / 0.45);
+}
+
+.lay-quick__input {
+  width: 100%;
+  height: 34px;
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-sm);
+}
+
+.lay-quick__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 16%, transparent);
+}
+
+.lay-quick__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--space-2);
+}
+
+.lay-quick__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  height: 30px;
+  padding-inline: var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text);
+  font-size: var(--text-xs);
+  text-align: start;
+  cursor: pointer;
+}
+
+.lay-quick__item:hover,
+.lay-quick__item.is-active { background-color: var(--color-surface-alt); }
+
+.lay-quick__group { color: var(--color-text-subtle); font-size: 0.6875rem; }
+
+.lay-quick__empty {
+  margin: var(--space-3) 0 var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+/* บนบอร์ดไม่ต้องมีเส้นบอกรอยพับหรือเงาปลายทางของการลาก */
+.lay.is-board .lay-ghost,
+.lay.is-board .lay-guides { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lay-frame__open { transition: none; }
+}
+
+/* ปุ่มชุดสีท้ายคลัง — เม็ดสีคือสถานะ ข้อความคือคำสั่ง กดที่ไหนก็เปิดหน้าต่างเลือกชุดสี */
+.lay-palette {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.lay-palette:hover { background-color: var(--color-surface-alt); }
+
+.lay-palette:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.lay-palette__label {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+.lay-palette:hover .lay-palette__label { color: var(--color-text); }
+
+@media (prefers-reduced-motion: reduce) {
+  .lay-palette { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   ผูกลิงก์รายส่วน และแผนภาพโฟลว์
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   เมนูคลิกขวาของหน้าจอ
+   -------------------------------------------------------------------------- */
+
+.lay-menu {
+  position: fixed;
+  z-index: 95;
+  min-width: 12rem;
+  padding: var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.lay-menu__head {
+  display: block;
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  font-size: 0.6875rem;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lay-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: start;
+  cursor: pointer;
+}
+
+.lay-menu__item .icon { width: 0.875rem; height: 0.875rem; color: var(--color-text-subtle); }
+
+.lay-menu__item:hover:not([disabled]) { background-color: var(--color-surface-alt); }
+.lay-menu__item:focus-visible { outline: 2px solid var(--color-primary); outline-offset: -2px; }
+
+.lay-menu__item[disabled] {
+  color: var(--color-text-subtle);
+  cursor: not-allowed;
+}
+
+.lay-menu__item--danger { color: var(--color-danger-text, var(--color-text)); }
+.lay-menu__item--danger .icon { color: currentColor; }
+.lay-menu__item--danger:hover:not([disabled]) { background-color: var(--color-danger-soft); }
+
+.lay-menu__divider {
+  display: block;
+  height: 1px;
+  margin: var(--space-1) var(--space-2);
+  background-color: var(--color-border);
+}
+
+/* ชื่อหน้าที่กำลังพิมพ์แก้อยู่ ต้องดูเป็นช่องกรอกจริง ไม่ใช่ข้อความที่บังเอิญมีเคอร์เซอร์ */
+.lay-screen__name.is-editing {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+  cursor: text;
+}
+
+/* --------------------------------------------------------------------------
+   หน้าทดลองใช้งาน — ผังจริงเต็มจอ ไม่มีเครื่องมือของ ColorLab ปนอยู่เลย
+   -------------------------------------------------------------------------- */
+
+.lay-live {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background-color: var(--color-bg);
+}
+
+/* แถบบางบนสุดเป็นทางออกทางเดียวที่เหลือ จึงต้องอ่านออกโดยไม่แย่งความสนใจจากงานที่กำลังทดสอบ */
+.lay-live__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: 2.25rem;
+  padding-inline: var(--space-4);
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  font-size: var(--text-xs);
+}
+
+.lay-live__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--weight-semibold);
+}
+
+.lay-live__label .icon { width: 0.875rem; height: 0.875rem; }
+
+.lay-live__hint { opacity: 0.7; }
+
+.lay-live__exit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-start: auto;
+  height: 1.5rem;
+  padding-inline: var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--color-bg) 40%, transparent);
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.lay-live__exit:hover { background-color: color-mix(in srgb, var(--color-bg) 20%, transparent); }
+.lay-live__exit .icon { width: 0.75rem; height: 0.75rem; }
+
+.lay-live__frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.lay-parts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.lay-parts__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+  color: var(--color-text);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.lay-parts__head .icon { width: 14px; height: 14px; color: var(--color-primary); }
+
+.lay-parts__count {
+  margin-inline-start: auto;
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.lay-parts__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.lay-parts__label {
+  min-width: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lay-parts__select {
+  width: 100%;
+  height: 26px;
+  padding-inline: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.6875rem;
+}
+
+.lay-parts__select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.lay-parts__empty {
+  margin: 0;
+  color: var(--color-text-subtle);
+  font-size: var(--text-xs);
+}
+
+/* --- แผนภาพโฟลว์ --- */
+
+.lay-flow__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.lay-flow__stats strong { color: var(--color-text); }
+
+.lay-flow__screen { margin-bottom: var(--space-5); }
+
+.lay-flow__name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.lay-flow__start {
+  width: 15px;
+  height: 15px;
+  padding: 2px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary, #fff);
+}
+
+.lay-flow__badge {
+  margin-inline-start: auto;
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 400;
+}
+
+.lay-flow__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lay-flow__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  font-size: var(--text-xs);
+}
+
+.lay-flow__from { color: var(--color-text-muted); }
+
+.lay-flow__to { color: var(--color-text); font-weight: 600; }
+
+.lay-flow__arrow { width: 15px; height: 15px; color: var(--color-primary); }
+
+.lay-flow__dead {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.lay-flow__warn {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-warning-soft);
+  color: var(--color-on-warning-soft);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+.lay-flow__warn .icon { width: 15px; height: 15px; flex: none; margin-top: 1px; }

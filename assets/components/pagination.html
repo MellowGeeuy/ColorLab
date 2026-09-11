@@ -1,0 +1,50 @@
+<!-- @card -->
+<div class="ui-stack">
+  <nav class="ui-pagination" aria-label="ตัวอย่างการแบ่งหน้า">
+    <span class="ui-pagination__info">1-20 จาก 143</span>
+    <button type="button" class="ui-page" aria-label="หน้าก่อนหน้า" disabled data-part="p1">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+    </button>
+    <button type="button" class="ui-page" aria-current="page" data-part="p2">1</button>
+    <button type="button" class="ui-page" data-part="p3">2</button>
+    <button type="button" class="ui-page" data-part="p4">3</button>
+    <button type="button" class="ui-page" aria-label="หน้าถัดไป" data-part="p5">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </button>
+  </nav>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<nav class="ui-pagination" aria-label="แบ่งหน้ารายการ">
+  <span class="ui-pagination__info">แสดง 1-20 จาก 143 รายการ</span>
+
+  <button type="button" class="ui-page" aria-label="หน้าก่อนหน้า" disabled data-part="p1">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+  </button>
+  <button type="button" class="ui-page" aria-current="page" aria-label="หน้า 1" data-part="p2">1</button>
+  <button type="button" class="ui-page" aria-label="หน้า 2" data-part="p3">2</button>
+  <button type="button" class="ui-page" aria-label="หน้า 3" data-part="p4">3</button>
+  <span class="ui-pagination__info" aria-hidden="true">...</span>
+  <button type="button" class="ui-page" aria-label="หน้า 8" data-part="p5">8</button>
+  <button type="button" class="ui-page" aria-label="หน้าถัดไป" data-part="p6">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+  </button>
+</nav>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="หน้าปัจจุบัน — ใช้ aria-current ไม่ใช่แค่คลาสสี">
+  <button type="button" class="ui-page" aria-current="page" data-part="p1">1</button>
+</div>
+
+<div class="cs-variant" data-variant-label="หน้าอื่น">
+  <button type="button" class="ui-page" data-part="p2">2</button>
+</div>
+
+<div class="cs-variant" data-variant-label="ปุ่มที่ไปต่อไม่ได้">
+  <button type="button" class="ui-page" aria-label="หน้าก่อนหน้า" disabled data-part="p3">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+  </button>
+</div>
+<!-- @end -->

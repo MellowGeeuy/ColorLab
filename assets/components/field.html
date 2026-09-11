@@ -1,0 +1,133 @@
+<!-- @card -->
+<div class="ui-stack">
+  <div class="ui-field">
+    <span class="ui-field__label">ชื่อรายการ<span class="ui-field__required" aria-hidden="true">*</span></span>
+    <input class="ui-input" type="text" value="รายการ A" aria-label="ชื่อรายการ">
+  </div>
+  <div class="ui-field ui-field--error">
+    <span class="ui-field__label">รหัสอ้างอิง</span>
+    <input class="ui-input" type="text" value="1234" aria-invalid="true" aria-label="รหัสอ้างอิง">
+    <span class="ui-field__error">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/></svg>
+      ต้องเป็นตัวเลข 13 หลัก
+    </span>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<form class="ui-panel">
+  <div class="ui-form">
+    <div class="ui-field">
+      <label class="ui-field__label" for="demo-customer">
+        ชื่อรายการ<span class="ui-field__required" aria-hidden="true">*</span>
+      </label>
+      <input class="ui-input" id="demo-customer" name="customer" type="text"
+             value="รายการ A" required aria-describedby="demo-customer-help">
+      <span class="ui-field__helper" id="demo-customer-help">ชื่อเต็มตามที่ใช้อ้างอิงในเอกสาร</span>
+    </div>
+
+    <div class="ui-field">
+      <label class="ui-field__label" for="demo-package">กลุ่ม</label>
+      <select class="ui-select" id="demo-package" name="package">
+        <option>กลุ่ม A</option>
+        <option selected>กลุ่ม B</option>
+        <option>กลุ่ม C</option>
+      </select>
+    </div>
+
+    <div class="ui-field ui-field--error">
+      <label class="ui-field__label" for="demo-tax">รหัสอ้างอิง</label>
+      <input class="ui-input" id="demo-tax" name="tax" type="text" inputmode="numeric"
+             value="1234" aria-invalid="true" aria-describedby="demo-tax-error">
+      <span class="ui-field__error" id="demo-tax-error">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/></svg>
+        ต้องเป็นตัวเลข 13 หลัก (ตอนนี้กรอกมา 4 หลัก)
+      </span>
+    </div>
+
+    <div class="ui-field">
+      <label class="ui-field__label" for="demo-ref">เลขอ้างอิงภายใน</label>
+      <input class="ui-input" id="demo-ref" name="ref" type="text" value="AUTO-2043" disabled>
+      <span class="ui-field__helper">ระบบสร้างให้อัตโนมัติ แก้ไขไม่ได้</span>
+    </div>
+
+    <div class="ui-field ui-field--wide">
+      <label class="ui-field__label" for="demo-note">หมายเหตุของรายการ</label>
+      <textarea class="ui-input ui-input--area" id="demo-note" rows="2"
+                placeholder="เช่น เงื่อนไขพิเศษ หรือรหัสอ้างอิงจากระบบอื่น"></textarea>
+    </div>
+
+    <label class="ui-check ui-field--wide">
+      <input class="ui-checkbox" type="checkbox" checked>
+      ส่งสำเนาเข้าอีเมลของฉันเมื่อเอกสารถูกเปิดอ่าน
+    </label>
+  </div>
+
+  <div class="ui-panel__foot">
+    <div class="ui-panel__actions">
+      <button type="button" class="ui-btn ui-btn--ghost" data-part="p1">ยกเลิก</button>
+      <button type="button" class="ui-btn" data-part="p2">บันทึกร่าง</button>
+    </div>
+  </div>
+</form>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ปกติ">
+  <div class="ui-field">
+    <label class="ui-field__label" for="v-normal">อีเมล</label>
+    <input class="ui-input" id="v-normal" type="email" placeholder="name@example.com">
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="มีคำอธิบายช่วย">
+  <div class="ui-field">
+    <label class="ui-field__label" for="v-help">รหัสพนักงาน</label>
+    <input class="ui-input" id="v-help" type="text" aria-describedby="v-help-text">
+    <span class="ui-field__helper" id="v-help-text">ห้าหลัก ขึ้นต้นด้วยตัวอักษรของแผนก</span>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ผิดพลาด — มีไอคอนคู่ข้อความ ไม่ใช่แค่สีแดง">
+  <div class="ui-field ui-field--error">
+    <label class="ui-field__label" for="v-error">อีเมล</label>
+    <input class="ui-input" id="v-error" type="email" value="name@" aria-invalid="true" aria-describedby="v-error-text">
+    <span class="ui-field__error" id="v-error-text">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/></svg>
+      รูปแบบอีเมลไม่ถูกต้อง
+    </span>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ปิดใช้งาน">
+  <div class="ui-field">
+    <label class="ui-field__label" for="v-disabled">เลขที่เอกสาร</label>
+    <input class="ui-input" id="v-disabled" type="text" value="AUTO-2043" disabled>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ตัวเลือก">
+  <div class="ui-field">
+    <label class="ui-field__label" for="v-select">สถานะ</label>
+    <select class="ui-select" id="v-select">
+      <option>ทั้งหมด</option>
+      <option>รอดำเนินการ</option>
+    </select>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ช่องข้อความหลายบรรทัด">
+  <div class="ui-field">
+    <label class="ui-field__label" for="v-area">หมายเหตุ</label>
+    <textarea class="ui-input ui-input--area" id="v-area" rows="2" placeholder="พิมพ์หมายเหตุ"></textarea>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ช่องติ๊ก">
+  <label class="ui-check">
+    <input class="ui-checkbox" type="checkbox" checked>
+    รับอีเมลแจ้งเตือน
+  </label>
+</div>
+<!-- @end -->

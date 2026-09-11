@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workspace — ColorLab</title>
+  <meta name="description" content="ห้องแล็บสี: เลือกสีบน color space วางระบบสีทั้งชุด ตรวจคอนทราสต์ ทดสอบกับ UI จริง แล้วส่งออกเป็นโค้ด">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/app-shell.css">
+  <link rel="stylesheet" href="assets/css/page-specific/workspace.css">
+  <link rel="stylesheet" href="assets/css/page-specific/preview-mock.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- ===================== TOP BAR ===================== -->
+    <header class="topbar topbar--ground">
+      <div class="topbar__side">
+        <!-- อยู่ในโหมดนี้แล้ว ชื่อจึงเป็นป้ายบอกที่ยืน ไม่ใช่ลิงก์ ปุ่มโดมกลางแถบจึงไม่ต้องมี -->
+        <span class="topbar__brand">
+          <span class="topbar__logo" aria-hidden="true"></span>
+          <span class="topbar__name">Colorground</span>
+        </span>
+
+        <nav class="groundnav" aria-label="ไปยังส่วนอื่นของ ColorLab">
+          <a class="groundnav__item" href="index.html" style="--dot-h:8">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-book"/></svg>Color Theory
+          </a>
+          <a class="groundnav__item" href="component-style.html" style="--dot-h:92">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-layers"/></svg>Component Style
+          </a>
+          <a class="groundnav__item" href="layout.html" style="--dot-h:150">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
+          </a>
+          <a class="groundnav__item" href="contrast-audit.html" style="--dot-h:196">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-contrast"/></svg>Contrast Audit
+          </a>
+          <a class="groundnav__item" href="token-export.html" style="--dot-h:286">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-tag"/></svg>Token Export
+          </a>
+        </nav>
+      </div>
+
+      <div class="topbar__side topbar__side--end">
+        <div class="topbar__actions">
+          <span class="topbar__status" id="save-status" role="status" aria-live="polite"></span>
+          <button type="button" class="cmdk-trigger" id="cmdk-open">
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <span class="cmdk-trigger__label">ค้นหาเครื่องมือ</span>
+            <kbd class="kbd">Ctrl K</kbd>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm" id="palette-reset" aria-label="คืนค่าชุดสีเริ่มต้น" title="คืนค่าชุดสีเริ่มต้น">
+            <svg class="icon" aria-hidden="true"><use href="#i-ban"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm" id="theme-toggle" aria-label="สลับโหมดสีของหน้าเว็บ">
+            <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================== STUDIO ===================== -->
+    <div class="studio">
+
+      <!-- ---------- TOOL RAIL ---------- -->
+      <nav class="rail" id="tool-rail" role="tablist" aria-orientation="vertical" aria-label="เครื่องมือ">
+        <button type="button" class="rail__item" role="tab" data-tool="auto" aria-selected="true" id="tab-auto" aria-controls="view-auto">
+          <svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg>
+          <span class="rail__num">1</span>
+          <span class="rail__tip">สร้างชุดสีอัตโนมัติ</span>
+        </button>
+      </nav>
+
+      <!-- ---------- CANVAS ---------- -->
+      <main class="canvas">
+
+        <div class="stage" id="stage">
+
+          <!-- ===== 1 · AUTO PALETTE ===== -->
+          <section class="tool-view is-active" data-view="auto" id="view-auto" role="tabpanel" aria-labelledby="tab-auto" tabindex="0">
+            <div class="tool-view__head">
+              <h1 class="tool-view__title">สร้างชุดสีอัตโนมัติ</h1>
+              <div class="tool-view__actions">
+                <button type="button" class="btn btn--sm" id="auto-from-brand">
+                  <svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg> ดึงสีแบรนด์
+                </button>
+                <button type="button" class="btn btn--sm" id="auto-random">
+                  <svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg> สุ่มสีตั้งต้น
+                </button>
+              </div>
+            </div>
+
+            <p class="tool-view__hint">
+              จิ้มบนวงล้อเพื่อเลือกเนื้อสีและความอิ่มพร้อมกัน หรือใส่รหัสสีตรง ๆ ก็ได้
+              แล้วกด "บันทึกชุดสี" ในสูตรที่ชอบ ชุดที่บันทึกจะไปรออยู่ที่เครื่องมือบันทึก และส่งออก
+            </p>
+
+            <div class="auto" id="auto-palette">
+              <div class="panel auto__seed">
+                <div class="panel__head"><h2 class="panel__title">สีตั้งต้น</h2></div>
+                <div class="panel__body auto__seed-body">
+                  <div class="auto__wheel" id="auto-wheel" role="slider" tabindex="0"
+                       aria-label="เลือกเนื้อสีตั้งต้นจากวงล้อ"
+                       aria-valuemin="0" aria-valuemax="359" aria-valuenow="270">
+                    <span class="auto__marker" id="auto-wheel-marker" aria-hidden="true"></span>
+                  </div>
+
+                  <div class="auto__fields">
+                    <div class="field">
+                      <label class="field__label" for="auto-hex">รหัสสี</label>
+                      <input class="input u-mono" id="auto-hex" type="text" spellcheck="false"
+                             autocomplete="off" placeholder="#845EC2">
+                    </div>
+
+                    <div class="field">
+                      <label class="field__label" for="auto-light">
+                        ความสว่าง <span class="u-num" id="auto-light-value">50%</span>
+                      </label>
+                      <input class="range" type="range" id="auto-light" min="10" max="92" value="50">
+                    </div>
+
+                    <div class="auto__preview" id="auto-seed-preview"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="auto__results" id="auto-results"></div>
+              <p class="u-small u-muted" id="auto-status" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+
+        </div>
+      </main>
+
+    </div>
+
+    <!-- ===================== COMMAND PALETTE ===================== -->
+    <div class="cmdk" id="cmdk" hidden>
+      <div class="cmdk__panel" role="dialog" aria-modal="true" aria-label="ค้นหาเครื่องมือ">
+        <label class="u-visually-hidden" for="cmdk-input">ค้นหาเครื่องมือหรือคำสั่ง</label>
+        <input class="cmdk__input" id="cmdk-input" type="text" placeholder="พิมพ์เพื่อค้นหาเครื่องมือ…" autocomplete="off" spellcheck="false">
+        <ul class="cmdk__list" id="cmdk-list"></ul>
+        <p class="cmdk__empty" id="cmdk-empty" hidden>ไม่พบคำสั่งที่ตรงกับที่พิมพ์</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="assets/js/pages/workspace.js"></script>
+</body>
+</html>

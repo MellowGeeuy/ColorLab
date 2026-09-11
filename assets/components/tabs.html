@@ -1,0 +1,89 @@
+<!-- @card -->
+<div class="ui-tabs">
+  <div class="ui-tabs__list" role="tablist" aria-label="ตัวอย่างแท็บ">
+    <button type="button" class="ui-tab" role="tab" aria-selected="true" tabindex="-1" data-part="p1">ทั้งหมด</button>
+    <button type="button" class="ui-tab" role="tab" aria-selected="false" tabindex="-1" data-part="p2">
+      รอดำเนินการ<span class="ui-tab__count">12</span>
+    </button>
+    <button type="button" class="ui-tab" role="tab" aria-selected="false" tabindex="-1" data-part="p3">เลยกำหนด</button>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-tabs">
+  <div class="ui-tabs__list" role="tablist" aria-label="กรองรายการตามสถานะ">
+    <button type="button" class="ui-tab" role="tab" id="tab-all" aria-selected="true" aria-controls="panel-all" data-part="p1">
+      ทั้งหมด<span class="ui-tab__count">248</span>
+    </button>
+    <button type="button" class="ui-tab" role="tab" id="tab-wait" aria-selected="false" aria-controls="panel-all" tabindex="-1" data-part="p2">
+      รอดำเนินการ<span class="ui-tab__count">12</span>
+    </button>
+    <button type="button" class="ui-tab" role="tab" id="tab-late" aria-selected="false" aria-controls="panel-all" tabindex="-1" data-part="p3">
+      เลยกำหนด<span class="ui-tab__count ui-tab__count--alert">3</span>
+    </button>
+    <button type="button" class="ui-tab" role="tab" id="tab-draft" aria-selected="false" aria-controls="panel-all" tabindex="-1" data-part="p4">
+      ร่าง
+    </button>
+    <button type="button" class="ui-tab" role="tab" id="tab-void" aria-selected="false" aria-controls="panel-all" tabindex="-1" disabled data-part="p5">
+      ยกเลิกแล้ว
+    </button>
+  </div>
+
+  <div class="ui-tabs__panel" role="tabpanel" id="panel-all" aria-labelledby="tab-all">
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <caption class="u-visually-hidden">รายการทั้งหมด</caption>
+        <thead>
+          <tr>
+            <th scope="col">เอกสาร</th>
+            <th scope="col">รายชื่อ</th>
+            <th scope="col" class="ui-table__num">จำนวน</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="u-mono">ID-2043</td><td>รายการ A</td><td class="ui-table__num">120,000.00</td></tr>
+          <tr><td class="u-mono">ID-2044</td><td>รายการ B</td><td class="ui-table__num">4,500.00</td></tr>
+          <tr><td class="u-mono">ID-2045</td><td>รายการ C</td><td class="ui-table__num">1,200.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ขีดใต้ — แท็บของทั้งหน้า">
+  <div class="ui-tabs__list" role="tablist" aria-label="ตัวอย่าง 1">
+    <button type="button" class="ui-tab" role="tab" aria-selected="true" tabindex="-1" data-part="p1">รายละเอียด</button>
+    <button type="button" class="ui-tab" role="tab" aria-selected="false" tabindex="-1" data-part="p2">ประวัติการดำเนินการ</button>
+    <button type="button" class="ui-tab" role="tab" aria-selected="false" tabindex="-1" data-part="p3">ไฟล์แนบ</button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="แบบเม็ดยา — ตัวกรองย่อยในกล่องเดียว">
+  <div class="ui-tabs__list ui-tabs__list--pill" role="tablist" aria-label="ตัวอย่าง 2">
+    <button type="button" class="ui-tab" role="tab" aria-selected="true" tabindex="-1" data-part="p4">รายวัน</button>
+    <button type="button" class="ui-tab" role="tab" aria-selected="false" tabindex="-1" data-part="p5">รายสัปดาห์</button>
+    <button type="button" class="ui-tab" role="tab" aria-selected="false" tabindex="-1" data-part="p6">รายเดือน</button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="มีตัวเลขกำกับ — บอกปริมาณก่อนกดเข้าไปดู">
+  <div class="ui-tabs__list" role="tablist" aria-label="ตัวอย่าง 3">
+    <button type="button" class="ui-tab" role="tab" aria-selected="true" tabindex="-1" data-part="p7">
+      ทั้งหมด<span class="ui-tab__count">248</span>
+    </button>
+    <button type="button" class="ui-tab" role="tab" aria-selected="false" tabindex="-1" data-part="p8">
+      เลยกำหนด<span class="ui-tab__count ui-tab__count--alert">3</span>
+    </button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ปิดใช้งาน — ยังบอกว่ามีมุมมองนี้อยู่">
+  <div class="ui-tabs__list" role="tablist" aria-label="ตัวอย่าง 4">
+    <button type="button" class="ui-tab" role="tab" aria-selected="true" tabindex="-1" data-part="p9">ทั้งหมด</button>
+    <button type="button" class="ui-tab" role="tab" aria-selected="false" tabindex="-1" disabled data-part="p10">ยกเลิกแล้ว</button>
+  </div>
+</div>
+<!-- @end -->

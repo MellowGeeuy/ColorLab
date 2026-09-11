@@ -1,0 +1,926 @@
+/* ==========================================================================
+   Component Style — layout ของหน้า แคตตาล็อก และกล่องโค้ด
+   CSS ของตัว component อยู่ที่ assets/css/component-catalog.css ไม่ปนกัน
+   ไฟล์นี้ใช้ token ของเว็บ (--color-*) ตามปกติ ส่วนกล่องที่มี data-preview-scope
+   จะถูก JS เขียนทับ --color-* ด้วยค่าจาก palette ของผู้ใช้เฉพาะภายในกล่องนั้น
+   ========================================================================== */
+
+/* .app สูงเท่าจอและ overflow:hidden — พื้นที่ที่เลื่อนได้จึงต้องเป็น main ตัวนี้เอง */
+.cs-page {
+  overflow-y: auto;
+  min-height: 0;
+  padding: var(--space-6) var(--space-6) var(--space-16);
+  background-image:
+    radial-gradient(60rem 30rem at 15% -10%, var(--color-primary-soft), transparent 60%);
+}
+
+.cs-page > * {
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+/* --------------------------------------------------------------------------
+   แถบคุม palette
+   -------------------------------------------------------------------------- */
+
+/* เม็ดสีลอยมุมขวาบน กว้างพอดีจำนวนสีเท่านั้น อยู่ซ้ายของวงกลมเมนูที่ลอยอยู่ตำแหน่งเดียวกัน
+   ระยะบนผูกกับ --topbar-h ซึ่งกลายเป็น 0 ตอนแถบบนยุบ เม็ดสีจึงเลื่อนขึ้นไปอยู่แถวเดียวกับวงกลมเอง
+   โดยไม่ต้องมีเงื่อนไขแยก */
+.cs-palette-pill {
+  position: fixed;
+  inset-block-start: calc(var(--topbar-h) + var(--space-3));
+  /* ระยะขอบขวาของวงกลม + ความกว้างวงกลม + ช่องไฟ — เม็ดสีจอดชิดซ้ายของวงกลมพอดีโดยไม่ทับ
+     ตัวเลขชุดนี้ต้องตรงกับ .dock ใน app-shell.css ถ้าขยับที่นั่นต้องขยับที่นี่ด้วย */
+  inset-inline-end: calc(var(--space-6) + 3.25rem + var(--space-4));
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              inset-block-start var(--duration-base) var(--ease-out);
+}
+
+.cs-palette-pill:hover {
+  transform: translateY(-1px);
+  border-color: var(--color-primary);
+}
+
+.cs-palette-pill:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.cs-swatches {
+  display: flex;
+  gap: 3px;
+}
+
+.cs-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   Modal เลือกชุดสี
+   -------------------------------------------------------------------------- */
+
+.cs-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+}
+
+.cs-modal[hidden] { display: none; }
+
+.cs-modal__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(15 23 42 / 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.cs-modal__panel {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: min(80vh, 640px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.cs-modal__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cs-modal__title {
+  font-size: var(--text-lg);
+  line-height: var(--lh-lg);
+  margin: 0;
+}
+
+/* คำอธิบายต่อท้ายหัวข้อในบรรทัดเดียวกัน คั่นด้วยจุดกลมที่ลอยกึ่งกลางความสูงบรรทัด
+   line-height เป็น 0 เพื่อไม่ให้จุดตัวโตไปดันความสูงของบรรทัดหัวข้อ */
+.cs-modal__sub {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+}
+
+.cs-modal__sub::before {
+  content: "\00B7";
+  font-size: 1.9em;
+  line-height: 0;
+  vertical-align: middle;
+  margin-inline: var(--space-2);
+  color: var(--color-text-subtle);
+}
+
+.cs-modal__head .btn { margin-inline-start: auto; }
+
+.cs-modal__body {
+  padding: var(--space-5);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.cs-modal__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cs-modal__label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.cs-modal__empty {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+}
+
+.cs-modal__foot {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface-alt);
+}
+
+.cs-palette-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cs-palette-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out);
+}
+
+.cs-palette-item:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+}
+
+.cs-palette-item:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ชุดที่กำลังใช้อยู่ต้องแยกออกได้โดยไม่ต้องพึ่งสีอย่างเดียว จึงมีคำว่า "ใช้อยู่" กำกับด้วย */
+.cs-palette-item[aria-current="true"] {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+}
+
+.cs-palette-item__strip {
+  display: flex;
+  flex: none;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.cs-palette-item__strip span {
+  width: 18px;
+  height: 34px;
+}
+
+.cs-palette-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cs-palette-item__name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+.cs-palette-item__meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.cs-palette-item__now {
+  margin-inline-start: auto;
+  flex: none;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-primary-text);
+}
+
+.cs-themeswitch {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-alt);
+}
+
+.cs-themeswitch__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-md);
+  padding-inline: var(--space-3);
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.cs-themeswitch__btn.is-active {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+  box-shadow: var(--shadow-xs);
+}
+
+/* --------------------------------------------------------------------------
+   แคตตาล็อก
+   -------------------------------------------------------------------------- */
+
+/* ไม่มีย่อหน้าให้คุมความยาวบรรทัดแล้ว เหลือหัวข้อกับคำอธิบายที่ต่อกันบรรทัดเดียว
+   ถ้ายังคุมที่ 60ch คำท้ายจะตกบรรทัดใหม่ทั้งที่ยังมีที่ว่างอีกครึ่งจอ */
+.cs-intro {
+  margin-bottom: var(--space-8);
+}
+
+.cs-intro__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary-text);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cs-intro__title {
+  font-size: var(--text-3xl);
+  line-height: var(--lh-3xl);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-3);
+}
+
+/* คำอธิบายเกาะท้ายหัวข้อบรรทัดเดียวแทนย่อหน้าของตัวเอง — คาตาล็อกจึงเริ่มสูงขึ้นหนึ่งย่อหน้า
+   ใช้จังหวะเดียวกับ .cs-modal__sub เพื่อให้จุดคั่นในหน้านี้อ่านเป็นภาษาเดียวกัน */
+.cs-intro__sub {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  line-height: var(--lh-lg);
+  letter-spacing: 0;
+  color: var(--color-text-muted);
+}
+
+.cs-intro__sub::before {
+  content: "\00B7";
+  font-size: 1.9em;
+  line-height: 0;
+  vertical-align: middle;
+  margin-inline: var(--space-2);
+  color: var(--color-text-subtle);
+}
+
+/* หมวดเป็น details ที่เปิดมาหุบไว้ — หัวข้อจึงต้องอ่านออกว่ากดได้และกางอยู่หรือไม่ */
+.cs-group {
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  overflow: hidden;
+}
+
+.cs-group[open] {
+  background-color: transparent;
+  border-color: transparent;
+  margin-bottom: var(--space-8);
+}
+
+.cs-group__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.cs-group__title::-webkit-details-marker { display: none; }
+
+.cs-group__title:hover { color: var(--color-text); }
+
+.cs-group__title:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  border-radius: var(--radius-xl);
+}
+
+.cs-group[open] .cs-group__title {
+  padding-inline: 0;
+  padding-block-end: var(--space-3);
+}
+
+.cs-group__name { flex: none; }
+
+.cs-group__count {
+  flex: none;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-alt);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-text-subtle);
+}
+
+/* เส้นไล่เฉดคั่นระหว่างชื่อหมวดกับลูกศร ทำให้แถวหัวข้ออ่านเป็นแถบเดียวยาวเต็มความกว้าง */
+.cs-group__title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--color-border), transparent);
+}
+
+.cs-group__chevron {
+  flex: none;
+  color: var(--color-text-subtle);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.cs-group[open] .cs-group__chevron { transform: rotate(180deg); }
+
+.cs-group[open] .cs-grid { padding-block-end: var(--space-2); }
+
+.cs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.cs-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out);
+}
+
+/* การ์ดเป็นลิงก์ทั้งใบ จึงต้องปิดเส้นใต้ของลิงก์ทั้งตอนปกติและตอนชี้
+   ไม่งั้นข้อความทั้งการ์ดขีดเส้นใต้พร้อมกันตอนเมาส์ผ่าน */
+.cs-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+
+.cs-card:hover .cs-card__title,
+.cs-card:hover .cs-card__text,
+.cs-card:hover .cs-card__tags,
+.cs-card:hover .cs-card__go { text-decoration: none; }
+
+.cs-card:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* พรีวิวเป็นของจริงขนาดจริง ใช้ markup ชุด @card ที่ตัดเฉพาะส่วนที่เป็นหัวใจของ component
+   ส่วนที่ยาวเกินกรอบถูกกลืนหายด้วย mask แทนการตัดขาดกลางบรรทัด */
+.cs-card__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  padding: var(--space-5);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+  pointer-events: none;
+  /* ตัวอย่างที่สูงเกินกรอบจะจางหายเท่ากันทั้งบนและล่าง เพราะของถูกจัดกึ่งกลาง
+     ถ้าจางด้านเดียวจะดูเหมือนวางเอียงขึ้นไปข้างบน */
+  mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 90%, transparent 100%);
+}
+
+.cs-card__stage-inner {
+  display: block;
+  width: 100%;
+  font-size: var(--text-sm);
+}
+
+.cs-card__tags {
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+.cs-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  flex: 1;
+}
+
+.cs-card__title {
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-lg);
+  letter-spacing: -0.01em;
+}
+
+.cs-card__text {
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+  flex: 1;
+}
+
+.cs-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.cs-card__go {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-primary-text);
+  font-weight: var(--weight-medium);
+}
+
+.cs-card:hover .cs-card__go .icon { transform: translateX(3px); }
+.cs-card__go .icon { transition: transform var(--duration-fast) var(--ease-out); }
+
+/* --------------------------------------------------------------------------
+   หน้าเนื้อหาของ component
+   -------------------------------------------------------------------------- */
+
+.cs-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-md);
+  padding-inline: var(--space-3);
+  margin-bottom: var(--space-5);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.cs-back:hover {
+  color: var(--color-primary-text);
+  border-color: var(--color-primary);
+  text-decoration: none;
+}
+
+.cs-detail__head {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cs-detail__title {
+  font-size: var(--text-3xl);
+  line-height: var(--lh-3xl);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-2);
+}
+
+.cs-detail__summary {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-md);
+  line-height: var(--lh-lg);
+  max-width: 68ch;
+}
+
+.cs-usage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.cs-usage .card {
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.cs-bullets {
+  margin: 0;
+  padding-inline-start: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+}
+
+.cs-section { margin-bottom: var(--space-8); }
+
+.cs-section__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.cs-section__title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--color-border), transparent);
+}
+
+.cs-section__hint {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+  max-width: 76ch;
+}
+
+/* กล่องพรีวิวคือที่เดียวที่ palette ของผู้ใช้มีผล จึงต้องเห็นชัดว่าเป็นคนละพื้นที่กับเครื่องมือ */
+.cs-stage,
+.cs-variants {
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+  overflow-x: auto;
+}
+
+/* ตารางตะแกรงจาง ๆ ทำให้เห็นว่าเป็นพื้นที่ทดลอง ไม่ใช่ส่วนหนึ่งของหน้าเว็บ
+   แต่ต้องจางมากพอที่จะไม่แย่งสายตาจากตัว component */
+.cs-stage,
+.cs-variants { background-blend-mode: normal; }
+
+.cs-stage > *,
+.cs-variant > * { position: relative; }
+
+.cs-variants {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.cs-variant {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.cs-variants--inline {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: var(--space-6);
+}
+
+.cs-variants--inline .cs-variant { align-items: flex-start; }
+
+.cs-variant__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+  order: -1;
+}
+
+.cs-variant__label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   ตารางสถานะ
+   -------------------------------------------------------------------------- */
+
+.cs-matrix-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.cs-matrix {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.cs-matrix th,
+.cs-matrix td {
+  padding: var(--space-4);
+  text-align: start;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cs-matrix tbody tr:last-child th,
+.cs-matrix tbody tr:last-child td { border-bottom: none; }
+
+.cs-matrix thead th {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  background-color: var(--color-surface-alt);
+}
+
+.cs-matrix tbody th {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  white-space: nowrap;
+  background-color: var(--color-surface-alt);
+}
+
+.cs-matrix__cell {
+  display: flex;
+  align-items: center;
+  min-width: 130px;
+}
+
+/* --------------------------------------------------------------------------
+   ตารางผลตรวจ
+   -------------------------------------------------------------------------- */
+
+.cs-audit__swatch {
+  display: flex;
+  gap: 3px;
+}
+
+.cs-audit__swatch span {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+}
+
+.cs-audit__ratio {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   กล่องโค้ด
+   -------------------------------------------------------------------------- */
+
+.cs-codemode {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  margin-bottom: var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-alt);
+}
+
+.cs-codemode__btn {
+  height: var(--control-h-md);
+  padding-inline: var(--space-4);
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.cs-codemode__btn.is-active {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-xs);
+}
+
+.cs-code {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+  overflow: hidden;
+}
+
+.cs-code__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface-alt);
+}
+
+.cs-code__tabs {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+}
+
+.cs-code__tab {
+  height: var(--control-h-sm);
+  padding-inline: var(--space-4);
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  cursor: pointer;
+}
+
+.cs-code__tab.is-active {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary-text);
+  font-weight: var(--weight-semibold);
+}
+
+.cs-code__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-inline-start: auto;
+}
+
+.cs-code__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-md);
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.cs-code__copy:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary-text);
+}
+
+.cs-code__copy--primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.cs-code__copy--primary:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  color: var(--color-on-primary);
+}
+
+.cs-code__copy.is-done {
+  border-color: var(--color-success);
+  color: var(--color-success-text);
+  background-color: var(--color-success-soft);
+}
+
+.cs-code__body {
+  margin: 0;
+  padding: var(--space-5);
+  max-height: 480px;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--lh-base);
+  color: var(--color-text);
+  white-space: pre;
+  tab-size: 2;
+}
+
+.cs-code__body:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.cs-code__status {
+  margin: 0;
+  padding: 0 var(--space-5) var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-success-text);
+  min-height: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   จอแคบ
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1080px) {
+  .cs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .cs-page { padding: var(--space-4); }
+  .cs-grid,
+  .cs-usage { grid-template-columns: minmax(0, 1fr); }
+  .cs-bar { position: static; }
+  .cs-intro__title,
+  .cs-detail__title { font-size: var(--text-2xl); line-height: var(--lh-2xl); }
+}

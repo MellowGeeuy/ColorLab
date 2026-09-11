@@ -1,0 +1,642 @@
+/* ==========================================================================
+   app-shell.css — เปลือกที่ใช้ร่วมกันทั้งโหมด Theory และ Workspace
+   top bar + ตัวสลับโหมด + โครง grid ระดับหน้า
+   ทุกความสูง/ความกว้างในไฟล์นี้มาจาก token ที่หาร 4px ลงตัว เพื่อให้ขอบทุก panel
+   ตกบนเส้นเดียวกันโดยไม่ต้องเล็งด้วยตา
+   ========================================================================== */
+
+.app {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: var(--topbar-h) minmax(0, 1fr);
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Top bar
+   -------------------------------------------------------------------------- */
+/* คอลัมน์กลางเป็น auto ขนาบด้วย 1fr ที่เท่ากันสองข้าง — Colorground จึงตกกลางแถบจริง
+   ไม่ว่าเมนูซ้ายกับขวาจะยาวไม่เท่ากันแค่ไหน (ถ้าใช้ flex + margin auto ตำแหน่งกลาง
+   จะเลื่อนตามความยาวของสองฝั่ง) */
+.topbar {
+  display: grid;
+  /* เมนูทั้งชุดอยู่ต่อกันทางซ้าย ปุ่มควบคุมกับ Colorground อยู่ทางขวา
+     เดิมเป็นสามคอลัมน์เพราะ Colorground เคยเป็นโดมกลางแถบ */
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding-inline: var(--space-4);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  /* โดม Colorground ล้นพ้นขอบล่างของแถบลงไปทับเนื้อหา — แถบจึงต้องมี stacking context
+     ของตัวเองที่อยู่เหนือพื้นที่ทำงาน แต่ยังต่ำกว่า command palette (z-index 60) */
+  position: relative;
+  z-index: 20;
+}
+
+.topbar__side {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.topbar__side--end { justify-content: flex-end; }
+
+/* --------------------------------------------------------------------------
+   แถบบนของ Colorground — อยู่ในโหมดทำงานแล้ว จึงไม่มีปุ่มโดมกลางแถบ
+   เหลือชื่อโหมดทางซ้ายกับทางกลับไปส่วนอื่นที่เป็นจุดสีเหมือนสารบัญหน้า Color Theory
+   -------------------------------------------------------------------------- */
+.topbar--ground { grid-template-columns: minmax(0, 1fr) auto; }
+
+.groundnav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.groundnav__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-md);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+/* ไอคอนชุดเดียวกับเมนูหน้าอื่น แต่ระบายสีประจำหมวด — ความสว่างตรึงที่ 42% ทุกอัน
+   ทุกสีจึงหนักเท่ากัน ไม่มีอันไหนเด่นกว่าเพื่อนเพราะเนื้อสีบังเอิญสว่างกว่า */
+.groundnav__icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: none;
+  color: hsl(var(--dot-h, 225) 55% 42%);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.groundnav__item:hover {
+  background-color: hsl(var(--dot-h, 225) 60% 42% / 0.1);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.groundnav__item:hover .groundnav__icon { transform: scale(1.12); }
+
+.groundnav__item:focus-visible {
+  outline: 2px solid hsl(var(--dot-h, 225) 55% 42%);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1180px) {
+  .groundnav__item { padding-inline: var(--space-2); font-size: var(--text-xs); }
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: inherit;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.topbar__logo {
+  width: var(--control-h-md);
+  height: var(--control-h-md);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #6366f1, #06b6d4 45%, #f59e0b);
+  flex-shrink: 0;
+}
+
+.topbar__name {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-base);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.topbar__brand,
+.topnav { min-width: 0; }
+
+/* สถานะการบันทึก — ข้อความสั้นที่เปลี่ยนบ่อย ตรึงความกว้างขั้นต่ำไว้
+   ไม่งั้นปุ่มข้าง ๆ จะขยับไปมาทุกครั้งที่ข้อความเปลี่ยน */
+.topbar__status {
+  min-width: 8.5rem;
+  text-align: end;
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   Top nav — 5 พื้นที่ของระบบ
+   ทั้งห้าเป็นคนละพื้นที่ทำงาน (คนละ URL) ไม่ใช่มุมมองของข้อมูลชุดเดียวกัน
+   จึงเป็นลิงก์จริง ไม่ใช่ tab หรือ toggle
+   -------------------------------------------------------------------------- */
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.topnav__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-md);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out);
+}
+
+.topnav__item:hover {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.topnav__item[aria-current="page"] {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+/* Colorground คือปลายทางที่ผู้ใช้กลับมาบ่อยที่สุด และเป็นที่เดียวที่ "ทำ" ไม่ใช่ "อ่าน"
+   จึงเป็นปุ่มพื้นทึบสีแบรนด์กลางแถบ — หาเจอด้วยสีและตำแหน่ง ไม่ต้องไล่อ่านทีละคำ */
+.topnav--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* เดิมเป็นโดมที่ยื่นพ้นขอบแถบลงมาทับเนื้อหา — เปลี่ยนเป็นปุ่มที่อยู่ในแถบตามที่ G สั่ง
+   ยังเด่นด้วยสีแบรนด์เต็มพื้นและเข็มกวาดตอนชี้ แต่ไม่บังของที่อยู่ใต้แถบอีก */
+.topnav__item--hero {
+  position: relative;
+  height: 2.25rem;
+  padding-inline: var(--space-5);
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  /* หน่วงสีตัวอักษรไว้จนเข็มกวาดผ่านครึ่งวง — พื้นหลังใต้ตัวอักษรจะเป็นสีเหลืองพอ
+     ให้ตัวอักษรสีเข้มอ่านออกแล้ว ถ้าสลับเร็วกว่านี้จะเห็นตัวอักษรเข้มบนพื้นน้ำเงิน */
+  transition: color var(--duration-base) var(--ease-out) 260ms;
+}
+
+/* ไอคอนกับข้อความต้องลอยเหนือแผ่นสีที่วิ่งผ่านด้านหลัง */
+.topnav__item--hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* มุมกวาดของเข็ม — ต้องลงทะเบียนเป็น <angle> ด้วย @property ไม่งั้นเบราว์เซอร์
+   มองค่านี้เป็นข้อความธรรมดาแล้ว transition จะกระโดดจาก 0 ไป 360 ทันทีโดยไม่ไล่มุม */
+@property --sweep {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* สี accent กวาดรอบโดมตามเข็มนาฬิกาตอนชี้ — เริ่มที่ 12 นาฬิกาแล้ววนกลับมาจุดเดิม
+   จุดหมุนคือกึ่งกลางโดม ทำให้ขอบสีที่กวาดผ่านเป็นแนวรัศมีเหมือนเข็มจริง */
+.topnav__item--hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  --sweep: 0deg;
+  background: conic-gradient(from 0deg at 50% 50%,
+              var(--color-accent) var(--sweep), transparent var(--sweep));
+  transition: --sweep var(--duration-sweep) linear;
+}
+
+/* ต้องย้ำ background เอง เพราะ .topnav__item:hover (พื้นเทาของเมนูธรรมดา) มี specificity
+   สูงกว่า .topnav__item--hero — ถ้าไม่ย้ำ พื้นน้ำเงินจะหายตั้งแต่เมาส์แตะ ก่อนเข็มกวาดมาถึง */
+.topnav__item--hero:hover,
+.topnav__item--hero:focus-visible {
+  background-color: var(--color-primary);
+  color: var(--color-on-accent);
+}
+
+.topnav__item--hero:hover::before,
+.topnav__item--hero:focus-visible::before { --sweep: 360deg; }
+
+.topnav__item--hero[aria-current="page"] {
+  background-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topnav__item--hero::before { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Dock — แถบบนยุบเป็นวงกลมมุมขวาบนเมื่อเลื่อนลง
+
+   ปุ่ม Colorground ในแถบอยู่มุมขวาบนอยู่แล้ว วงกลมจึงจอดที่เดิมกับปุ่มนั้น
+   แล้วเปลี่ยนสภาพด้วยการย่อ-ขยายกับความจาง แทนการวิ่งข้ามจอมาจากกลางแถบแบบเดิม
+   ตาจึงอ่านว่าเป็นปุ่มตัวเดียวกันที่หดตัวลง ไม่ใช่ปุ่มใหม่ที่วิ่งเข้ามา
+   -------------------------------------------------------------------------- */
+.dock {
+  position: fixed;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-6);
+  width: 3.25rem;
+  height: 3.25rem;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  /* จุดตั้งต้นซ้อนอยู่ใต้ปุ่มจริงในแถบ ขยายกว้างกว่านิดหน่อยและเยื้องขึ้น
+     พอแถบยุบ วงกลมจึงดูเหมือนปุ่มเดิมที่ค่อย ๆ หดลงมาเข้าที่ */
+  transform: translateY(-6px) scale(1.08);
+  transition: transform var(--duration-base) var(--ease-out),
+              opacity var(--duration-base) var(--ease-out),
+              visibility var(--duration-base) var(--ease-out);
+}
+
+.dock__hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  overflow: hidden;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.dock__hero .icon { position: relative; z-index: 1; width: 1.25rem; height: 1.25rem; }
+
+/* สีกวาดตามเข็มชุดเดียวกับโดมในแถบบน — ปุ่มเปลี่ยนรูปแต่ยังเป็นของชิ้นเดิม */
+.dock__hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  --sweep: 0deg;
+  background: conic-gradient(from 0deg at 50% 50%,
+              var(--color-accent) var(--sweep), transparent var(--sweep));
+  transition: transform var(--duration-sweep) linear, --sweep var(--duration-sweep) linear;
+}
+
+/* เปิดได้สองทาง: state จาก JS (ครอบคลุมตอนเมาส์อยู่บนเมนูในวงโคจร ซึ่ง .dock เองไม่รับ pointer)
+   และ :has(:hover) ตรง ๆ เผื่อกรณีที่ pointer event ไม่ถูกยิงแต่ hover state ถูกตั้ง */
+.dock.is-open .dock__hero,
+.dock:has(.dock__hero:hover) .dock__hero { transform: scale(1.06); color: var(--color-on-accent); }
+
+.dock.is-open .dock__hero::before,
+.dock:has(.dock__hero:hover) .dock__hero::before { --sweep: 360deg; }
+
+/* เมนูไหลลงมาเป็นแถวตั้งใต้วงกลม — วงกลมอยู่ชิดขอบขวาแล้ว การกางเป็นวงจึงเลยขอบจอ */
+.orbit {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-2));
+  inset-inline-start: 0;
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+  justify-items: center;
+}
+
+.orbit__item {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--control-h-lg);
+  height: var(--control-h-lg);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-0.75rem) scale(0.4);
+  transition: transform var(--duration-slow) var(--ease-out),
+              opacity var(--duration-base) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+/* ไล่ทีละตัวจากบนลงล่าง ให้อ่านเป็นลำดับเหมือนของไหลลงมาจากวงกลม */
+.orbit__item:nth-child(1) { transition-delay: 0ms, 0ms, 0ms; }
+.orbit__item:nth-child(2) { transition-delay: 50ms, 50ms, 0ms; }
+.orbit__item:nth-child(3) { transition-delay: 100ms, 100ms, 0ms; }
+.orbit__item:nth-child(4) { transition-delay: 150ms, 150ms, 0ms; }
+
+.dock.is-open .orbit__item,
+.dock:has(.dock__hero:hover) .orbit__item,
+.dock:has(.orbit__item:hover) .orbit__item {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.orbit__item:hover,
+.orbit__item:focus-visible { color: var(--color-primary); border-color: var(--color-primary); }
+
+.orbit__item[aria-current="page"] {
+  border-color: var(--color-primary);
+  color: var(--color-primary-text);
+  background-color: var(--color-primary-soft);
+}
+
+/* ชื่อเมนูอยู่ทางซ้ายของปุ่ม เพราะปุ่มชิดขอบขวาจอแล้ว ป้ายทางขวาจะตกนอกจอ
+   โผล่เฉพาะตอนชี้ทีละปุ่ม — ถ้าโชว์พร้อมกันทั้งสี่จะกลายเป็นกำแพงข้อความบังเนื้อหา */
+.orbit__tip {
+  position: absolute;
+  inset-inline-end: calc(100% + var(--space-2));
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-text);
+  color: var(--color-surface);
+  font-size: 0.625rem;
+  line-height: var(--lh-xs);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.orbit__item:hover .orbit__tip,
+.orbit__item:focus-visible .orbit__tip { opacity: 1; }
+
+/* สถานะยุบ — แถบบนคืนความสูงทั้งหมดให้เนื้อหา */
+body.is-nav-docked .app { --topbar-h: 0rem; }
+
+body.is-nav-docked .topbar {
+  height: 0;
+  padding-block: 0;
+  border-block-end-color: transparent;
+  background-color: transparent;
+  pointer-events: none;
+}
+
+body.is-nav-docked .topbar > * { opacity: 0; visibility: hidden; }
+
+/* เข้าที่แล้ว: หยุดที่ตำแหน่งเดียวกับที่ปุ่มในแถบเคยอยู่ ขนาดจริง ไม่เยื้อง */
+body.is-nav-docked .dock {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.app { transition: grid-template-rows var(--duration-base) var(--ease-out); }
+
+.topbar > * { transition: opacity var(--duration-base) var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  .app,
+  .dock,
+  .dock__hero,
+  .dock__hero::before,
+  .orbit__item { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Placeholder — พื้นที่ที่เมนูพาไปถึงแล้วแต่ยังไม่มีเนื้อหา
+   ให้เห็นชัดว่าหน้ายังว่าง ไม่ใช่โหลดไม่ขึ้น และบอกว่าระหว่างนี้ไปทำอะไรต่อได้
+   -------------------------------------------------------------------------- */
+.placeholder {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  overflow-y: auto;
+  text-align: center;
+}
+
+.placeholder__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-2xl);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.placeholder__text {
+  max-width: 48ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: var(--lh-base);
+}
+
+/* --------------------------------------------------------------------------
+   Command palette (⌘K)
+   -------------------------------------------------------------------------- */
+.cmdk-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-sm);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  cursor: pointer;
+}
+
+.cmdk-trigger:hover { background-color: var(--color-surface-alt); color: var(--color-text); }
+
+.kbd {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  padding: 2px var(--space-1);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+}
+
+.cmdk {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: start center;
+  padding-top: 12vh;
+  background-color: rgb(2 6 23 / 0.45);
+}
+
+.cmdk[hidden] { display: none; }
+
+.cmdk__panel {
+  width: min(36rem, calc(100vw - var(--space-8)));
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.cmdk__input {
+  width: 100%;
+  height: var(--control-h-lg);
+  padding-inline: var(--space-4);
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-md);
+}
+
+.cmdk__input:focus { outline: none; }
+
+.cmdk__list {
+  max-height: 22rem;
+  overflow-y: auto;
+  padding: var(--space-2);
+  margin: 0;
+  list-style: none;
+}
+
+.cmdk__item {
+  display: grid;
+  grid-template-columns: var(--control-h-md) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  height: var(--control-h-lg);
+  padding-inline: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: start;
+  cursor: pointer;
+  margin: 0;
+}
+
+.cmdk__item:hover,
+.cmdk__item.is-active { background-color: var(--color-surface-alt); }
+
+.cmdk__item-icon {
+  display: grid;
+  place-items: center;
+  color: var(--color-text-muted);
+}
+
+.cmdk__item-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+.cmdk__empty {
+  padding: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Utility ที่เกี่ยวกับ alignment โดยตรง
+   -------------------------------------------------------------------------- */
+
+/* ตัวเลขที่ต้องอ่านเทียบกันเป็นคอลัมน์ (contrast ratio, %, HEX)
+   IBM Plex Sans Thai ไม่มี glyph ชุด tnum ให้เรียก แต่ digit กว้างเท่ากันอยู่แล้ว
+   ประกาศไว้เพื่อกันกรณีตกไปใช้ fallback font ที่ digit กว้างไม่เท่ากัน */
+.u-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ตัวเลขในตาราง/รายการต้องชิดขวาเสมอ หลักหน่วยจึงจะตรงกันทุกแถว
+   ระบุ td/th ด้วยเพราะ .table td มี specificity สูงกว่า utility class เปล่า ๆ
+   (ทางเลือกอื่นคือ !important ซึ่งกฎของโปรเจกต์ห้ามไว้) */
+.u-num-end,
+td.u-num-end,
+th.u-num-end { text-align: end; }
+
+/* ไอคอนที่มวลไม่สมมาตร (ลูกศร สามเหลี่ยม) ดูเหมือนเยื้องแม้จะจัดกึ่งกลางถูกต้องแล้ว
+   ชดเชยด้วยตา 4% ของความกว้างไอคอน ตามช่วง 3-6% ที่ใช้กันทั่วไป */
+.u-optical-x { transform: translateX(0.04em); }
+
+/* --------------------------------------------------------------------------
+   Responsive ของ shell
+   จอแคบพื้นที่แนวนอนไม่พอให้ทุกอย่างมีข้อความกำกับ — ลดรูปตามลำดับความสำคัญ
+   โดยที่ทุกปุ่มยังกดได้ครบ ไม่มีอะไรถูกตัดหาย
+   -------------------------------------------------------------------------- */
+/* ลำดับการยุบ: ของที่อธิบายตัวเองได้ด้วยไอคอนหายก่อน ชื่อเมนูหายทีหลัง
+   เพราะเมนูคือสิ่งที่ผู้ใช้ต้องอ่านเพื่อรู้ว่าระบบมีอะไรบ้าง
+   ตัวเลขเริ่มที่ 1500 เพราะฝั่งขวาของหน้า Colorground มีทั้งสถานะบันทึกและ ⌘K
+   ต่อท้ายเมนู — ถ้ารอถึง breakpoint มาตรฐานจะล้นทับกันก่อน */
+@media (max-width: 1500px) {
+  .cmdk-trigger__label { display: none; }
+  .cmdk-trigger { padding-inline: var(--space-2); }
+}
+
+@media (max-width: 1300px) {
+  .topbar__status { display: none; }
+}
+
+/* เมนูสี่ตัวรอบข้างเหลือไอคอน — ชื่อยังอ่านได้จาก tooltip และ accessible name
+   ที่ผูกไว้กับตัวลิงก์ ส่วน Colorground คงคำไว้เพราะเป็นจุดอ้างอิงกลางแถบ */
+@media (max-width: 1080px) {
+  .topbar__side { gap: var(--space-3); }
+  .topnav__item { padding-inline: var(--space-2); }
+  .topnav__item .topnav__label { display: none; }
+  .topnav__item--hero .topnav__label { display: inline; }
+}
+
+@media (max-width: 860px) {
+  .topbar {
+    gap: var(--space-2);
+    padding-inline: var(--space-3);
+  }
+
+  .cmdk-trigger .kbd { display: none; }
+}
+
+@media (max-width: 560px) {
+  /* เหลือแค่โลโก้ — ชื่อแบรนด์กินที่มากที่สุดและเป็นสิ่งที่ผู้ใช้ต้องการน้อยที่สุดตอนทำงาน */
+  .topbar__name { display: none; }
+
+  /* ที่ความกว้างนี้ Colorground เหลือไอคอน โดมจึงหดเป็นครึ่งวงกลมพอดีตัว —
+     รูปทรงกับตำแหน่งกลางแถบยังบอกว่ามันคือปุ่มหลัก แม้ไม่มีคำกำกับ */
+  .topbar__side { gap: var(--space-2); }
+  .topnav__item--hero { width: 5.5rem; padding-inline: var(--space-2); }
+  .topnav__item--hero .topnav__label { display: none; }
+}

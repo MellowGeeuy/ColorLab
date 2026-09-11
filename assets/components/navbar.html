@@ -1,0 +1,119 @@
+<!-- @card -->
+<div class="ui-navbar">
+  <div class="ui-navbar__brand">
+    <span class="ui-navbar__mark" aria-hidden="true"></span>
+    <span class="ui-navbar__name">Northwind</span>
+  </div>
+  <nav class="ui-navbar__menu">
+    <a class="ui-navbar__link" href="#" aria-current="page" data-part="p1">หน้าแรก</a>
+    <a class="ui-navbar__link" href="#" data-part="p2">สินค้า</a>
+    <a class="ui-navbar__link" href="#" data-part="p3">ราคา</a>
+  </nav>
+  <div class="ui-navbar__end">
+    <button type="button" class="ui-btn ui-btn--sm" data-part="p4">เริ่มใช้งาน</button>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<header class="ui-navbar">
+  <a class="ui-navbar__brand" href="#">
+    <span class="ui-navbar__mark" aria-hidden="true"></span>
+    <span class="ui-navbar__name">Northwind</span>
+  </a>
+
+  <nav class="ui-navbar__menu" aria-label="เมนูหลัก">
+    <a class="ui-navbar__link" href="#" aria-current="page" data-part="p1">ภาพรวม</a>
+    <a class="ui-navbar__link" href="#" data-part="p2">รายการ</a>
+    <a class="ui-navbar__link" href="#" data-part="p3">รายชื่อ</a>
+    <a class="ui-navbar__link" href="#" data-part="p4">รายงาน</a>
+  </nav>
+
+  <div class="ui-navbar__end">
+    <button type="button" class="ui-iconbtn" aria-label="การแจ้งเตือน 3 รายการ">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6M13.7 20a2 2 0 0 1-3.4 0"/>
+      </svg>
+      <span class="ui-iconbtn__dot" aria-hidden="true"></span>
+    </button>
+
+    <button type="button" class="ui-btn ui-btn--sm" data-part="p5">สร้างรายการ</button>
+
+    <button type="button" class="ui-navbar__user" aria-label="บัญชีของ ปวีณา ส.">
+      <span class="ui-avatar" data-tone="1" aria-hidden="true">ปส</span>
+    </button>
+  </div>
+</header>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="เว็บทั่วไป — เมนูซ้าย ปุ่มหลักขวา">
+  <div class="ui-navbar">
+    <span class="ui-navbar__brand">
+      <span class="ui-navbar__mark" aria-hidden="true"></span>
+      <span class="ui-navbar__name">Northwind</span>
+    </span>
+    <nav class="ui-navbar__menu" aria-label="เมนูตัวอย่าง 1">
+      <a class="ui-navbar__link" href="#" aria-current="page" data-part="p1">หน้าแรก</a>
+      <a class="ui-navbar__link" href="#" data-part="p2">คุณสมบัติ</a>
+      <a class="ui-navbar__link" href="#" data-part="p3">ราคา</a>
+    </nav>
+    <div class="ui-navbar__end">
+      <button type="button" class="ui-btn ui-btn--ghost ui-btn--sm" data-part="p4">เข้าสู่ระบบ</button>
+      <button type="button" class="ui-btn ui-btn--sm" data-part="p5">ทดลองฟรี</button>
+    </div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="เมนูกลาง — ใช้เมื่อเมนูน้อยและอยากให้แบรนด์เด่น">
+  <div class="ui-navbar ui-navbar--center">
+    <span class="ui-navbar__brand">
+      <span class="ui-navbar__mark" aria-hidden="true"></span>
+      <span class="ui-navbar__name">Northwind</span>
+    </span>
+    <nav class="ui-navbar__menu" aria-label="เมนูตัวอย่าง 2">
+      <a class="ui-navbar__link" href="#" aria-current="page" data-part="p6">ผลงาน</a>
+      <a class="ui-navbar__link" href="#" data-part="p7">บริการ</a>
+      <a class="ui-navbar__link" href="#" data-part="p8">ติดต่อ</a>
+    </nav>
+    <div class="ui-navbar__end">
+      <button type="button" class="ui-btn ui-btn--sm" data-part="p9">ขอใบเสนอราคา</button>
+    </div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="แอปหลังบ้าน — ปุ่มเปิดเมนูข้าง ไม่มีเมนูกลาง">
+  <div class="ui-navbar ui-navbar--app">
+    <div class="ui-navbar__brand">
+      <button type="button" class="ui-iconbtn" aria-label="เปิดเมนูข้าง">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <span class="ui-navbar__name">แผงควบคุม</span>
+    </div>
+    <div class="ui-navbar__end">
+      <button type="button" class="ui-iconbtn" aria-label="การแจ้งเตือน">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6M13.7 20a2 2 0 0 1-3.4 0"/>
+        </svg>
+      </button>
+      <span class="ui-avatar" data-tone="2" aria-hidden="true">ปส</span>
+    </div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="แบบทึบ — ใช้เมื่อวางทับภาพหรือ hero">
+  <div class="ui-navbar ui-navbar--solid">
+    <span class="ui-navbar__brand">
+      <span class="ui-navbar__mark" aria-hidden="true"></span>
+      <span class="ui-navbar__name">Northwind</span>
+    </span>
+    <nav class="ui-navbar__menu" aria-label="เมนูตัวอย่าง 3">
+      <a class="ui-navbar__link" href="#" aria-current="page" data-part="p10">หน้าแรก</a>
+      <a class="ui-navbar__link" href="#" data-part="p11">เกี่ยวกับเรา</a>
+    </nav>
+    <div class="ui-navbar__end">
+      <button type="button" class="ui-btn ui-btn--sm ui-btn--onsolid" data-part="p12">ติดต่อฝ่ายขาย</button>
+    </div>
+  </div>
+</div>
+<!-- @end -->

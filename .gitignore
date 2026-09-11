@@ -1,0 +1,18 @@
+# ไฟล์ทำงานภายใน ไม่เผยแพร่บน repo สาธารณะ
+.claude/
+docs/
+Updates/
+CLAUDE.md
+GRules.md
+
+# ไฟล์สำรองระหว่างพัฒนา
+*.bak
+*.bak-*
+*.bak2
+
+# ระบบปฏิบัติการและ editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
