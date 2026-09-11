@@ -91,7 +91,7 @@ async function init() {
         keywords: 'theory ทฤษฎี อ่าน เนื้อหา mode',
         icon: '#i-book',
         hint: 'เปลี่ยนโหมด',
-        run: () => { window.location.href = 'index.html'; },
+        run: () => { window.location.href = '../'; },
       },
       {
         label: 'สลับธีมสว่าง / มืดของหน้าเว็บ',

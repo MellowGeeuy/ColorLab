@@ -6,8 +6,9 @@
  * ทั้งสองไฟล์ถูก fetch มาแสดงเป็นทั้งพรีวิวและโค้ด จึงไม่มีทางไม่ตรงกัน
  */
 
-const MARKUP_DIR = 'assets/components';
-const CATALOG_CSS = 'assets/css/component-catalog.css';
+// ผูกกับตำแหน่งของไฟล์นี้ ไม่ใช่ตำแหน่งของหน้า — แต่ละหน้าอยู่คนละชั้นโฟลเดอร์กัน
+const MARKUP_DIR = new URL('../../components', import.meta.url);
+const CATALOG_CSS = new URL('../../css/component-catalog.css', import.meta.url);
 
 export const GROUPS = [
   { id: 'nav', label: 'นำทาง' },

@@ -170,15 +170,17 @@ const SECTIONS = [
 
 // เปิดมาที่หัวข้อของหน้าที่ยืนอยู่ — คนกดคู่มือส่วนใหญ่สงสัยหน้าตรงหน้า ไม่ใช่หน้าอื่น
 const PAGE_SECTION = {
-  'index.html': 'theory',
-  'component-style.html': 'component',
-  'layout.html': 'layout',
-  'workspace.html': 'ground',
+  'component-style': 'component',
+  layout: 'layout',
+  workspace: 'ground',
 };
 
+// แต่ละหน้าเป็นโฟลเดอร์ของตัวเอง ชื่อโฟลเดอร์สุดท้ายจึงเป็นตัวบอกว่ายืนอยู่หน้าไหน
+// หน้าแรกอยู่ที่รากจึงไม่มีชื่อโฟลเดอร์ของตัวเอง ตกมาที่ theory
 function currentSection() {
-  const file = window.location.pathname.split('/').pop() || 'index.html';
-  return PAGE_SECTION[file] ?? 'start';
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  const last = parts[parts.length - 1]?.replace(/\.html$/, '');
+  return PAGE_SECTION[last] ?? 'theory';
 }
 
 function renderBlock(block) {
