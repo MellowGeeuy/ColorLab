@@ -431,24 +431,36 @@ export function createLayoutCanvas(options) {
     }
   }, { passive: false });
 
-  /* --- รับของที่ลากมาจากคลัง --- */
+  /* --- รับของที่ลากมาจากคลัง ---
+     เดิมใช้ dragover/drop ของ HTML5 DnD ซึ่งไม่ยิง event บนจอสัมผัสเลย
+     เปลี่ยนเป็นให้ฝั่งที่ลาก (pages/layout.js) เรียกสามเมธอดนี้จาก pointermove/pointerup แทน
+     ตรรกะการแปลงพิกัดเป็นช่องกริดยังเป็น cellAt ตัวเดิม ไม่ได้ทำซ้ำ */
 
-  root.addEventListener('dragover', (event) => {
-    event.preventDefault();
-    root.classList.add('is-dropping');
-  });
-
-  root.addEventListener('dragleave', () => root.classList.remove('is-dropping'));
-
-  root.addEventListener('drop', (event) => {
-    event.preventDefault();
-    root.classList.remove('is-dropping');
-    const slug = event.dataTransfer.getData('text/plain');
-    if (!slug) return;
-    options.onDrop(slug, cellAt(event.clientX, event.clientY));
-  });
+  /** จุดนี้อยู่เหนือแคนวาสไหม — ใช้ทั้งไฮไลต์และตัดสินว่าปล่อยแล้วนับหรือไม่ */
+  const pointInCanvas = (clientX, clientY) => {
+    const rect = root.getBoundingClientRect();
+    return clientX >= rect.left && clientX <= rect.right
+        && clientY >= rect.top && clientY <= rect.bottom;
+  };
 
   return {
+    /** ไฮไลต์แคนวาสระหว่างลาก — คืนค่าว่าอยู่เหนือแคนวาสไหม ให้ตัวลากไปเปลี่ยนหน้าตาเคอร์เซอร์ */
+    dropPreview(clientX, clientY) {
+      const over = pointInCanvas(clientX, clientY);
+      root.classList.toggle('is-dropping', over);
+      return over;
+    },
+
+    /** เลิกไฮไลต์ ไม่ว่าจะปล่อยหรือยกเลิก */
+    endDropPreview() {
+      root.classList.remove('is-dropping');
+    },
+
+    /** ช่องกริดที่ตรงกับพิกัดนี้ — null ถ้าอยู่นอกแคนวาส */
+    dropCellAt(clientX, clientY) {
+      return pointInCanvas(clientX, clientY) ? cellAt(clientX, clientY) : null;
+    },
+
     render,
     select,
     selectMany,

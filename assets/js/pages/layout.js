@@ -38,6 +38,7 @@ import {
 import {
   buildLayoutCss, buildLayoutHtml, buildLayoutJs, buildLayoutBundle, summarizeLayout, flowLinks,
 } from '../utils/layout-export.js';
+import { makeDraggable, createDragGhost } from '../utils/pointer-drag.js';
 
 const store = createPaletteStore();
 const history = createHistory(readLayout() ?? createLayout());
@@ -131,21 +132,20 @@ async function renderPalette() {
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'lay-lib__item';
-      chip.draggable = true;
       chip.dataset.slug = meta.slug;
+      chip.dataset.name = meta.name;
       chip.innerHTML = `
         ${icon('i-grid', 'icon lay-lib__icon')}
         <span class="lay-lib__name">${meta.name}</span>
         <span class="lay-lib__add">${icon('i-plus')}</span>
       `;
 
-      chip.addEventListener('dragstart', (event) => {
-        event.dataTransfer.setData('text/plain', meta.slug);
-        event.dataTransfer.effectAllowed = 'copy';
+      // กดก็วางได้ ไม่ต้องลากอย่างเดียว — ผู้ใช้คีย์บอร์ดต้องใช้ได้ด้วย
+      // การลากเพื่อเลือกตำแหน่งผูกไว้ที่ตัวแผงครั้งเดียวใน initLibraryDrag()
+      chip.addEventListener('click', () => {
+        if (suppressChipClick) return;
+        place(meta.slug);
       });
-
-      // กดก็วางได้ ไม่ต้องลากอย่างเดียว — ผู้ใช้คีย์บอร์ดกับทัชสกรีนต้องใช้ได้ด้วย
-      chip.addEventListener('click', () => place(meta.slug));
 
       list.appendChild(chip);
     });
@@ -328,6 +328,60 @@ function commit(next, addToHistory = true) {
  * กดของจากคลังแล้วจะไปลงตรงนั้น ไม่ใช่ไหลไปต่อท้ายผังเสมอ
  */
 let dropPoint = null;
+
+/* กัน click ที่เบราว์เซอร์ยิงตามหลัง pointerup ของการลาก ไม่งั้นจะวางสองครั้ง */
+let suppressChipClick = false;
+
+/**
+ * ลากของจากคลังมาวางบนแคนวาส
+ *
+ * เดิมใช้ HTML5 DnD ซึ่งไม่ยิง event บนจอสัมผัส การลากจึงใช้ไม่ได้บนมือถือทั้งหมด
+ * เหลือแค่การกดที่วางต่อท้ายผังโดยเลือกตำแหน่งไม่ได้
+ * ผูกที่ตัวแผงครั้งเดียวด้วย event delegation — คลังวาดใหม่ทุกครั้งที่เปลี่ยนชุดสี
+ * ถ้าผูกรายชิ้นจะต้องผูกใหม่ทุกรอบและหลุดง่าย
+ */
+function initLibraryDrag() {
+  let ghost = null;
+  let slug = null;
+  let over = false;
+
+  makeDraggable(el.palette, {
+    handle: (event) => event.target.closest('.lay-lib__item'),
+
+    onStart: ({ target }) => {
+      slug = target.dataset.slug;
+      if (!slug) return false;
+      /* DnD เคยวาดภาพตามนิ้วให้เอง พอเลิกใช้ก็ต้องวาดเอง ไม่งั้นไม่รู้ว่ากำลังถืออะไร */
+      ghost = createDragGhost(target.dataset.name ?? slug);
+      document.body.classList.add('is-lib-dragging');
+    },
+
+    onMove: ({ x, y }) => {
+      ghost?.moveTo(x, y);
+      over = canvas.dropPreview(x, y);
+      ghost?.setState(over);
+    },
+
+    onEnd: ({ x, y, cancelled }) => {
+      ghost?.destroy();
+      ghost = null;
+      canvas.endDropPreview();
+
+      if (!cancelled && slug) {
+        const cell = canvas.dropCellAt(x, y);
+        /* ปล่อยนอกแคนวาส = ยกเลิก ไม่ใช่วางต่อท้าย — ผู้ใช้ตั้งใจเลือกตำแหน่งอยู่ */
+        if (cell) place(slug, cell);
+        else el.status.textContent = 'ยกเลิกการวาง — ปล่อยบนผังเพื่อวางตรงจุดที่ต้องการ';
+      }
+
+      slug = null;
+      over = false;
+      document.body.classList.remove('is-lib-dragging');
+      suppressChipClick = true;
+      setTimeout(() => { suppressChipClick = false; }, 0);
+    },
+  });
+}
 
 function place(slug, position) {
   const target = position ?? dropPoint ?? undefined;
@@ -2004,7 +2058,6 @@ async function init() {
     onLockedHit: () => {
       el.status.textContent = 'ชิ้นนี้ถูกล็อกไว้ — ปลดล็อกได้ที่แท็บเลเยอร์ หรือ Ctrl+Shift+L';
     },
-    onDrop: (slug, position) => place(slug, position),
     onCanvasPoint: (point) => {
       dropPoint = point;
       el.status.textContent = `เลือกจุดวางไว้ที่คอลัมน์ ${point.col} แถว ${point.row} — กดของจากคลังเพื่อวางตรงนี้`;
@@ -2044,6 +2097,9 @@ async function init() {
     onPlay: () => openPreviewWindow(),
     onScreenMenu: (id, x, y) => openScreenMenu(id, x, y),
   });
+
+  /* ต้องหลัง createLayoutCanvas เพราะตัวลากเรียก canvas.dropPreview / dropCellAt */
+  initLibraryDrag();
 
   layers = createLayerPanel({
     root: el.layerList,

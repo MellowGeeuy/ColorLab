@@ -2245,3 +2245,64 @@
 }
 
 .lay-flow__warn .icon { width: 15px; height: 15px; flex: none; margin-top: 1px; }
+
+/* ==========================================================================
+   ลากด้วย Pointer Events (แทน HTML5 DnD ที่ไม่ทำงานบนจอสัมผัส)
+   ตรรกะอยู่ที่ assets/js/utils/pointer-drag.js
+   ========================================================================== */
+
+/* บนทัชต้องแตะค้างก่อนถึงจะเข้าโหมดลาก ระหว่างแตะค้าง iOS จะเด้งเมนู "คัดลอก/แชร์"
+   และ Android จะเริ่มไฮไลต์ข้อความ ทั้งสองอย่างขโมยท่าทางไปจากเรา
+   ปิดทั้งคู่เฉพาะแถวที่ลากได้ ไม่แตะส่วนอื่นของหน้า
+   หมายเหตุ: ห้ามใส่ touch-action: none ตรงนี้ ไม่งั้นลิสต์จะเลื่อนดูไม่ได้เลย
+   การกันหน้าเลื่อนทำตอน "เข้าโหมดลากแล้ว" ด้วย preventDefault ใน pointer-drag.js แทน */
+.lay-layer__row,
+.lay-lib__item {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ระหว่างลาก ห้ามให้ข้อความที่อื่นถูกลากคลุมไปด้วย */
+body.is-layer-dragging,
+body.is-lib-dragging {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: grabbing;
+}
+
+/* ภาพตามนิ้ว — DnD เคยวาดให้เอง พอเลิกใช้ก็ต้องวาดเอง
+   position: fixed + translate3d ทำให้ขยับด้วย compositor ไม่ต้อง reflow ทุกเฟรม */
+.drag-ghost {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: 80;
+  /* ต้องโปร่งต่อ pointer ไม่งั้น elementFromPoint จะเจอแต่ตัวมันเอง หาแคนวาสไม่พบ */
+  pointer-events: none;
+  /* ยกออกจากปลายนิ้วเล็กน้อย ไม่ให้นิ้วบังป้ายที่กำลังถือ */
+  margin-block-start: -2.5rem;
+  margin-inline-start: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  white-space: nowrap;
+  max-width: 60vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* อยู่เหนือแคนวาสแล้ว = ปล่อยได้ — บอกด้วยสีแบรนด์ ไม่ต้องอ่านข้อความ */
+.drag-ghost.is-over {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drag-ghost { transition: none; }
+}

@@ -13,6 +13,7 @@
  */
 
 import { layerRows, layerState, groupsOf, activeScreen, readingOrderIssues } from '../utils/layout-model.js';
+import { makeDraggable } from '../utils/pointer-drag.js';
 
 const icon = (id, cls = 'icon') => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
 
@@ -32,6 +33,8 @@ export function createLayerPanel(options) {
   /** จุดยึดของการเลือกเป็นช่วงด้วย Shift — เก็บแยกจากตัวที่เลือกล่าสุดตามพฤติกรรมลิสต์ทั่วไป */
   let anchorId = null;
   let dragId = null;
+  /* กัน click ที่เบราว์เซอร์ยิงตามหลัง pointerup ของการลาก */
+  let suppressClick = false;
 
   /* --- ข้อมูลที่แถวใช้ร่วมกัน --- */
 
@@ -60,7 +63,7 @@ export function createLayerPanel(options) {
              aria-level="${level}" aria-posinset="${posinset}" aria-setsize="${setsize}"
              aria-expanded="${group.collapsed ? 'false' : 'true'}" aria-selected="${on ? 'true' : 'false'}"
              tabindex="-1">
-          <div class="lay-layer__row" draggable="true">
+          <div class="lay-layer__row">
             <button type="button" class="lay-layer__twist" data-act="twist" tabindex="-1"
                     aria-label="${group.collapsed ? 'กางกลุ่ม' : 'พับกลุ่ม'} ${escapeHtml(group.name)}">
               ${icon('i-chevron-down')}
@@ -93,7 +96,7 @@ export function createLayerPanel(options) {
            aria-level="${level}" aria-posinset="${posinset}" aria-setsize="${setsize}"
            aria-selected="${selected.includes(item.id) ? 'true' : 'false'}" tabindex="-1"
            ${state.hidden ? 'data-hidden="true"' : ''} ${state.locked ? 'data-locked="true"' : ''}>
-        <div class="lay-layer__row" draggable="true">
+        <div class="lay-layer__row">
           <span class="lay-layer__twist lay-layer__twist--leaf" aria-hidden="true"></span>
           ${icon(iconOf(item), 'icon lay-layer__kind')}
           <span class="lay-layer__name" data-act="rename">${escapeHtml(labelOf(item))}</span>
@@ -245,6 +248,7 @@ export function createLayerPanel(options) {
   /* --- คลิก --- */
 
   root.addEventListener('click', (event) => {
+    if (suppressClick) return;
     const node = event.target.closest('.lay-layer');
     if (!node) return;
 
@@ -367,47 +371,21 @@ export function createLayerPanel(options) {
   const clearDropMarks = () => root.querySelectorAll('.is-drop-before, .is-drop-after')
     .forEach((node) => node.classList.remove('is-drop-before', 'is-drop-after'));
 
-  root.addEventListener('dragstart', (event) => {
-    const node = event.target.closest('.lay-layer');
-    if (!node) return;
-    dragId = node.dataset.id;
-    node.classList.add('is-dragging');
-    event.dataTransfer.effectAllowed = 'move';
-    // Firefox ไม่เริ่มลากเลยถ้าไม่ได้ตั้งข้อมูลอะไรไว้สักอย่าง
-    event.dataTransfer.setData('text/plain', dragId);
-  });
+  /** แถวที่อยู่ใต้ปลายนิ้วตอนนี้ — ไม่มี dragover ให้ใช้แล้ว จึงต้องยิงรังสีเอง */
+  const rowAt = (x, y) => document.elementFromPoint(x, y)?.closest('.lay-layer') ?? null;
 
-  root.addEventListener('dragend', () => {
-    root.querySelectorAll('.is-dragging').forEach((node) => node.classList.remove('is-dragging'));
-    clearDropMarks();
-    dragId = null;
-  });
-
-  root.addEventListener('dragover', (event) => {
-    if (!dragId) return;
-    const node = event.target.closest('.lay-layer');
-    if (!node || node.dataset.id === dragId) return;
-    event.preventDefault();
+  const dropSide = (node, y) => {
     const box = node.getBoundingClientRect();
-    const after = event.clientY > box.top + box.height / 2;
-    clearDropMarks();
-    node.classList.add(after ? 'is-drop-after' : 'is-drop-before');
-  });
+    return y > box.top + box.height / 2;
+  };
 
-  root.addEventListener('drop', (event) => {
-    if (!dragId) return;
-    const node = event.target.closest('.lay-layer');
-    if (!node || node.dataset.id === dragId) return;
-    event.preventDefault();
-
-    const box = node.getBoundingClientRect();
-    const after = event.clientY > box.top + box.height / 2;
-
+  /** ย้าย dragId ไปก่อน/หลังแถวเป้าหมาย — คณิตศาสตร์ชุดเดิม แค่แยกออกมาจาก event handler */
+  const applyReorder = (targetNode, after) => {
     // ทำงานบนลำดับที่ตาเห็น (บนลงล่าง) แล้วค่อยกลับหัวเป็นลำดับของ items ตอนท้าย
     const rows = fullRows();
     const seen = rows.filter((row) => row.kind === 'item').map((row) => row.id);
     const moving = idsBehind(dragId);
-    const targetIds = idsBehind(node.dataset.id);
+    const targetIds = idsBehind(targetNode.dataset.id);
     const anchorTarget = after ? targetIds[targetIds.length - 1] : targetIds[0];
 
     const rest = seen.filter((id) => !moving.includes(id));
@@ -415,8 +393,48 @@ export function createLayerPanel(options) {
     if (at < 0) return;
 
     const visual = [...rest.slice(0, after ? at + 1 : at), ...moving, ...rest.slice(after ? at + 1 : at)];
-    clearDropMarks();
     onReorder([...visual].reverse());
+  };
+
+  /* ลากด้วย Pointer Events ไม่ใช่ HTML5 DnD — DnD ไม่ยิง event บนจอสัมผัสเลย
+     แผงนี้จึงเคยจัดลำดับไม่ได้บนมือถือทั้งหมด (ดู utils/pointer-drag.js) */
+  makeDraggable(root, {
+    handle: (event) => {
+      /* ปุ่มในแถวกับชื่อที่กดเพื่อเปลี่ยนต้องทำงานตามปกติ ไม่ใช่จุดเริ่มลาก */
+      if (event.target.closest('button, input, [data-act="rename"]')) return null;
+      return event.target.closest('.lay-layer');
+    },
+
+    onStart: ({ target }) => {
+      dragId = target.dataset.id;
+      target.classList.add('is-dragging');
+      /* บอกทั้งหน้าว่ากำลังลาก เพื่อกันข้อความถูกลากเลือกไปด้วยระหว่างทาง */
+      document.body.classList.add('is-layer-dragging');
+    },
+
+    onMove: ({ x, y }) => {
+      clearDropMarks();
+      const node = rowAt(x, y);
+      if (!node || node.dataset.id === dragId) return;
+      node.classList.add(dropSide(node, y) ? 'is-drop-after' : 'is-drop-before');
+    },
+
+    onEnd: ({ x, y, cancelled }) => {
+      const node = cancelled ? null : rowAt(x, y);
+      if (node && dragId && node.dataset.id !== dragId) {
+        applyReorder(node, dropSide(node, y));
+      }
+      root.querySelectorAll('.is-dragging').forEach((n) => n.classList.remove('is-dragging'));
+      document.body.classList.remove('is-layer-dragging');
+      clearDropMarks();
+      dragId = null;
+
+      /* pointerup จบแล้วเบราว์เซอร์จะยิง click ตามมา ถ้าไม่กันไว้แถวที่ลากจะถูกเลือกซ้ำ */
+      if (!cancelled) {
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 0);
+      }
+    },
   });
 
   /* --- ช่องค้นหา --- */
