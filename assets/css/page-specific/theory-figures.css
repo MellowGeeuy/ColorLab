@@ -337,13 +337,13 @@
 .wheels > * { grid-column: span 6; }
 .wheels > :nth-child(5) { grid-column: 4 / span 6; }
 
-@media (max-width: 860px) {
+@media (max-width: 1023px) {
   .wheels { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .wheels > * { grid-column: span 2; }
   .wheels > :nth-child(5) { grid-column: 2 / span 2; }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 680px) {
   .wheels { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .wheels > * { grid-column: span 2; }
   .wheels > :nth-child(5) { grid-column: span 2; }
@@ -627,7 +627,7 @@
   border: 2px solid currentColor;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 680px) {
   .harmony-explorer__body { grid-template-columns: minmax(0, 1fr); justify-items: center; }
 }
 
@@ -1300,7 +1300,7 @@
   .is-in-view .gaze__dot { opacity: 1; transform: translate(2.5rem, 9.5rem); }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 680px) {
   .figure__stage { padding: var(--space-4); }
   .axis { grid-template-columns: 5rem minmax(0, 1fr) 2.75rem; gap: var(--space-2); }
   .steps { grid-template-columns: repeat(6, minmax(0, 1fr)); }

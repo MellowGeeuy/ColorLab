@@ -94,7 +94,7 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 1279px) {
   .groundnav__item { padding-inline: var(--space-2); font-size: var(--text-xs); }
 }
 
@@ -633,14 +633,14 @@ th.u-num-end { text-align: end; }
 
 /* เมนูสี่ตัวรอบข้างเหลือไอคอน — ชื่อยังอ่านได้จาก tooltip และ accessible name
    ที่ผูกไว้กับตัวลิงก์ ส่วน Colorground คงคำไว้เพราะเป็นจุดอ้างอิงกลางแถบ */
-@media (max-width: 1080px) {
+@media (max-width: 1023px) {
   .topbar__side { gap: var(--space-3); }
   .topnav__item { padding-inline: var(--space-2); }
   .topnav__item .topnav__label { display: none; }
   .topnav__item--hero .topnav__label { display: inline; }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1023px) {
   .topbar {
     gap: var(--space-2);
     padding-inline: var(--space-3);
@@ -649,7 +649,7 @@ th.u-num-end { text-align: end; }
   .cmdk-trigger .kbd { display: none; }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 680px) {
   /* เดิมซ่อนชื่อแบรนด์ที่ความกว้างนี้ เพราะมันแย่งที่กับเมนูสามอันในแถบเดียวกัน
      ตอนนี้เมนูย้ายลงแถบล่างแล้ว แถบบนจึงเหลือแค่แบรนด์กับปุ่มของหน้า — มีที่พอ
      และชื่อยังเป็นตัวบอก "อยู่ที่ไหน" ที่อ่านได้เร็วกว่าโลโก้สี่เหลี่ยมเปล่า ๆ
@@ -888,7 +888,7 @@ th.u-num-end { text-align: end; }
 
 /* จอแคบ: หัวข้อกลายเป็นแถวนอนเลื่อนได้ เนื้อหาได้ความกว้างเต็ม
    และคำอธิบายตกลงมาใต้ชื่อแทนการบีบสองคอลัมน์จนอ่านไม่ออก */
-@media (max-width: 860px) {
+@media (max-width: 1023px) {
   .guide { padding: var(--space-3); }
 
   .guide__body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }

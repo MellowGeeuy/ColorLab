@@ -1538,7 +1538,7 @@
   color: var(--color-on-primary);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 680px) {
   .ui-hero { grid-template-columns: minmax(0, 1fr); }
 }
 /* @end */

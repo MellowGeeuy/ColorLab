@@ -1112,7 +1112,7 @@
    จอแคบ
    -------------------------------------------------------------------------- */
 
-@media (max-width: 1100px) {
+@media (max-width: 1279px) {
   .lay { grid-template-columns: var(--lib-w, 11rem) minmax(0, 1fr); }
   .lay-insp { grid-column: 1 / -1; border-inline-start: none; border-block-start: 1px solid var(--color-border); }
 }
@@ -1122,7 +1122,7 @@
    ผลคือที่ 768px ทั้งหน้าล้น 93px และ dock ล้น 110px โดยเลื่อนดูไม่ได้
    ในระบบ max-width ค่าที่ถูกคือ "น้อยกว่า 768" หรือครอบแท็บเล็ตแนวตั้งไปเลย
    เลือกอย่างหลังเพราะ lib 11rem + inspector 14rem + แคนวาสที่ใช้งานได้จริง ไม่พอดี 768px */
-@media (max-width: 899px) {
+@media (max-width: 1023px) {
   .lay { grid-template-columns: minmax(0, 1fr); }
   .lay-lib { border-inline-end: none; border-block-end: 1px solid var(--color-border); }
   .lay-dock { flex-wrap: wrap; justify-content: center; border-radius: var(--radius-lg); }

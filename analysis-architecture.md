@@ -39,7 +39,7 @@
 |---|---|
 | 0 · ลบ dead code | ✅ **เสร็จ** |
 | 1 · tooling (Vite/ESLint/Stylelint/CI) | ⬜ ยังไม่ทำ |
-| 2 · ดึง token + breakpoints | ⬜ ยังไม่ทำ |
+| 2 · ดึง token + breakpoints | ✅ **เสร็จ** — `breakpoints.css` + รวม 11 จุดตัดเหลือ 3 |
 | 3–5 · แตกไฟล์ · ย้ายโครง · HTML shell | ⬜ ยังไม่ทำ |
 
 ---

@@ -6,7 +6,12 @@
  * .reader__main จึงต้องผูกทุกอย่างกับ container ตัวนั้นแทน window
  */
 
-const MOBILE_BREAKPOINT = 900;
+/* อ่านค่าจาก assets/css/breakpoints.css แทนการฮาร์ดโค้ด — CSS กับ JS จะได้ไม่หลุดจากกัน
+   (custom property ใช้ใน @media ไม่ได้ตามสเปก โทเคนจึงมีไว้ให้ฝั่ง JS อ่านโดยเฉพาะ) */
+const readBp = (name, fallback) => {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue(`--bp-${name}`);
+  return parseInt(raw, 10) || fallback;
+};
 
 function initScrollSpy(scroller, links, sections, onChange) {
   const byId = new Map(links.map((link) => [link.getAttribute('href').slice(1), link]));
@@ -56,9 +61,20 @@ function initDrawer(toc, toggle, scrim, links) {
   });
 
   scrim.addEventListener('click', close);
+
+  /* matchMedia แทน window.innerWidth ที่อ่านค่า ณ ตอนคลิกเท่านั้น
+     แท็บเล็ตหมุนจอบ่อย (768 <-> 1024 ข้ามเส้นพอดี) ถ้าเปิด drawer ค้างไว้ตอนแนวตั้ง
+     แล้วหมุนเป็นแนวนอน ของเดิมจะค้างในสถานะที่ไม่ถูกจนกว่าจะคลิกลิงก์ครั้งถัดไป */
+  const isDrawerMode = window.matchMedia(`(max-width: ${readBp('lg', 1024) - 1}px)`);
+
   links.forEach((link) => link.addEventListener('click', () => {
-    if (window.innerWidth <= MOBILE_BREAKPOINT) close();
+    if (isDrawerMode.matches) close();
   }));
+
+  /* กว้างพอจนสารบัญกลับไปเป็นคอลัมน์ถาวรแล้ว drawer ไม่ควรเปิดค้าง */
+  isDrawerMode.addEventListener('change', (event) => {
+    if (!event.matches) close();
+  });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') close();

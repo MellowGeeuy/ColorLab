@@ -683,7 +683,7 @@
 
 
 /* Responsive --------------------------------------------------------------- */
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .preview-stage__inner { padding: var(--space-4); }
   .code-layout { height: auto; grid-template-rows: 320px 380px; }
 }
