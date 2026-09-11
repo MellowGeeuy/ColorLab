@@ -561,7 +561,12 @@ input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; }
   background-color: var(--color-surface);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-md);
-  padding: var(--space-2) var(--space-3);
+  /* padding แนวตั้งต้องเป็น 0 ไม่ใช่ --space-2
+     กล่องสูง 32px หัก padding 16 กับเส้นขอบ 2 แล้วเหลือที่ให้ตัวอักษรแค่ 14px
+     ซึ่งพอสำหรับภาษาละติน แต่ภาษาไทยมีสระบนซ้อนวรรณยุกต์กับสระล่าง ต้องการราว 21px
+     สระกับวรรณยุกต์จึงถูกตัดหายไป — เบราว์เซอร์จัดข้อความใน select ให้อยู่กลางแนวตั้งเองอยู่แล้ว
+     จึงไม่ต้องมี padding แนวตั้งช่วย */
+  padding: 0 var(--space-3);
   cursor: pointer;
 }
 

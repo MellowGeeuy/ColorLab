@@ -73,6 +73,13 @@
           <span class="rail__num">1</span>
           <span class="rail__tip">สร้างชุดสีอัตโนมัติ</span>
         </button>
+
+        <button type="button" class="rail__item" role="tab" data-tool="type" aria-selected="false" tabindex="-1"
+                id="tab-type" aria-controls="view-type">
+          <svg class="icon" aria-hidden="true"><use href="#i-contrast"/></svg>
+          <span class="rail__num">2</span>
+          <span class="rail__tip">ตัวอักษรกับสี</span>
+        </button>
       </nav>
 
       <!-- ---------- CANVAS ---------- -->
@@ -122,6 +129,100 @@
 
               <div class="auto__results" id="auto-results"></div>
               <p class="u-small u-muted" id="auto-status" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+
+          <section class="tool-view" data-view="type" id="view-type" role="tabpanel"
+                   aria-labelledby="tab-type" tabindex="0" hidden>
+            <div class="tool-view__head">
+              <h1 class="tool-view__title">ตัวอักษรกับสี</h1>
+            </div>
+
+            <p class="tool-view__hint">
+              เลือกฟอนต์จาก Google Fonts แล้วจับคู่กับสีตัวอักษรและสีพื้นหลัง เห็นผลทันทีทุกขนาดพร้อมกัน
+              แล้วกด "วิเคราะห์" เพื่อดูว่าคู่สีนี้ใช้ได้ถึงขนาดไหน — เพราะ WCAG ใช้เกณฑ์ต่างกันตามขนาดและน้ำหนัก
+            </p>
+
+            <div class="type-lab" id="type-lab">
+
+              <div class="panel type-lab__controls">
+                <div class="panel__head"><h2 class="panel__title">ฟอนต์</h2></div>
+                <div class="panel__body type-lab__stack">
+
+                  <div class="field">
+                    <label class="field__label" for="type-font">เลือกจากรายการ</label>
+                    <select class="select" id="type-font"></select>
+                  </div>
+
+                  <div class="field">
+                    <label class="field__label" for="type-font-custom">หรือพิมพ์ชื่อฟอนต์จาก Google Fonts เอง</label>
+                    <div class="type-lab__row">
+                      <input class="input" id="type-font-custom" type="text" spellcheck="false"
+                             autocomplete="off" placeholder="เช่น Figtree">
+                      <button type="button" class="btn btn--primary" id="type-font-load">โหลด</button>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <span class="field__label">น้ำหนักที่ฟอนต์นี้มีจริง</span>
+                    <div class="type-weights" id="type-weights"></div>
+                  </div>
+
+                  <p class="u-small type-lab__status" id="type-status" role="status" aria-live="polite"></p>
+                </div>
+              </div>
+
+              <div class="panel type-lab__controls">
+                <div class="panel__head"><h2 class="panel__title">สี</h2></div>
+                <div class="panel__body type-lab__stack">
+
+                  <div class="field">
+                    <label class="field__label" for="type-fg-hex">สีตัวอักษร</label>
+                    <div class="type-swatches" id="type-fg"></div>
+                    <input class="input u-mono" id="type-fg-hex" type="text" spellcheck="false"
+                           autocomplete="off" placeholder="#0F172A">
+                  </div>
+
+                  <div class="field">
+                    <label class="field__label" for="type-bg-hex">สีพื้นหลัง</label>
+                    <div class="type-swatches" id="type-bg"></div>
+                    <input class="input u-mono" id="type-bg-hex" type="text" spellcheck="false"
+                           autocomplete="off" placeholder="#FFFFFF">
+                  </div>
+
+                  <button type="button" class="btn" id="type-swap">
+                    <svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg>
+                    สลับสีตัวอักษรกับพื้นหลัง
+                  </button>
+
+                  <div class="field">
+                    <label class="field__label" for="type-sample">ข้อความตัวอย่าง</label>
+                    <select class="select" id="type-sample">
+                      <option value="th">ไทย</option>
+                      <option value="en">อังกฤษ</option>
+                      <option value="mix">ไทยผสมอังกฤษและตัวเลข</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel type-lab__specimen-panel">
+                <div class="panel__head">
+                  <h2 class="panel__title">ตัวอย่างสด — ทุกขนาดพร้อมกัน</h2>
+                  <button type="button" class="btn btn--primary btn--sm type-lab__analyze" id="type-analyze">
+                    <svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg>
+                    วิเคราะห์
+                  </button>
+                </div>
+                <div class="type-specimen" id="type-specimen"></div>
+              </div>
+
+              <div class="type-lab__output" id="type-result"></div>
+
+              <div class="panel type-lab__code" hidden>
+                <div class="panel__head"><h2 class="panel__title">Preset พร้อมใช้ (CSS custom properties)</h2></div>
+                <pre class="type-code u-mono"><code id="type-code"></code></pre>
+              </div>
             </div>
           </section>
 

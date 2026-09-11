@@ -957,3 +957,265 @@
 @media (prefers-reduced-motion: reduce) {
   .xport__tab { transition: none; }
 }
+
+/* ==========================================================================
+   เครื่องมือ 2 — ตัวอักษรกับสี
+   ตรรกะอยู่ที่ assets/js/modules/type-lab.js
+   ========================================================================== */
+
+.type-lab {
+  display: grid;
+  /* สองคอลัมน์สำหรับแผงควบคุม ส่วนตัวอย่างกับผลวิเคราะห์กินเต็มความกว้าง
+     เพราะตัวอักษรต้องได้ความยาวบรรทัดจริงถึงจะตัดสินได้ว่าอ่านง่ายไหม */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  align-items: start;
+  min-width: 0;
+}
+
+.type-lab__specimen-panel,
+.type-lab__output,
+.type-lab__code { grid-column: 1 / -1; }
+
+.type-lab__stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.type-lab__row {
+  display: flex;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.type-lab__row .input { flex: 1; min-width: 0; }
+
+.type-lab__status { margin: 0; color: var(--color-text-muted); }
+.type-lab__status[data-state="ok"]  { color: var(--color-success-text); }
+.type-lab__status[data-state="bad"] { color: var(--color-danger-text); }
+
+.type-lab__analyze { margin-inline-start: auto; }
+
+/* --- น้ำหนักฟอนต์ --- */
+
+.type-weights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.type-weight {
+  min-width: var(--control-h-md);
+  height: var(--control-h-md);
+  padding-inline: var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.type-weight:hover { background-color: var(--color-surface-alt); color: var(--color-text); }
+
+.type-weight[aria-pressed="true"] {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary-text);
+  font-weight: var(--weight-bold);
+}
+
+/* --- ปุ่มสี --- */
+
+.type-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-block-end: var(--space-2);
+}
+
+.type-swatch {
+  width: var(--control-h-md);
+  height: var(--control-h-md);
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background-color: var(--sw, transparent);
+  cursor: pointer;
+  flex: none;
+}
+
+.type-swatch[aria-pressed="true"] {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* --- ตัวอย่างสด --- */
+
+.type-specimen {
+  background-color: var(--type-bg, #fff);
+  color: var(--type-fg, #0f172a);
+  font-family: var(--type-family, var(--font-sans));
+  padding: var(--space-6);
+  /* ตัวอักษรตัดสินไม่ได้ถ้าบรรทัดยาวเกินจริง — 70ch คือช่วงที่งานเนื้อความใช้จริง */
+  container-type: inline-size;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.type-row {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: baseline;
+  padding-block: var(--space-4);
+  min-width: 0;
+}
+
+.type-row + .type-row {
+  /* เส้นคั่นต้องอิงสีตัวอักษรที่ผู้ใช้เลือก ไม่ใช่สีเส้นของธีม
+     ไม่งั้นพอเลือกพื้นมืดเส้นจะหายไปเลย */
+  border-block-start: 1px solid currentColor;
+  opacity: 1;
+}
+
+.type-row + .type-row { border-block-start-color: color-mix(in srgb, currentColor 12%, transparent); }
+
+.type-row__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* แถบข้อมูลกำกับต้องอ่านออกเสมอ จึงใช้ฟอนต์ของระบบไม่ใช่ฟอนต์ที่กำลังทดลอง
+     ไม่งั้นพอโหลดฟอนต์ที่อ่านยากจะอ่านป้ายกำกับไม่ออกไปด้วย */
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  opacity: 0.65;
+}
+
+.type-row__name { font-weight: var(--weight-semibold); }
+.type-row__spec { font-family: var(--font-mono); }
+
+.type-row__text {
+  margin: 0;
+  max-width: 70ch;
+  /* คำไทยยาว ๆ ที่ไม่มีช่องว่างต้องตัดได้ ไม่งั้นดันกล่องจนล้น */
+  overflow-wrap: anywhere;
+}
+
+@container (max-width: 34rem) {
+  .type-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+}
+
+/* --- ผลวิเคราะห์ --- */
+
+.type-lab__output:empty { display: none; }
+
+.type-score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  margin-block-end: var(--space-4);
+}
+
+.type-score__ratio { display: flex; flex-direction: column; gap: 2px; }
+.type-score__num { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: var(--weight-bold); }
+.type-score__label { font-size: var(--text-xs); color: var(--color-text-muted); }
+.type-score__bars { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-inline-start: auto; }
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--weight-semibold);
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger-text);
+}
+
+.type-badge[data-ok="true"] {
+  background-color: var(--color-success-soft);
+  color: var(--color-success-text);
+}
+
+.type-notes {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.type-notes li {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-alt);
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+}
+
+.type-notes li[data-kind="ok"]   { border-inline-start-color: var(--color-success); }
+.type-notes li[data-kind="warn"] { border-inline-start-color: var(--color-warning); }
+.type-notes li[data-kind="bad"]  { border-inline-start-color: var(--color-danger); }
+.type-notes li[data-kind="info"] { border-inline-start-color: var(--color-info); }
+
+.type-table-wrap {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.type-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.type-table th,
+.type-table td {
+  padding: var(--space-2) var(--space-3);
+  text-align: start;
+  white-space: nowrap;
+  border-block-end: 1px solid var(--color-border);
+}
+
+.type-table thead th {
+  background-color: var(--color-surface-alt);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.type-table tbody tr:last-child th,
+.type-table tbody tr:last-child td { border-block-end: 0; }
+
+/* แถวที่ตกเกณฑ์ต้องหาเจอโดยไม่ต้องอ่านทีละบรรทัด */
+.type-table tr[data-pass="no"] { background-color: var(--color-danger-soft); }
+
+.type-code {
+  margin: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+  white-space: pre;
+}
+
+@media (max-width: 1023px) {
+  .type-lab { grid-template-columns: minmax(0, 1fr); }
+  .type-specimen { padding: var(--space-4); }
+}
