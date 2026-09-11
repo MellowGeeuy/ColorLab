@@ -8,6 +8,7 @@
 
 import { loadIconSprite } from '../modules/icon-sprite.js';
 import { initThemeToggle } from '../modules/theme-toggle.js';
+import { initMobileTabbar } from '../modules/mobile-tabbar.js';
 import { initGuideModal } from '../modules/guide-modal.js';
 import { createSavedPaletteList } from '../modules/saved-palette-list.js';
 import { askConfirm } from '../modules/confirm-dialog.js';
@@ -1924,6 +1925,8 @@ async function openExport() {
 async function init() {
   await loadIconSprite();
   initThemeToggle();
+  // ต้องหลัง loadIconSprite() เพราะแท็บอ้างไอคอนจาก sprite ด้วย <use href="#i-...">
+  initMobileTabbar();
   initGuideModal();
 
   el.shell = document.querySelector('.lay');

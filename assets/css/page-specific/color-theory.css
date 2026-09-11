@@ -45,8 +45,14 @@
     hsl(0 90% 50%), hsl(60 90% 50%), hsl(120 90% 50%),
     hsl(180 90% 50%), hsl(240 90% 50%), hsl(300 90% 50%), hsl(360 90% 50%));
   border-radius: var(--radius-full);
-  height: 8px;
   appearance: none;
+  /* รางรุ้งยังหนา 8px เท่าเดิม แต่กล่องรับสัมผัสสูงเต็ม control
+     background-clip: content-box ทำให้สีวาดเฉพาะในกรอบเนื้อหา ส่วน padding ใสรอบ ๆ
+     กินพื้นที่นิ้วแทน — ไม่ต้องทำแถบให้หนาขึ้นจนผิดดีไซน์ */
+  box-sizing: border-box;
+  height: var(--control-h-md);
+  padding-block: calc((var(--control-h-md) - 8px) / 2);
+  background-clip: content-box;
 }
 
 .range--hue::-webkit-slider-thumb {

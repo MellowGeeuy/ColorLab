@@ -50,8 +50,9 @@
 .lay-panel__toggle {
   display: grid;
   place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  /* ใช้โทเคนแทนค่าตายตัว 1.75rem เพื่อให้โตตามกฎ any-pointer: coarse ด้วย */
+  width: var(--control-h-sm);
+  height: var(--control-h-sm);
   flex: none;
   border: 0;
   border-radius: var(--radius-md);
@@ -95,6 +96,9 @@
   align-items: center;
   gap: var(--space-1);
   min-width: 0;
+  /* เดิมความสูงมาจาก padding 3px ล้วน จึงคงที่ 30px ไม่ว่าอุปกรณ์อะไร
+     ผูกกับโทเคนแทน เพื่อให้โตตามกฎ any-pointer: coarse เหมือน control ตัวอื่น */
+  min-height: var(--control-h-sm);
   padding: 3px var(--space-2);
   border: 0;
   border-radius: var(--radius-md);
@@ -158,6 +162,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  /* grid item มี min-width: auto โดยปริยาย = "ห้ามแคบกว่า min-content"
+     กล่องนี้จึงกางเป็น 217px ในแผง 175px แล้วส่วนเกิน 42px ถูก overflow:hidden
+     ของ .lay-lib ตัดทิ้ง — ชื่อคอมโพเนนต์ตัวยาวหายไปโดยไม่มีทางเลื่อนดู
+     .lay-lib__name มี ellipsis รออยู่แล้ว แค่ต้องปลดล็อกให้หดได้ก่อน */
+  min-width: 0;
 }
 
 .lay-lib__title {
@@ -187,6 +196,8 @@
   font-size: var(--text-sm);
   text-align: start;
   cursor: grab;
+  /* ปลดล็อกให้หดได้ ชื่อยาวจะไปจบที่ ellipsis ของ .lay-lib__name แทนที่จะดันกล่อง */
+  min-width: 0;
   transition: background-color var(--duration-fast) var(--ease-out),
               border-color var(--duration-fast) var(--ease-out);
 }
@@ -219,6 +230,12 @@
 }
 
 .lay-lib__item:hover .lay-lib__add { opacity: 1; }
+
+/* บนเครื่องที่แตะได้ไม่มีท่า hover — ปุ่มเพิ่มที่โผล่ตอน hover จึงมองไม่เห็นเลย
+   แสดงถาวรแต่จางไว้ พอบอกว่ากดได้โดยไม่ตะโกนทับชื่อคอมโพเนนต์ */
+@media (any-pointer: coarse) {
+  .lay-lib__add { opacity: 0.55; }
+}
 
 .lay-lib__foot {
   display: flex;
@@ -493,6 +510,12 @@
 .lay-stage {
   overflow: auto;
   min-height: 0;
+  /* grid item ที่ min-width: auto จะกางคอลัมน์ให้พอดีผังที่อยู่ข้างใน แล้วพี่น้องในแถว
+     (.lay-topbar, #lay-status) ยืดตามไปด้วยจนทั้งหน้าล้น
+     ร้ายกว่านั้นคือ layout.js คำนวณ zoom จาก stage.clientWidth (บรรทัด ~1820)
+     ค่าที่กางแล้วจึงถูกป้อนกลับเข้าสูตร กลายเป็นจุดคงที่ที่กว้างเกินจริงและไม่ยอมหดลง
+     ปลดขั้นต่ำตรงนี้ครั้งเดียว สูตร fit ก็ได้ความกว้างจริงไปคำนวณ */
+  min-width: 0;
   padding: var(--space-6) var(--space-6) 5.5rem;
   background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
   background-size: 24px 24px;
@@ -1094,11 +1117,57 @@
   .lay-insp { grid-column: 1 / -1; border-inline-start: none; border-block-start: 1px solid var(--color-border); }
 }
 
-@media (max-width: 760px) {
+/* เดิมเขียนไว้ที่ 760px ซึ่งต่ำกว่า 768 อยู่ 8px พอดี — แท็บเล็ตแนวตั้งจึงตกร่อง
+   ระหว่างกฎนี้กับกฎ 1100px ข้างบน: ได้ผังสองคอลัมน์มาแต่ไม่ได้กฎที่ยุบ dock
+   ผลคือที่ 768px ทั้งหน้าล้น 93px และ dock ล้น 110px โดยเลื่อนดูไม่ได้
+   ในระบบ max-width ค่าที่ถูกคือ "น้อยกว่า 768" หรือครอบแท็บเล็ตแนวตั้งไปเลย
+   เลือกอย่างหลังเพราะ lib 11rem + inspector 14rem + แคนวาสที่ใช้งานได้จริง ไม่พอดี 768px */
+@media (max-width: 899px) {
   .lay { grid-template-columns: minmax(0, 1fr); }
   .lay-lib { border-inline-end: none; border-block-end: 1px solid var(--color-border); }
   .lay-dock { flex-wrap: wrap; justify-content: center; border-radius: var(--radius-lg); }
   .lay-dock__summary { display: none; }
+}
+
+/* จอมือถือ: แผงสองข้างยุบหมดแล้วตั้งแต่กฎข้างบน เหลือแคนวาสกับ dock
+   หมายเหตุ: ไม่แตะ --grid-cols ตรงนี้ เพราะเป็นค่าที่ผู้ใช้ตั้งเองจากแผงคุณสมบัติ
+   และถูกเขียนเป็น inline style จาก layout-canvas.js — จำนวนคอลัมน์คือส่วนหนึ่งของ
+   "ผังที่ผู้ใช้กำลังออกแบบ" ไม่ใช่เรื่องการแสดงผล ผังกว้างเกินจอแก้ด้วย zoom ตามที่ตั้งใจไว้แต่แรก */
+@media (max-width: 680px) {
+  /* dock ลอยทับแคนวาสอยู่ บนจอเตี้ยจึงบังพื้นที่ทำงานเกือบหมด — ย้ายมาเกาะก้นพื้นที่แทน
+     ข้อควรระวัง: เดิมเป็น position: absolute ซึ่งอยู่นอกโฟลว์ จึงไม่มีผลต่อการวัดกริด
+     พอเปลี่ยนเป็น sticky มันกลับเข้ามาเป็น grid item แล้วดันคอลัมน์ของ .lay-main
+     ให้กว้างตาม min-content ของตัวเอง (350px บนจอ 320px) พี่น้องในแถวจึงยืดตามทั้งหมด
+     ต้องปลด min-width และล้างค่าจัดกึ่งกลางของเวอร์ชันลอยออกให้หมด */
+  .lay-dock {
+    position: sticky;
+    inset-block-end: 0;
+    inset-inline-start: auto;
+    transform: none;
+    min-width: 0;
+    max-width: 100%;
+    /* เผื่อแถบ gesture ของ iOS */
+    padding-block-end: max(var(--space-2), env(safe-area-inset-bottom));
+  }
+
+  /* กฎ ≤899px ให้ dock ตกบรรทัดได้ ซึ่งบนจอโทรศัพท์กลายเป็นสามบรรทัดสูงร่วม 170px
+     กินความสูงไปจากแคนวาสซึ่งเป็นพระเอกของหน้านี้ — คืนเป็นแถวเดียวแล้วให้เลื่อนดูแทน
+     สูงคงที่ ~56px และผู้ใช้ยังเข้าถึงปุ่มครบทุกตัว */
+  .lay-dock {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    border-radius: 0;
+  }
+
+  .lay-dock::-webkit-scrollbar { display: none; }
+
+  /* ปุ่มในกลุ่มต้องไม่ยุบตามความกว้างที่เหลือ ไม่งั้นไอคอนจะบี้ */
+  .lay-dock__group { flex: none; }
+  .lay-dock__btn,
+  .lay-dock__cta { flex: none; }
 }
 
 /* --------------------------------------------------------------------------
@@ -1379,7 +1448,20 @@
   gap: var(--space-3);
   border-bottom: 1px solid var(--color-border);
   background-color: var(--color-surface);
+  /* grid item ที่ min-width: auto จะไม่ยอมแคบกว่า min-content ของแถบทั้งแถว (439px)
+     แล้วดัน .lay-main ทั้งก้อนให้กว้างตาม — ที่ 360px ทั้งหน้าจึงล้น 79px
+     ปลดล็อกให้หดได้ แล้วให้ส่วนเกินเลื่อนดูแทนการถูกตัดทิ้ง
+     (แบบเดียวกับ #tool-rail และ .groundnav) */
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
 }
+
+.lay-topbar::-webkit-scrollbar { display: none; }
+
+/* ป้ายสถานะยืดตามความกว้างของแถบข้างบน ถ้าไม่ปลดล็อกจะดันกริดกลับมาอีกทาง */
+.lay-status { min-width: 0; }
 
 .lay-topbar .lay-screens {
   flex: 1;
@@ -1455,6 +1537,8 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background-color: var(--color-surface-alt);
+  /* เหตุผลเดียวกับ .lay-lib__body — ช่องค้นหากางเป็น 193px ในแผง 175px */
+  min-width: 0;
 }
 
 .lay-lib__search .icon {

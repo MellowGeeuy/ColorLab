@@ -965,8 +965,17 @@
   align-items: center;
   gap: var(--cs-space-1);
   min-width: 0;
-  overflow: hidden;
+  /* เดิมเป็น overflow: hidden — ที่กรอบพรีวิวแคบ เมนูถูกบีบเหลือ 42px
+     แล้วลิงก์ 3 ใน 4 ตัวหายไปโดยไม่มีทางเข้าถึง (วัดได้ล้น 143px ที่จอ 768px)
+     คอมโพเนนต์ในหน้านี้คือสิ่งที่ผู้ใช้คัดลอกไปใช้ ตัวอย่างที่ตัดเนื้อหาทิ้งเงียบ ๆ
+     จึงสอนสิ่งที่ผิด — ให้เลื่อนดูได้แทน */
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
 }
+
+.ui-navbar__menu::-webkit-scrollbar { display: none; }
 
 .ui-navbar__link {
   display: inline-flex;

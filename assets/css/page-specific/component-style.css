@@ -35,6 +35,8 @@
   z-index: 45;
   display: inline-flex;
   align-items: center;
+  /* เดิมความสูงมาจาก padding 5px ล้วน — ผูกกับโทเคนให้โตตามอุปกรณ์ทัชด้วย */
+  min-height: var(--control-h-md);
   padding: 5px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);

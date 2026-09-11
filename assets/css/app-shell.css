@@ -98,13 +98,24 @@
   .groundnav__item { padding-inline: var(--space-2); font-size: var(--text-xs); }
 }
 
+/* จอแคบ: แถบบนแบ่งพื้นที่ให้เมนูได้ 166px ที่จอ 360px แต่เมนูสามอันยาวรวม 332px
+   เคยแก้ด้วยการให้เลื่อนแนวนอน แต่ผู้ใช้ยังเห็นแค่อันแรกและไม่มีอะไรบอกว่าปัดได้
+   จึงย้ายการนำทางทั้งชุดลงไปเป็นแถบก้นจอแทน (ดู .tabbar ท้ายไฟล์)
+   แถบบนเหลือแค่แบรนด์กับปุ่มของหน้านั้น ๆ ซึ่งรวมแล้ว ~212px พอดีจอ 360px สบาย ๆ */
+@media (max-width: 680px) {
+  .groundnav { display: none; }
+}
+
 .topbar__brand {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   color: inherit;
   text-decoration: none;
-  min-width: 0;
+  /* เดิมเป็น min-width: 0 ซึ่งปล่อยให้ยุบได้ไม่จำกัด — ที่ 360px ลิงก์เหลือกว้าง 11px
+     จนกดไม่โดน ตรึงพื้นขั้นต่ำไว้เท่าโลโก้ แต่ยังยอมให้หดได้
+     เพื่อให้ชื่อแบรนด์ตัดท้ายด้วย ellipsis แทนการดันปุ่มฝั่งขวาตกขอบ */
+  min-width: var(--control-h-md);
 }
 
 .topbar__logo {
@@ -121,6 +132,8 @@
   line-height: var(--lh-base);
   letter-spacing: -0.01em;
   white-space: nowrap;
+  /* flex item ไม่ยอมแคบกว่าข้อความถ้าไม่ปลด min-width — ellipsis จึงไม่มีวันได้ทำงาน */
+  min-width: 0;
 }
 
 .topbar__actions {
@@ -391,7 +404,13 @@
   transition: opacity var(--duration-fast) var(--ease-out);
 }
 
-.orbit__item:hover .orbit__tip,
+/* แยก hover ออกมาให้เฉพาะเครื่องที่ชี้ได้จริง — บนทัช :hover จะค้างหลังแตะ
+   ทำให้ป้ายติดคาจอจนกว่าจะไปแตะที่อื่น
+   :focus-visible อยู่นอกบล็อกเพราะผู้ใช้คีย์บอร์ดต้องได้ป้ายทุกอุปกรณ์ */
+@media (hover: hover) and (pointer: fine) {
+  .orbit__item:hover .orbit__tip { opacity: 1; }
+}
+
 .orbit__item:focus-visible .orbit__tip { opacity: 1; }
 
 /* สถานะยุบ — แถบบนคืนความสูงทั้งหมดให้เนื้อหา */
@@ -631,11 +650,15 @@ th.u-num-end { text-align: end; }
 }
 
 @media (max-width: 560px) {
-  /* เหลือแค่โลโก้ — ชื่อแบรนด์กินที่มากที่สุดและเป็นสิ่งที่ผู้ใช้ต้องการน้อยที่สุดตอนทำงาน */
-  .topbar__name { display: none; }
+  /* เดิมซ่อนชื่อแบรนด์ที่ความกว้างนี้ เพราะมันแย่งที่กับเมนูสามอันในแถบเดียวกัน
+     ตอนนี้เมนูย้ายลงแถบล่างแล้ว แถบบนจึงเหลือแค่แบรนด์กับปุ่มของหน้า — มีที่พอ
+     และชื่อยังเป็นตัวบอก "อยู่ที่ไหน" ที่อ่านได้เร็วกว่าโลโก้สี่เหลี่ยมเปล่า ๆ
+     (ตัดท้ายด้วย ellipsis เผื่อจอ 320px ที่ปุ่มเยอะ) */
+  .topbar__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-  /* ที่ความกว้างนี้ Colorground เหลือไอคอน โดมจึงหดเป็นครึ่งวงกลมพอดีตัว —
-     รูปทรงกับตำแหน่งกลางแถบยังบอกว่ามันคือปุ่มหลัก แม้ไม่มีคำกำกับ */
   .topbar__side { gap: var(--space-2); }
   .topnav__item--hero { width: 5.5rem; padding-inline: var(--space-2); }
   .topnav__item--hero .topnav__label { display: none; }
@@ -958,4 +981,101 @@ th.u-num-end { text-align: end; }
   justify-content: flex-end;
   gap: var(--space-2);
   margin-block-start: var(--space-5);
+}
+
+/* ==========================================================================
+   Mobile tab bar — แถบนำทางก้นจอ
+   สร้างด้วย assets/js/modules/mobile-tabbar.js จากลิงก์ที่มีอยู่แล้วในแถบบน
+   ========================================================================== */
+
+/* ซ่อนไว้ก่อนเป็นค่าตั้งต้น แล้วค่อยเปิดที่จอแคบ — ถ้าทำกลับกัน
+   จอใหญ่จะเห็นแถบแวบหนึ่งก่อน CSS จะซ่อน ตอนโหลดครั้งแรก */
+.tabbar { display: none; }
+
+@media (max-width: 680px) {
+  .tabbar {
+    display: grid;
+    /* ทุกช่องกว้างเท่ากันเสมอ ไม่ว่าป้ายจะยาวไม่เท่ากัน — เป้ากดจึงคาดเดาได้
+       minmax(0, 1fr) ไม่ใช่ 1fr เฉย ๆ เพราะป้ายยาวจะดันช่องให้กว้างเกินส่วน */
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    border-block-start: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    /* เผื่อแถบ gesture ของ iOS ที่กินพื้นที่ก้นจอ */
+    padding-block-end: env(safe-area-inset-bottom);
+  }
+
+  .tabbar__item {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 2px;
+    min-height: var(--tabbar-h);
+    padding-block: var(--space-1);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    /* ป้ายภาษาไทยมีสระบน-ล่าง ถ้าปล่อยให้ตัดบรรทัดแถวจะสูงไม่เท่ากัน */
+    white-space: nowrap;
+  }
+
+  .tabbar__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+  }
+
+  .tabbar__label {
+    font-size: 0.625rem;
+    line-height: var(--lh-xs);
+    /* ป้ายที่ยาวเกินช่อง (เช่น Colorground ที่จอ 320px) ตัดท้ายแทนการดันช่องข้าง ๆ */
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tabbar__item[aria-current="page"] {
+    color: var(--color-primary-text);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* ขีดบอกตำแหน่งที่ขอบบนของช่อง — ชิดเส้นแบ่งเดียวกับที่แถบวางอยู่
+     ตาจึงอ่านว่า "หน้านี้" ได้โดยไม่ต้องพึ่งสีอย่างเดียว (เผื่อผู้ใช้ตาบอดสี) */
+  .tabbar__item[aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 25%;
+    height: 2px;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    background-color: var(--color-primary);
+  }
+
+  .tabbar__item { position: relative; }
+
+  .tabbar__item:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ปุ่ม Colorground ในแถบบนกลายเป็นแท็บที่สี่แล้ว ถ้าคงไว้จะมีสองทางไปที่เดียวกัน */
+  .topnav__item--hero { display: none; }
+
+  /* โดมลอยเป็น "แถบบนที่ยุบแล้ว" ซึ่งมีไว้ให้เข้าถึงเมนูตอนเลื่อนอ่าน
+     เมื่อมีแถบล่างอยู่ตลอดเวลา โดมจึงซ้ำซ้อน — และถ้ายุบแถบบนไปด้วย
+     ปุ่มธีม/คู่มือ/สารบัญ จะหายไปโดยไม่มีที่ไป จึงปิดการยุบทั้งชุดบนมือถือ */
+  .dock { display: none; }
+  body.is-nav-docked .app { --topbar-h: 3.5rem; }
+  body.is-nav-docked .topbar {
+    height: auto;
+    padding-block: revert;
+    border-block-end-color: var(--color-border);
+    background-color: var(--color-surface);
+    pointer-events: auto;
+  }
+  body.is-nav-docked .topbar > * { opacity: 1; visibility: visible; }
+}
+
+@media (max-width: 680px) and (prefers-reduced-motion: no-preference) {
+  .tabbar__item { transition: color var(--duration-fast) var(--ease-out); }
 }

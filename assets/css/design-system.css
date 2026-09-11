@@ -176,6 +176,20 @@
   --palettebar-h:  4rem;     /* 64px */
   --toc-w:        16.5rem;   /* 264px — ความกว้างตอนกางออก */
   --toc-rail:      3.5rem;   /* 56px — ความกว้างตอนหุบเหลือแค่จุด */
+  --tabbar-h:      3.5rem;   /* 56px — แถบนำทางก้นจอบนมือถือ สูงเท่าแถบบนพอดี */
+}
+
+/* ชุดความสูงสำหรับเครื่องที่ "นิ้วเป็นตัวชี้" — เมาส์ยังได้ UI กระชับชุดเดิม
+   ถามด้วย any-pointer ไม่ใช่ pointer เพราะ iPad ที่ต่อคีย์บอร์ดรายงานตัวเองเป็น fine
+   ทั้งที่ผู้ใช้ยังแตะจอสลับไปมาได้ตลอด — ถ้ามีทางแตะได้ ให้เผื่อขนาดไว้ก่อน
+   และไม่ผูกกับ max-width เพราะแท็บเล็ตจอกว้างก็ใช้นิ้วเหมือนกัน
+   ค่าใหม่ยังหาร 4 ลงตัวทุกตัวตามกติกาเดิมของชุดนี้ */
+@media (any-pointer: coarse) {
+  :root {
+    --control-h-sm: 2.25rem;  /* 36px */
+    --control-h-md: 2.75rem;  /* 44px — เกณฑ์ WCAG 2.2 SC 2.5.5 */
+    --control-h-lg: 3rem;     /* 48px */
+  }
 }
 
 /* Dark theme — override เฉพาะ semantic token ไม่แตะ primitive */
@@ -520,11 +534,20 @@ label.btn { user-select: none; }
   background-color: transparent;
 }
 
-.range {
+/* ความสูงของ range ต้องกำหนดเอง — ค่า default ของเบราว์เซอร์ให้กล่องรับสัมผัสเตี้ยมาก
+   (วัดได้ 8px บน Chrome) ซึ่งนิ้วจับแทบไม่ติด พื้นหลังโปร่งไว้ รางจึงยังบางเท่าเดิม
+   กินแค่พื้นที่รับสัมผัส ไม่ได้ทำให้ตัวรางหนาขึ้น */
+.range,
+input[type="range"] {
   width: 100%;
+  height: var(--control-h-md);
+  background: transparent;
   accent-color: var(--color-primary);
   cursor: pointer;
 }
+
+input[type="range"]::-webkit-slider-thumb { width: 24px; height: 24px; }
+input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; }
 
 .select {
   height: var(--control-h-md);

@@ -7,6 +7,7 @@
 
 import { loadIconSprite } from '../modules/icon-sprite.js';
 import { initThemeToggle } from '../modules/theme-toggle.js';
+import { initMobileTabbar } from '../modules/mobile-tabbar.js';
 import { initGuideModal } from '../modules/guide-modal.js';
 import { initTocNav } from '../modules/toc-nav.js';
 import { initOrbitDock } from '../modules/orbit-dock.js';
@@ -19,6 +20,8 @@ import { initHarmonyWheelSpin } from '../modules/harmony-wheel-spin.js';
 async function init() {
   await loadIconSprite();
   initThemeToggle();
+  // ต้องหลัง loadIconSprite() เพราะแท็บอ้างไอคอนจาก sprite ด้วย <use href="#i-...">
+  initMobileTabbar();
   initGuideModal();
   initTocNav();
   initOrbitDock(document.querySelector('.reader__main'));
