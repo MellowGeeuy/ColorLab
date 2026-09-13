@@ -1,0 +1,69 @@
+<!-- @card -->
+<div class="ui-loading">
+  <span class="ui-spinner" aria-hidden="true"></span>
+  <span class="ui-loading__text">กำลังโหลดรายการ</span>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <div class="ui-loading" role="status" data-part="p1">
+    <span class="ui-spinner" aria-hidden="true"></span>
+    <span class="ui-loading__text">กำลังโหลดรายการเอกสาร</span>
+  </div>
+
+  <div class="ui-loading ui-loading--block" role="status">
+    <span class="ui-spinner ui-spinner--lg" aria-hidden="true"></span>
+    <span class="ui-loading__text">
+      <b>กำลังคำนวณยอดรวมใหม่</b>
+      <small>ใช้เวลาประมาณ 10 วินาที ระหว่างนี้ยังปิดหน้าไม่ได้</small>
+    </span>
+  </div>
+
+  <div class="ui-loading__row">
+    <button type="button" class="ui-btn" data-state="loading" data-part="p2">
+      <span class="ui-spinner ui-spinner--xs" aria-hidden="true"></span>
+      กำลังบันทึก
+    </button>
+    <button type="button" class="ui-btn ui-btn--ghost">ยกเลิก</button>
+  </div>
+
+  <div class="ui-loading ui-loading--slow" role="status">
+    <span class="ui-spinner" aria-hidden="true"></span>
+    <span class="ui-loading__text">
+      <b>ยังรออยู่</b>
+      <small>ระบบปลายทางตอบช้ากว่าปกติ รอต่อหรือลองใหม่ก็ได้</small>
+    </span>
+    <button type="button" class="ui-btn ui-btn--sm ui-btn--secondary">ลองใหม่</button>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ขนาดเล็ก — ใช้ในปุ่มหรือในแถว">
+  <span class="ui-spinner ui-spinner--xs" aria-hidden="true"></span>
+</div>
+
+<div class="cs-variant" data-variant-label="ขนาดปกติ — ใช้คู่ข้อความว่ากำลังโหลดอะไร">
+  <div class="ui-loading"><span class="ui-spinner" aria-hidden="true"></span><span class="ui-loading__text">กำลังโหลดรายการ</span></div>
+</div>
+
+<div class="cs-variant" data-variant-label="ขนาดใหญ่ — ใช้กลางพื้นที่ที่ยังว่างทั้งก้อน">
+  <span class="ui-spinner ui-spinner--lg" aria-hidden="true"></span>
+</div>
+
+<div class="cs-variant" data-variant-label="ในปุ่ม — ปุ่มต้องคงความกว้างเดิม ไม่งั้นปุ่มข้าง ๆ ขยับ">
+  <button type="button" class="ui-btn" data-state="loading">
+    <span class="ui-spinner ui-spinner--xs" aria-hidden="true"></span>
+    กำลังบันทึก
+  </button>
+</div>
+
+<div class="cs-variant" data-variant-label="รอนานผิดปกติ — ต้องเสนอทางออก ไม่ปล่อยให้หมุนไปเรื่อย ๆ">
+  <div class="ui-loading ui-loading--slow">
+    <span class="ui-spinner" aria-hidden="true"></span>
+    <span class="ui-loading__text"><b>ยังรออยู่</b><small>ระบบปลายทางตอบช้ากว่าปกติ</small></span>
+    <button type="button" class="ui-btn ui-btn--sm ui-btn--secondary">ลองใหม่</button>
+  </div>
+</div>
+<!-- @end -->

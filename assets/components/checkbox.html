@@ -1,0 +1,90 @@
+<!-- @card -->
+<div class="ui-choice-set">
+  <label class="ui-check"><span class="ui-box" data-state="checked" aria-hidden="true">
+    <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+    ส่งอีเมลแจ้งเมื่ออนุมัติ</label>
+  <label class="ui-check"><span class="ui-box" aria-hidden="true"></span>
+    ส่งสรุปรายสัปดาห์</label>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <fieldset class="ui-choice-set">
+    <legend class="ui-choice-set__legend">แจ้งเตือนที่ต้องการ</legend>
+    <label class="ui-check" data-part="p1">
+      <span class="ui-box" data-state="checked" aria-hidden="true">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+      </span>
+      <span class="ui-check__text"><b>ส่งอีเมลเมื่อเอกสารถูกอนุมัติ</b><small>ส่งทันทีที่สถานะเปลี่ยน</small></span>
+    </label>
+    <label class="ui-check">
+      <span class="ui-box" data-state="mixed" aria-hidden="true"><span class="ui-box__dash"></span></span>
+      <span class="ui-check__text"><b>แจ้งเตือนในแอป</b><small>เลือกไว้ 2 จาก 5 ประเภท</small></span>
+    </label>
+    <label class="ui-check">
+      <span class="ui-box" aria-hidden="true"></span>
+      <span class="ui-check__text"><b>ส่งสรุปรายสัปดาห์</b><small>ทุกเช้าวันจันทร์</small></span>
+    </label>
+    <label class="ui-check" data-state="disabled">
+      <span class="ui-box" data-state="disabled" aria-hidden="true"></span>
+      <span class="ui-check__text"><b>ส่ง SMS</b><small>ต้องยืนยันเบอร์โทรก่อน</small></span>
+    </label>
+  </fieldset>
+
+  <fieldset class="ui-choice-set">
+    <legend class="ui-choice-set__legend">รอบการส่งรายงาน</legend>
+    <label class="ui-check">
+      <span class="ui-dot" data-state="checked" aria-hidden="true"></span>
+      <span class="ui-check__text"><b>ทุกวัน</b></span>
+    </label>
+    <label class="ui-check">
+      <span class="ui-dot" aria-hidden="true"></span>
+      <span class="ui-check__text"><b>ทุกสัปดาห์</b></span>
+    </label>
+    <label class="ui-check">
+      <span class="ui-dot" aria-hidden="true"></span>
+      <span class="ui-check__text"><b>ทุกเดือน</b></span>
+    </label>
+  </fieldset>
+
+  <fieldset class="ui-choice-cards">
+    <legend class="ui-choice-set__legend">ระดับสิทธิ์</legend>
+    <label class="ui-choice-card" data-state="checked" data-part="p2">
+      <span class="ui-dot" data-state="checked" aria-hidden="true"></span>
+      <span class="ui-choice-card__text"><b>ดูอย่างเดียว</b><small>เปิดอ่านได้ แก้ไขไม่ได้</small></span>
+    </label>
+    <label class="ui-choice-card">
+      <span class="ui-dot" aria-hidden="true"></span>
+      <span class="ui-choice-card__text"><b>แก้ไขได้</b><small>แก้ไขและส่งต่อได้</small></span>
+    </label>
+  </fieldset>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ยังไม่เลือก — ขอบต้องได้ 3:1 ไม่งั้นมองไม่เห็นว่ามีช่อง">
+  <label class="ui-check"><span class="ui-box" aria-hidden="true"></span> ส่งสรุปรายสัปดาห์</label>
+</div>
+
+<div class="cs-variant" data-variant-label="เลือกแล้ว — เครื่องหมายถูกบอกสถานะ ไม่ใช่สีอย่างเดียว">
+  <label class="ui-check"><span class="ui-box" data-state="checked" aria-hidden="true">
+    <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span> ส่งสรุปรายสัปดาห์</label>
+</div>
+
+<div class="cs-variant" data-variant-label="เลือกบางส่วน — ใช้เมื่อลูกถูกเลือกไม่ครบ">
+  <label class="ui-check"><span class="ui-box" data-state="mixed" aria-hidden="true"><span class="ui-box__dash"></span></span> แจ้งเตือนในแอป</label>
+</div>
+
+<div class="cs-variant" data-variant-label="กำลังโฟกัส — วงแหวนอยู่นอกกล่อง จึงไม่ถูกกลืน">
+  <label class="ui-check"><span class="ui-box" data-state="focus" aria-hidden="true"></span> ส่งสรุปรายสัปดาห์</label>
+</div>
+
+<div class="cs-variant" data-variant-label="กดไม่ได้">
+  <label class="ui-check" data-state="disabled"><span class="ui-box" data-state="disabled" aria-hidden="true"></span> ส่ง SMS</label>
+</div>
+
+<div class="cs-variant" data-variant-label="ตัวเลือกเดียว — วงกลมบอกว่าเลือกได้อย่างเดียว">
+  <label class="ui-check"><span class="ui-dot" data-state="checked" aria-hidden="true"></span> ทุกวัน</label>
+</div>
+<!-- @end -->

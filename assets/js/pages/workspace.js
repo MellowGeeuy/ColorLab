@@ -26,6 +26,7 @@ import { initPaletteExport } from '../modules/palette-export.js';
 import { initPaletteExportDialog } from '../modules/palette-export-dialog.js';
 import { initAutoPalettePanel } from '../modules/auto-palette-panel.js';
 import { initTypeLab } from '../modules/type-lab.js';
+import { initRadiusLab } from '../modules/radius-lab.js';
 
 /** บอกว่างานถูกเก็บลงเครื่องแล้ว — palette store เขียน localStorage ทุกครั้งที่มีการแก้ */
 function initSaveStatus(store) {
@@ -66,6 +67,7 @@ async function init() {
 
   initAutoPalettePanel(store);
   initTypeLab(store);
+  initRadiusLab(store);
   initPaletteExportDialog(store);
 
   // เครื่องมือ 2 เป็นต้นไปถูกถอดออกจากหน้าไว้ก่อนตามที่ G สั่ง (2026-09-09) เพื่อรื้อทำใหม่ทีละตัว

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 สัดส่วนการใช้สี — ColorLab</title>
+  <meta name="description" content="กฎ 60/30/10 ในงาน UI จริง พร้อมเครื่องมือวัดสัดส่วนพื้นที่ของหน้าจอตัวอย่าง">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/breakpoints.css">
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="../../assets/css/app-shell.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory-figures.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/color-theory.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="topbar">
+      <div class="topbar__side">
+        <a class="topbar__brand" href="../../">
+          <span class="topbar__logo" aria-hidden="true"></span>
+          <span class="topbar__name">ColorLab</span>
+        </a>
+
+        <nav class="groundnav" aria-label="เมนูหลัก">
+          <a class="groundnav__item" href="../../" style="--dot-h:8" aria-current="page">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-book"/></svg>Color Theory
+          </a>
+          <a class="groundnav__item" href="../../component-style/" style="--dot-h:92">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-layers"/></svg>Component Style
+          </a>
+          <a class="groundnav__item" href="../../layout/" style="--dot-h:150">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
+          </a>
+        </nav>
+      </div>
+
+      <div class="topbar__side topbar__side--end">
+        <div class="topbar__actions">
+          <span class="topbar__status" id="read-status" role="status" aria-live="polite"></span>
+          <button type="button" class="btn btn--icon btn--sm toc-toggle" id="toc-toggle"
+                  aria-controls="toc" aria-expanded="false" aria-label="เปิดสารบัญ">
+            <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm btn--guide" id="guide-open"
+                  aria-haspopup="dialog" aria-label="เปิดคู่มือใช้งาน" title="คู่มือใช้งาน">
+            <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm" id="theme-toggle" aria-label="สลับโหมดสีของหน้าเว็บ">
+            <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+          </button>
+
+          <a class="topnav__item topnav__item--hero" href="../../workspace/" aria-label="Colorground" title="Colorground">
+            <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+            <span class="topnav__label">Colorground</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="read-progress" aria-hidden="true"><div class="read-progress__bar" id="progress-bar"></div></div>
+    <div class="toc-scrim" id="toc-scrim"></div>
+
+    <div class="reader">
+
+      <nav class="toc" id="toc" aria-label="สารบัญทั้งคอร์ส">
+        <a class="toc__home" href="../"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg> สารบัญทั้งหมด</a>
+        <div class="toc__group">พื้นฐาน</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-first/" style="--dot-h:8"><span class="toc__no">01</span> <span class="toc__text">สีทำงานก่อนตัวหนังสือ</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../three-axes/" style="--dot-h:28"><span class="toc__no">02</span> <span class="toc__text">สามแกนของสี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../color-models/" style="--dot-h:45"><span class="toc__no">03</span> <span class="toc__text">Color Models</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ทฤษฎีสี</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../harmony/" style="--dot-h:92"><span class="toc__no">04</span> <span class="toc__text">วงล้อสี & Harmony</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../psychology/" style="--dot-h:150"><span class="toc__no">05</span> <span class="toc__text">สีกับความรู้สึก</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ระบบสีใน UI</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-roles/" style="--dot-h:172"><span class="toc__no">06</span> <span class="toc__text">สี่บทบาทของสี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../scales/" style="--dot-h:196"><span class="toc__no">07</span> <span class="toc__text">จากสีเดียวสู่สเกล</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">การเข้าถึง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../contrast/" style="--dot-h:214"><span class="toc__no">08</span> <span class="toc__text">Contrast & WCAG</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../dark-mode/" style="--dot-h:248"><span class="toc__no">09</span> <span class="toc__text">Dark Mode</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ลงมือใช้จริง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link is-current" href="../proportion/" style="--dot-h:286" aria-current="page"><span class="toc__no">10</span> <span class="toc__text">สัดส่วนการใช้สี</span></a>
+            <ul class="toc__sub">
+              <li><a class="toc__link toc__link--sub" href="#why">ทำไมต้องรู้</a></li>
+              <li><a class="toc__link toc__link--sub" href="#core">หลักการ</a></li>
+              <li><a class="toc__link toc__link--sub" href="#deep">กฎ 60 / 30 / 10 มาจากไหน และแปลงเป็น UI อย่างไร</a></li>
+              <li><a class="toc__link toc__link--sub" href="#pitfalls">ข้อผิดที่เจอบ่อย</a></li>
+              <li><a class="toc__link toc__link--sub" href="#wrap">สรุป</a></li>
+            </ul>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../fixes/" style="--dot-h:322"><span class="toc__no">11</span> <span class="toc__text">ก่อนแก้ / หลังแก้</span></a>
+          </li>
+        </ul>
+      </nav>
+
+      <main class="reader__main" id="reader-main">
+        <div class="prose">
+
+          <header class="topic-head">
+            <span class="topic-head__eyebrow">ตอนที่ 10 · ลงมือใช้จริง</span>
+            <h1 class="topic-head__title">สัดส่วนการใช้สี</h1>
+            <p class="topic-head__lead">รู้ทฤษฎีแล้วยังต้องรู้ว่าใช้แค่ไหน ปริมาณที่ใช้นี่แหละที่ทำให้งานดูเป็นมืออาชีพ หรือดูเป็นมือใหม่</p>
+          </header>
+
+          <section class="section" id="why">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">01</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ทำไมต้องรู้เรื่องนี้</h2>
+            </div>
+
+              <p>เคสที่เจอบ่อยที่สุดคือหน้า landing page ที่ทีมภูมิใจกับสีแบรนด์มาก
+                จนใส่ลงไปทุกที่ที่ใส่ได้</p>
+
+              <div class="case">
+                <div class="case__item">
+                  <span class="case__tag">สิ่งที่ตั้งใจ</span>
+                  <p>อยากให้คนจำแบรนด์ได้ เลยใส่สีแบรนด์ที่แถบบน แถบข้าง การ์ดเด่น ปุ่ม และแท็ก</p>
+                </div>
+                <div class="case__item">
+                  <span class="case__tag">สิ่งที่ได้จริง</span>
+                  <p>ปุ่ม “เริ่มใช้งาน” ที่เป็นเป้าหมายเดียวของหน้ากลืนไปกับทุกอย่าง
+                    อัตราการกดลดลงโดยที่ไม่มีใครเปลี่ยนข้อความสักคำ</p>
+                </div>
+              </div>
+          </section>
+
+          <section class="section" id="core">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">02</span><span class="section__rule"></span></div>
+              <h2 class="section__title">หลักการ</h2>
+            </div>
+
+            <figure class="figure" data-reveal>
+              <div class="figure__stage">
+                <div class="ratio">
+                  <span class="fig-label">กฎ 60 / 30 / 10 ที่ยืมมาจากงานตกแต่งภายใน</span>
+                  <div class="ratio__bar">
+                    <span class="ratio__seg ratio__seg--base">60% พื้นหลัง</span>
+                    <span class="ratio__seg ratio__seg--second">30% พื้นผิวรอง</span>
+                    <span class="ratio__seg ratio__seg--accent">10%</span>
+                  </div>
+
+                  <span class="fig-label">สัดส่วนจริงบนหน้าจอเครื่องมือ</span>
+                  <div class="ratio__real">
+                    <span></span><span></span>
+                  </div>
+                  <p class="ramp-row__note u-mb-0">ในงาน UI สัดส่วนจริงหนักกว่านั้นอีก พื้นหลังกับตัวหนังสือกินไปราว 90%
+                    เหลือให้สีแบรนด์แค่ 10% และยิ่งใช้น้อย สายตายิ่งวิ่งไปหาเร็ว</p>
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg>
+                <span>ปุ่มหลักหนึ่งปุ่มต่อหนึ่งหน้าจอ ปุ่มรองใช้เส้นขอบ ส่วนปุ่มที่แค่ถอยกลับใช้เป็นข้อความพอ</span>
+              </figcaption>
+            </figure>
+
+            <figure class="figure" data-reveal>
+              <div class="figure__stage">
+                <div class="proof">
+                  <div>
+                    <span class="fig-label fig-label--good">สีแบรนด์ราว 10% ของพื้นที่</span>
+                    <div class="proof__screen">
+                      <div class="proof__bar">
+                        <span class="proof__logo"></span>
+                        <span class="proof__navline"></span>
+                      </div>
+                      <div class="proof__body">
+                        <span class="proof__line proof__line--80"></span>
+                        <span class="proof__line"></span>
+                        <span class="proof__line proof__line--60"></span>
+                      </div>
+                      <div class="proof__row">
+                        <span class="proof__btn proof__btn--solid">บันทึก</span>
+                        <span class="proof__btn">ดูตัวอย่าง</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <span class="fig-label fig-label--bad">สีแบรนด์ราว 40% ของพื้นที่</span>
+                    <div class="proof__screen proof__screen--loud">
+                      <div class="proof__bar">
+                        <span class="proof__logo"></span>
+                        <span class="proof__navline"></span>
+                      </div>
+                      <div class="proof__body">
+                        <span class="proof__line proof__line--80"></span>
+                        <span class="proof__line"></span>
+                        <span class="proof__line proof__line--60"></span>
+                      </div>
+                      <div class="proof__row">
+                        <span class="proof__btn proof__btn--solid">บันทึก</span>
+                        <span class="proof__btn">ดูตัวอย่าง</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-target"/></svg>
+                <span>สองฝั่งมีเนื้อหาเท่ากันทุกชิ้น ต่างกันแค่ปริมาณสีแบรนด์
+                  ฝั่งซ้ายรู้ทันทีว่าปุ่มไหนคือขั้นตอนถัดไป ส่วนฝั่งขวาทุกชิ้นแย่งกันเด่น เลยไม่มีชิ้นไหนเด่นจริง</span>
+              </figcaption>
+            </figure>
+
+            <!-- คราวนี้ไม่ใช่การประมาณด้วยตา — วัดพื้นที่ที่เบราว์เซอร์วางจริงด้วย
+                 getBoundingClientRect() แล้วคิดเป็นเปอร์เซ็นต์ของกรอบ ติ๊กสวิตช์แล้วตัวเลขขยับตามทันที -->
+            <div class="tool">
+              <div class="tool__header">
+                <svg class="icon icon--lg" aria-hidden="true"><use href="#i-calculator"/></svg> วัดสัดส่วนจริงของหน้าจอตัวอย่าง
+                <span class="tool__tag">วัดสดจากขนาดที่วางจริง</span>
+              </div>
+              <div class="tool__body">
+                <div class="area-meter" data-area-meter>
+
+                  <div class="area-meter__frame" data-area-frame>
+                    <div class="arena__bar" data-area="surface" data-area-optional="surface">
+                      <span class="arena__logo" data-area="brand"></span>
+                            <span class="arena__nav" data-area="text" data-area-optional="text"></span>
+                            <span class="arena__nav" data-area="text" data-area-optional="text"></span>
+                            <span class="arena__nav" data-area="text" data-area-optional="text"></span>
+                    </div>
+                    <div class="arena__body">
+                      <aside class="arena__side" data-area="surface" data-area-optional="surface">
+                              <span class="arena__item" data-area="text" data-area-optional="text"></span>
+                              <span class="arena__item" data-area="text" data-area-optional="text"></span>
+                              <span class="arena__item" data-area="text" data-area-optional="text"></span>
+                              <span class="arena__item" data-area="text" data-area-optional="text"></span>
+                      </aside>
+                      <div class="arena__main">
+                            <div class="arena__card" data-area="surface" data-area-optional="surface">
+                              <span class="arena__line" data-area="text"></span>
+                              <span class="arena__line arena__line--80" data-area="text"></span>
+                              <span class="arena__tag" data-area="text" data-area-optional="text"></span>
+                            </div>
+                            <div class="arena__card" data-area="surface">
+                              <span class="arena__line" data-area="text"></span>
+                              <span class="arena__line arena__line--60" data-area="text"></span>
+                              <span class="arena__tag" data-area="text" data-area-optional="text"></span>
+                            </div>
+                        <span class="arena__cta" data-area="brand">บันทึกการตั้งค่า</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <label class="area-meter__toggle">
+                    <input type="checkbox" data-area-loud>
+                    ใส่สีแบรนด์ทุกที่ที่ “ใส่ได้” — แถบบน แถบข้าง การ์ดเด่น เมนู และแท็ก
+                  </label>
+
+                  <div class="area-meter__bar" data-area-bar></div>
+                  <ul class="area-meter__legend" data-area-legend></ul>
+                  <span class="badge area-meter__verdict" data-area-verdict aria-live="polite"></span>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="note">
+              <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+              <p>สังเกตว่าพอติ๊กสวิตช์ สีแบรนด์ไม่ได้เด่นขึ้น แต่กลับหายไป
+                  เพราะความเด่นไม่ได้มาจากตัวสี แต่มาจากการที่มันมีอยู่น้อยในหน้านั้น
+                  ตัวเลขในแถบข้างบนคือหลักฐานว่ากฎ 10% ไม่ใช่เรื่องรสนิยม แต่เป็นเรื่องปริมาณ</p>
+            </div>
+          </section>
+
+          <section class="section" id="deep">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">03</span><span class="section__rule"></span></div>
+              <h2 class="section__title">กฎ 60 / 30 / 10 มาจากไหน และแปลงเป็น UI อย่างไร</h2>
+            </div>
+
+              <p>กฎนี้ยืมมาจากงานตกแต่งภายใน สัดส่วนเดิมคือสีผนัง 60% เฟอร์นิเจอร์ 30%
+                และของตกแต่ง 10% พอย้ายมาที่หน้าจอ ความหมายของแต่ละก้อนเปลี่ยนไปแบบนี้</p>
+
+              <div class="table-wrap">
+                <table class="table">
+                  <caption class="table__caption">แปลงกฎจากงานตกแต่งมาเป็นหน้าจอ</caption>
+                  <thead><tr><th>สัดส่วน</th><th>งานตกแต่งภายใน</th><th>หน้าจอ</th></tr></thead>
+                  <tbody>
+                    <tr><td><b>60%</b></td><td>สีผนัง</td><td>พื้นหลังของหน้าและพื้นที่ว่าง</td></tr>
+                    <tr><td><b>30%</b></td><td>เฟอร์นิเจอร์</td><td>พื้นผิวรอง การ์ด แถบ และตัวหนังสือ</td></tr>
+                    <tr><td><b>10%</b></td><td>ของตกแต่ง</td><td>สีแบรนด์ ปุ่มหลัก และจุดที่ต้องให้สังเกต</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p>ในงาน UI จริงสัดส่วนมักโหดกว่านั้นอีก เพราะพื้นหลังกับตัวหนังสือรวมกันกินไปเกือบ 90%
+                เหลือให้สีแบรนด์แค่หลักหน่วยเปอร์เซ็นต์ ซึ่งเป็นเรื่องดี — ยิ่งมีน้อย ยิ่งหาเจอเร็ว</p>
+          </section>
+
+          <section class="section" id="pitfalls">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">04</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ข้อผิดที่เจอบ่อย</h2>
+            </div>
+
+              <ul class="pitfalls">
+                <li class="pitfall">
+                  <b class="pitfall__name">ใส่สีแบรนด์ทุกที่ที่ใส่ได้</b>
+                  <span class="pitfall__body">สีแบรนด์ไม่ได้เด่นขึ้นเมื่อมีมากขึ้น แต่หายไปแทน เพราะความเด่นมาจากการมีอยู่น้อย</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">นับสัดส่วนด้วยความรู้สึก</b>
+                  <span class="pitfall__body">วัดจริงจากพื้นที่ที่วางบนหน้าจอ จะเห็นว่าตัวเลขมักต่างจากที่คิดไว้มาก</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">ใช้สีแบรนด์เป็นพื้นของบล็อกใหญ่</b>
+                  <span class="pitfall__body">พื้นที่กว้างควรเป็นสีกลางหรือสีแบรนด์ที่ลดความสดลงมาก ไม่ใช่สีสดเต็มที่</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">มีปุ่มพื้นทึบมากกว่าหนึ่งปุ่มในหน้าจอเดียว</b>
+                  <span class="pitfall__body">ผู้ใช้จะไม่รู้ว่าขั้นตอนถัดไปคืออะไร ปุ่มรองใช้เส้นขอบ ปุ่มที่แค่ถอยกลับใช้เป็นข้อความ</span>
+                </li>
+              </ul>
+          </section>
+
+          <section class="section" id="wrap">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">05</span><span class="section__rule"></span></div>
+              <h2 class="section__title">สรุปและแหล่งอ้างอิง</h2>
+            </div>
+
+              <h3 class="wrap__title">สรุปสามข้อ</h3>
+
+              <ul class="takeaway">
+                <li>ความเด่นมาจากปริมาณ ไม่ได้มาจากความสดของสี</li>
+                <li>กฎ 60/30/10 เป็นจุดตั้งต้น ส่วน UI จริงมักเหลือให้สีแบรนด์น้อยกว่านั้นอีก</li>
+                <li>วัดสัดส่วนจริงได้ อย่าเดา</li>
+              </ul>
+
+              <h3 class="wrap__title">อ่านต่อจากต้นทาง</h3>
+
+              <ul class="refs">
+                <li><a href="https://www.interaction-design.org/literature/topics/color-theory" target="_blank" rel="noopener noreferrer">Interaction Design Foundation · Color Theory</a><span>ที่มาของกฎสัดส่วนและการนำมาใช้ในงานออกแบบ</span></li>
+              </ul>
+          </section>
+
+          <nav class="pager" aria-label="ไปตอนก่อนหน้าหรือตอนถัดไป">
+            <a class="pager__link pager__link--prev" href="../dark-mode/"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg><span><small>ตอนก่อนหน้า</small>Dark Mode ที่ทำถูกวิธี</span></a>
+            <a class="pager__link pager__link--next" href="../fixes/"><span><small>ตอนถัดไป</small>ก่อนแก้ / หลังแก้</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          </nav>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../../assets/js/pages/theory.js"></script>
+</body>
+</html>

@@ -50,7 +50,10 @@
   --color-surface-alt:   var(--neutral-100);
   --color-surface-sunken: var(--neutral-100);
   --color-border:        var(--neutral-200);
-  --color-border-strong: var(--neutral-300);
+  /* เส้นขอบของ control เป็น "ข้อมูลที่จำเป็นต่อการระบุองค์ประกอบ" ตาม SC 1.4.11
+     จึงต้องผ่าน 3:1 กับพื้นรอบข้าง — neutral-300 เดิมได้แค่ 1.48:1 บนพื้นขาว
+     ค่านี้ได้ 3.65:1 บน #FFFFFF และ 3.33:1 บนพื้น surface-alt ซึ่งเป็นพื้นที่เข้มที่สุดที่มันไปวางอยู่ */
+  --color-border-strong: #78879d;
   --color-text:          var(--neutral-900);
   /* เพดานล่างของสีตัวอักษรคือ 4.5:1 บนพื้นที่มันวางอยู่จริง ไม่ใช่แค่บนขาว
      neutral-500 บนพื้น surface-sunken ได้ 4.34:1 ซึ่งตกเกณฑ์ จึงยกทั้งสองระดับขึ้นหนึ่งขั้น */
@@ -90,7 +93,7 @@
   --color-danger-text:  #b91c1c;
 
   /* Typography */
-  --font-sans: "IBM Plex Sans Thai", "Noto Sans Thai", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-sans: "Anuphan", "Noto Sans Thai", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas, monospace;
 
   --text-xs:   0.75rem;
@@ -105,15 +108,21 @@
   /* Line-height เป็น rem ไม่ใช่ unitless — ต้องการให้ทุกค่าตกบน baseline 4px พอดี
      (unitless คูณกับ font-size แล้วได้เศษ เช่น 15px x 1.7 = 25.5px ซึ่งหลุด grid)
      ค่าเป็น rem จึงยังขยายตามขนาดตัวอักษรที่ผู้ใช้ตั้งไว้ในเบราว์เซอร์ */
-  --lh-xs:   1rem;      /* 16px */
+  /* 20px — ตัวอักษร 12px ของ Anuphan ต้องการเท่านี้สำหรับสระซ้อนวรรณยุกต์
+     ("ทุกอย่างน้ำหนักเท่ากัน" ที่ 16px ถูกเฉือนทั้งบนและล่างอย่างละ 0.5px) */
+  --lh-xs:   1.25rem;   /* 20px */
   --lh-sm:   1.25rem;   /* 20px */
   --lh-base: 1.5rem;    /* 24px */
   --lh-lg:   1.75rem;   /* 28px */
-  --lh-xl:   2rem;      /* 32px */
-  --lh-2xl:  2.25rem;   /* 36px */
-  --lh-3xl:  2.75rem;   /* 44px */
+  --lh-xl:   2.25rem;   /* 36px — 22px ต้องการ 34px สำหรับสระซ้อน */
+  --lh-2xl:  2.75rem;   /* 44px — 28px ของ Anuphan ต้องการ 42px สำหรับสระซ้อนสูงสุด
+                           ของเดิม 36px เฉือนยอดสระ 2.5px และ 40px ยังเหลือ 0.5px */
+  --lh-3xl:  3.5rem;    /* 56px — 36px ต้องการ 54px สำหรับสระซ้อน */
 
-  --leading-tight: 1.25;
+  /* หัวข้อทุกระดับใช้ค่านี้ — 1.25 เดิมแคบกว่าที่สระซ้อนวรรณยุกต์ของไทยต้องการ
+     วัดจาก Anuphan แล้วหมึกล้นกล่องบรรทัด 0.5–2.5px ที่ขนาด 18–28px
+     1.45 คือค่าต่ำสุดที่ไม่เฉือนยอดสระในเนื้อหาจริงของเว็บนี้ */
+  --leading-tight: 1.45;
   --leading-snug:  1.45;
   --leading-normal: 1.7;
 
@@ -198,7 +207,8 @@
   --color-surface-alt:   #172033;
   --color-surface-sunken: #0a1120;
   --color-border:        #1e293b;
-  --color-border-strong: #334155;
+  /* ธีมมืด: #334155 เดิมได้ 1.73:1 บนพื้นการ์ด ค่านี้ได้ 3.76:1 */
+  --color-border-strong: #64748b;
   --color-text:          var(--neutral-100);
   --color-text-muted:    var(--neutral-300);
   --color-text-subtle:   var(--neutral-400);
@@ -283,6 +293,15 @@ code {
   border-radius: var(--radius-sm);
   padding: 0.1em 0.4em;
 }
+
+/* ปุ่มและช่องกรอกไม่สืบทอด line-height จาก body — UA ตั้ง normal ให้เอง
+   ซึ่ง Anuphan คำนวณออกมาเป็น 1.2 เท่า ไม่พอกับสระบนซ้อนวรรณยุกต์ของไทย
+   วัดแล้วหมึกล้นกล่องบรรทัด 0.4–1.3px ที่ขนาด 11–12px (เช่น "เพิ่มหน้า" "เปลี่ยนชุดสี")
+   ตัว control จัดกลางด้วย flex อยู่แล้ว ความสูงของกล่องจึงไม่เปลี่ยนตาม */
+button,
+input,
+select,
+textarea { line-height: var(--lh-sm); }
 
 :focus-visible {
   outline: 2px solid var(--color-primary);

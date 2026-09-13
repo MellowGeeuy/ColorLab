@@ -1855,7 +1855,9 @@
   width: 100%;
   height: 34px;
   padding-inline: var(--space-3);
-  border: 1px solid var(--color-border);
+  /* ขอบคือสิ่งเดียวที่บอกว่าตรงนี้พิมพ์ได้ จึงต้องผ่าน 3:1 ตาม SC 1.4.11
+     --color-border ได้แค่ 1.43:1 บนพื้นของแผงนี้ */
+  border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-md);
   background-color: var(--color-surface);
   color: var(--color-text);
@@ -2305,4 +2307,60 @@ body.is-lib-dragging {
 
 @media (prefers-reduced-motion: reduce) {
   .drag-ghost { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   เตือนเมื่อเนื้อหาของชิ้นสูงเกินกล่อง
+   .lay-item__stage ตัด overflow ทิ้ง ของที่ล้นจึงหายไปโดยไม่มีอะไรบอก
+   ผังบนจอจะไม่ตรงกับไฟล์ที่ส่งออก — ป้ายนี้คือสิ่งเดียวที่ฟ้องเรื่องนั้น
+   -------------------------------------------------------------------------- */
+/* ห้ามใช้ box-shadow ตรงนี้ — .lay-item.is-selected ใช้ box-shadow วาดวงแหวนเลือกอยู่
+   สองกฎ specificity เท่ากัน กฎที่อยู่ทีหลังจะลบวงแหวนทิ้ง ป้ายมุมล่างจึงทำหน้าที่นี้แทน */
+
+/* ป้ายมุมล่างขวา บอกด้วยทั้งไอคอน ข้อความ และสี ไม่ใช่สีอย่างเดียว
+   (กฎเดียวกับที่หน้า Color Theory ของเว็บนี้สอนไว้) */
+.lay-item[data-overflow]::after {
+  content: "เนื้อหาล้น";
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  z-index: 2;
+  padding: 1px var(--space-2);
+  border-start-start-radius: var(--radius-sm);
+  background-color: var(--color-warning);
+  color: var(--color-on-accent);
+  font-size: 0.625rem;
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-sm);
+  pointer-events: none;
+}
+
+.lay-insp__fit {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-warning-soft);
+  color: var(--color-warning-text);
+}
+
+.lay-insp__fit-text {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+}
+
+.lay-insp__fit-text .icon { flex-shrink: 0; margin-block-start: 2px; }
+
+/* กล่องทดสอบที่ใช้วัดความสูงจริงของคอมโพเนนต์ ต้องอยู่นอกสายตาแต่ยังถูกจัดวางจริง
+   display:none ใช้ไม่ได้เพราะจะไม่มีการคำนวณขนาดเลย */
+.lay-fit-probe {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: -99999px;
+  visibility: hidden;
+  pointer-events: none;
 }

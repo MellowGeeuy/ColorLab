@@ -1,0 +1,88 @@
+<!-- @card -->
+<div class="ui-cal">
+  <div class="ui-cal__head"><b>กันยายน 2568</b></div>
+  <div class="ui-cal__grid">
+    <span class="ui-cal__dow">จ</span><span class="ui-cal__dow">อ</span><span class="ui-cal__dow">พ</span>
+    <span class="ui-cal__day">8</span>
+    <span class="ui-cal__day ui-cal__day--today">9</span>
+    <span class="ui-cal__day ui-cal__day--picked">10</span>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <div class="ui-cal" data-part="p1">
+    <div class="ui-cal__head">
+      <button type="button" class="ui-cal__nav" aria-label="เดือนก่อนหน้า">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+      </button>
+      <b class="ui-cal__title">กันยายน 2568</b>
+      <button type="button" class="ui-cal__nav" aria-label="เดือนถัดไป">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+      </button>
+    </div>
+
+    <div class="ui-cal__grid" role="grid" aria-label="กันยายน 2568">
+      <span class="ui-cal__dow">จ</span><span class="ui-cal__dow">อ</span><span class="ui-cal__dow">พ</span>
+      <span class="ui-cal__dow">พฤ</span><span class="ui-cal__dow">ศ</span>
+      <span class="ui-cal__dow ui-cal__dow--off">ส</span><span class="ui-cal__dow ui-cal__dow--off">อา</span>
+
+      <button type="button" class="ui-cal__day ui-cal__day--out">31</button>
+      <button type="button" class="ui-cal__day">1</button>
+      <button type="button" class="ui-cal__day">2</button>
+      <button type="button" class="ui-cal__day">3</button>
+      <button type="button" class="ui-cal__day">4</button>
+      <button type="button" class="ui-cal__day ui-cal__day--off">5</button>
+      <button type="button" class="ui-cal__day ui-cal__day--off">6</button>
+
+      <button type="button" class="ui-cal__day">7</button>
+      <button type="button" class="ui-cal__day ui-cal__day--today" aria-current="date">8</button>
+      <button type="button" class="ui-cal__day ui-cal__day--picked" aria-pressed="true">9</button>
+      <button type="button" class="ui-cal__day ui-cal__day--marked">10<span class="ui-cal__mark" aria-hidden="true"></span></button>
+      <button type="button" class="ui-cal__day" disabled>11</button>
+      <button type="button" class="ui-cal__day ui-cal__day--off">12</button>
+      <button type="button" class="ui-cal__day ui-cal__day--off">13</button>
+    </div>
+
+    <p class="ui-cal__note">
+      วันที่ 11 ปิดรับงาน · จุดใต้ตัวเลขคือวันที่มีนัดหมายอยู่แล้ว
+    </p>
+  </div>
+
+  <div class="ui-cal-range" data-part="p2">
+    <span class="ui-cal-range__label">ช่วงที่เลือก</span>
+    <span class="ui-cal-range__value">9 – 12 ก.ย. 2568 (4 วัน)</span>
+    <button type="button" class="ui-btn ui-btn--sm ui-btn--ghost">ล้างช่วง</button>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="วันนี้ — ขอบวง ไม่ใช่พื้นทึบ จะได้ไม่ชนกับวันที่เลือก">
+  <button type="button" class="ui-cal__day ui-cal__day--today">8</button>
+</div>
+
+<div class="cs-variant" data-variant-label="วันที่เลือก — พื้นสีแบรนด์ ตัวอักษรต้องอ่านออก 4.5:1">
+  <button type="button" class="ui-cal__day ui-cal__day--picked" aria-pressed="true">9</button>
+</div>
+
+<div class="cs-variant" data-variant-label="มีนัดหมาย — จุดใต้ตัวเลข พร้อมคำอธิบายใต้ปฏิทิน">
+  <button type="button" class="ui-cal__day ui-cal__day--marked">10<span class="ui-cal__mark" aria-hidden="true"></span></button>
+</div>
+
+<div class="cs-variant" data-variant-label="เลือกไม่ได้ — ปิดปุ่มจริง และบอกเหตุผลไว้ใต้ปฏิทิน">
+  <button type="button" class="ui-cal__day" disabled>11</button>
+</div>
+
+<div class="cs-variant" data-variant-label="วันหยุด — จางลงแต่ยังอ่านออก 4.5:1">
+  <button type="button" class="ui-cal__day ui-cal__day--off">12</button>
+</div>
+
+<div class="cs-variant" data-variant-label="สรุปช่วงที่เลือก — เขียนเป็นข้อความ ไม่ให้ผู้ใช้นับเอง">
+  <span class="ui-cal-range">
+    <span class="ui-cal-range__label">ช่วงที่เลือก</span>
+    <span class="ui-cal-range__value">9 – 12 ก.ย. 2568 (4 วัน)</span>
+  </span>
+</div>
+<!-- @end -->

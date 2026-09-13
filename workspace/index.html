@@ -8,11 +8,12 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/css/breakpoints.css">
   <link rel="stylesheet" href="../assets/css/design-system.css">
   <link rel="stylesheet" href="../assets/css/app-shell.css">
+  <link rel="stylesheet" href="../assets/css/component-catalog.css">
   <link rel="stylesheet" href="../assets/css/page-specific/workspace.css">
   <link rel="stylesheet" href="../assets/css/page-specific/preview-mock.css">
 </head>
@@ -80,6 +81,13 @@
           <span class="rail__num">2</span>
           <span class="rail__tip">ตัวอักษรกับสี</span>
         </button>
+
+        <button type="button" class="rail__item" role="tab" data-tool="shape" aria-selected="false" tabindex="-1"
+                id="tab-shape" aria-controls="view-shape">
+          <svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg>
+          <span class="rail__num">3</span>
+          <span class="rail__tip">มุมโค้ง</span>
+        </button>
       </nav>
 
       <!-- ---------- CANVAS ---------- -->
@@ -129,6 +137,48 @@
 
               <div class="auto__results" id="auto-results"></div>
               <p class="u-small u-muted" id="auto-status" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+
+          <!-- ===== 3 · SHAPE ===== -->
+          <section class="tool-view" data-view="shape" id="view-shape" role="tabpanel"
+                   aria-labelledby="tab-shape" tabindex="0" hidden>
+            <div class="tool-view__head">
+              <h1 class="tool-view__title">มุมโค้งของทั้งระบบ</h1>
+            </div>
+
+            <p class="tool-view__hint">
+              ตั้งค่าเดียว แล้วทุก component ในหน้า Component Style และผังในหน้า Layout ขยับตามทันที
+              ค่านี้ถูกจำไว้คู่กับชุดสี และออกไปพร้อมกันตอนส่งออก token
+            </p>
+
+            <div class="shape" id="shape-lab">
+              <div class="panel shape__controls">
+                <div class="panel__head"><h2 class="panel__title">ค่าฐาน</h2></div>
+                <div class="panel__body shape__stack">
+                  <div class="field">
+                    <label class="field__label" for="shape-range">
+                      ความโค้ง <span class="u-num" id="shape-value">10px</span>
+                    </label>
+                    <input class="range" type="range" id="shape-range" min="0" max="24" step="1" value="10">
+                  </div>
+
+                  <ul class="shape__scale" id="shape-scale"></ul>
+
+                  <p class="shape__note u-mb-0">
+                    ตั้งค่าเดียวแล้วอีกสองขนาดคิดตามสัดส่วน เพราะความสัมพันธ์ระหว่างขนาด
+                    คือสิ่งที่ทำให้ทั้งระบบดูเป็นชุดเดียวกัน
+                    ส่วนของที่ต้องกลมเสมอ เช่น รูปโปรไฟล์กับจุดสถานะ ใช้ค่าคงที่ ไม่ขยับตาม
+                  </p>
+                </div>
+              </div>
+
+              <div class="panel shape__preview-panel">
+                <div class="panel__head"><h2 class="panel__title">เห็นผลทันที</h2></div>
+                <div class="panel__body">
+                  <div class="cs-preview shape__preview" id="shape-preview"></div>
+                </div>
+              </div>
             </div>
           </section>
 

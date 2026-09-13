@@ -1,0 +1,82 @@
+<!-- @card -->
+<dl class="ui-kv">
+  <div class="ui-kv__row"><dt class="ui-kv__key">เลขที่เอกสาร</dt><dd class="ui-kv__val">DOC-2043</dd></div>
+  <div class="ui-kv__row"><dt class="ui-kv__key">สถานะ</dt><dd class="ui-kv__val">รอตรวจสอบ</dd></div>
+</dl>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <dl class="ui-kv" data-part="p1">
+    <div class="ui-kv__row">
+      <dt class="ui-kv__key">เลขที่เอกสาร</dt>
+      <dd class="ui-kv__val ui-kv__val--num">DOC-2043</dd>
+    </div>
+    <div class="ui-kv__row">
+      <dt class="ui-kv__key">ผู้ยื่น</dt>
+      <dd class="ui-kv__val">
+        <span class="ui-avatar ui-avatar--xs" data-tone="1" aria-hidden="true">ก</span>
+        ผู้ใช้ ก. · ฝ่ายจัดซื้อ
+      </dd>
+    </div>
+    <div class="ui-kv__row">
+      <dt class="ui-kv__key">ยอดรวม</dt>
+      <dd class="ui-kv__val ui-kv__val--num">120,000</dd>
+    </div>
+    <div class="ui-kv__row">
+      <dt class="ui-kv__key">สถานะ</dt>
+      <dd class="ui-kv__val">
+        <span class="ui-badge ui-badge--warning">รอตรวจสอบ</span>
+      </dd>
+    </div>
+    <div class="ui-kv__row">
+      <dt class="ui-kv__key">หมายเหตุ</dt>
+      <dd class="ui-kv__val ui-kv__val--empty">ยังไม่มีหมายเหตุ</dd>
+    </div>
+  </dl>
+
+  <dl class="ui-kv ui-kv--stack" data-part="p2">
+    <div class="ui-kv__row">
+      <dt class="ui-kv__key">ที่อยู่จัดส่ง</dt>
+      <dd class="ui-kv__val">
+        อาคาร ก. ชั้น 12 ห้อง 1204<br>
+        ถนนตัวอย่าง เขตตัวอย่าง 10110
+      </dd>
+    </div>
+    <div class="ui-kv__row">
+      <dt class="ui-kv__key">เงื่อนไขการชำระ</dt>
+      <dd class="ui-kv__val">ชำระภายใน 30 วันหลังได้รับใบแจ้งหนี้</dd>
+    </div>
+  </dl>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="สองคอลัมน์ — ใช้เมื่อค่าสั้นและอ่านไล่ลงมา">
+  <dl class="ui-kv">
+    <div class="ui-kv__row"><dt class="ui-kv__key">เลขที่เอกสาร</dt><dd class="ui-kv__val ui-kv__val--num">DOC-2043</dd></div>
+    <div class="ui-kv__row"><dt class="ui-kv__key">ยอดรวม</dt><dd class="ui-kv__val ui-kv__val--num">120,000</dd></div>
+  </dl>
+</div>
+
+<div class="cs-variant" data-variant-label="ค่าอยู่ใต้ชื่อ — ใช้เมื่อค่ายาวหรือที่แคบ">
+  <dl class="ui-kv ui-kv--stack">
+    <div class="ui-kv__row"><dt class="ui-kv__key">ที่อยู่จัดส่ง</dt>
+      <dd class="ui-kv__val">อาคาร ก. ชั้น 12 ห้อง 1204</dd></div>
+  </dl>
+</div>
+
+<div class="cs-variant" data-variant-label="ค่าเป็นสถานะ — ใช้ป้ายเดียวกับที่ใช้ในตาราง">
+  <dl class="ui-kv">
+    <div class="ui-kv__row"><dt class="ui-kv__key">สถานะ</dt>
+      <dd class="ui-kv__val"><span class="ui-badge ui-badge--warning">รอตรวจสอบ</span></dd></div>
+  </dl>
+</div>
+
+<div class="cs-variant" data-variant-label="ยังไม่มีค่า — เขียนว่ายังไม่มี ไม่ปล่อยว่างให้เดา">
+  <dl class="ui-kv">
+    <div class="ui-kv__row"><dt class="ui-kv__key">หมายเหตุ</dt>
+      <dd class="ui-kv__val ui-kv__val--empty">ยังไม่มีหมายเหตุ</dd></div>
+  </dl>
+</div>
+<!-- @end -->

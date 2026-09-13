@@ -1,0 +1,106 @@
+<!-- @card -->
+<ol class="ui-steps">
+  <li class="ui-step ui-step--done"><span class="ui-step__mark" aria-hidden="true">
+    <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+    <span class="ui-step__text"><b>ข้อมูลผู้ซื้อ</b></span></li>
+  <li class="ui-step ui-step--now" aria-current="step"><span class="ui-step__mark" aria-hidden="true">2</span>
+    <span class="ui-step__text"><b>รายการสินค้า</b></span></li>
+  <li class="ui-step"><span class="ui-step__mark" aria-hidden="true">3</span>
+    <span class="ui-step__text"><b>ตรวจสอบ</b></span></li>
+</ol>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <ol class="ui-steps" data-part="p1">
+    <li class="ui-step ui-step--done">
+      <span class="ui-step__mark" aria-hidden="true">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+      </span>
+      <span class="ui-step__text">
+        <b>ข้อมูลผู้ซื้อ</b>
+        <small>กรอกครบแล้ว · กดเพื่อกลับไปแก้</small>
+      </span>
+    </li>
+
+    <li class="ui-step ui-step--now" aria-current="step">
+      <span class="ui-step__mark" aria-hidden="true">2</span>
+      <span class="ui-step__text">
+        <b>รายการสินค้า</b>
+        <small>กำลังทำอยู่ · เพิ่มไปแล้ว 3 รายการ</small>
+      </span>
+    </li>
+
+    <li class="ui-step ui-step--error">
+      <span class="ui-step__mark" aria-hidden="true">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 7.5V13M12 16.5h.01"/><circle cx="12" cy="12" r="9"/></svg>
+      </span>
+      <span class="ui-step__text">
+        <b>การชำระเงิน</b>
+        <small>บัตรหมดอายุ ต้องแก้ก่อนส่ง</small>
+      </span>
+    </li>
+
+    <li class="ui-step">
+      <span class="ui-step__mark" aria-hidden="true">4</span>
+      <span class="ui-step__text">
+        <b>ตรวจสอบและส่ง</b>
+        <small>ยังไปไม่ถึง</small>
+      </span>
+    </li>
+  </ol>
+
+  <ol class="ui-steps ui-steps--vertical" data-part="p2">
+    <li class="ui-step ui-step--done">
+      <span class="ui-step__mark" aria-hidden="true">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+      </span>
+      <span class="ui-step__text"><b>รับเรื่อง</b><small>วันนี้ 09:12</small></span>
+    </li>
+    <li class="ui-step ui-step--now" aria-current="step">
+      <span class="ui-step__mark" aria-hidden="true">2</span>
+      <span class="ui-step__text"><b>กำลังตรวจเอกสาร</b><small>คาดว่าเสร็จภายในวันนี้</small></span>
+    </li>
+    <li class="ui-step">
+      <span class="ui-step__mark" aria-hidden="true">3</span>
+      <span class="ui-step__text"><b>แจ้งผล</b><small>ยังไปไม่ถึง</small></span>
+    </li>
+  </ol>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ขั้นที่ทำแล้ว — เครื่องหมายถูก กดกลับไปแก้ได้">
+  <ol class="ui-steps"><li class="ui-step ui-step--done">
+    <span class="ui-step__mark" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+    <span class="ui-step__text"><b>ข้อมูลผู้ซื้อ</b></span></li></ol>
+</div>
+
+<div class="cs-variant" data-variant-label="ขั้นปัจจุบัน — เลขในวงทึบ พร้อม aria-current">
+  <ol class="ui-steps"><li class="ui-step ui-step--now" aria-current="step">
+    <span class="ui-step__mark" aria-hidden="true">2</span>
+    <span class="ui-step__text"><b>รายการสินค้า</b></span></li></ol>
+</div>
+
+<div class="cs-variant" data-variant-label="ขั้นที่มีปัญหา — ไอคอนเตือน ไม่ใช่แค่เปลี่ยนเป็นสีแดง">
+  <ol class="ui-steps"><li class="ui-step ui-step--error">
+    <span class="ui-step__mark" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/></svg></span>
+    <span class="ui-step__text"><b>การชำระเงิน</b><small>บัตรหมดอายุ</small></span></li></ol>
+</div>
+
+<div class="cs-variant" data-variant-label="ขั้นที่ยังไม่ถึง — วงโปร่ง ยังกดข้ามไปไม่ได้">
+  <ol class="ui-steps"><li class="ui-step">
+    <span class="ui-step__mark" aria-hidden="true">4</span>
+    <span class="ui-step__text"><b>ตรวจสอบและส่ง</b></span></li></ol>
+</div>
+
+<div class="cs-variant" data-variant-label="แนวตั้ง — ใช้เมื่อแต่ละขั้นมีคำอธิบายยาว หรือที่แคบ">
+  <ol class="ui-steps ui-steps--vertical">
+    <li class="ui-step ui-step--done"><span class="ui-step__mark" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+      <span class="ui-step__text"><b>รับเรื่อง</b><small>วันนี้ 09:12</small></span></li>
+    <li class="ui-step ui-step--now"><span class="ui-step__mark" aria-hidden="true">2</span>
+      <span class="ui-step__text"><b>กำลังตรวจเอกสาร</b></span></li>
+  </ol>
+</div>
+<!-- @end -->

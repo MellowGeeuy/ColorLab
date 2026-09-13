@@ -1,0 +1,83 @@
+<!-- @card -->
+<div class="ui-menu">
+  <div class="ui-menu__item"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M6 16 18 4l2 2L8 18z"/></svg>แก้ไข</div>
+  <div class="ui-menu__item"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8z"/><path d="M5 16V5h11"/></svg>ทำสำเนา</div>
+  <div class="ui-menu__sep" role="separator"></div>
+  <div class="ui-menu__item ui-menu__item--danger"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13"/></svg>ลบ</div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-menu-demo">
+  <button type="button" class="ui-btn ui-btn--secondary" aria-haspopup="menu" aria-expanded="true" data-part="p1">
+    การกระทำ
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+
+  <div class="ui-menu" role="menu" aria-label="การกระทำกับเอกสารนี้" data-part="p2">
+    <div class="ui-menu__label">เอกสาร DOC-2043</div>
+
+    <div class="ui-menu__item" role="menuitem" data-state="hover">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M6 16 18 4l2 2L8 18z"/></svg>
+      <span class="ui-menu__text">แก้ไข</span>
+      <kbd class="ui-menu__key">E</kbd>
+    </div>
+
+    <div class="ui-menu__item" role="menuitem">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8z"/><path d="M5 16V5h11"/></svg>
+      <span class="ui-menu__text">ทำสำเนา</span>
+      <kbd class="ui-menu__key">D</kbd>
+    </div>
+
+    <div class="ui-menu__item" role="menuitem" aria-haspopup="true">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <span class="ui-menu__text">ย้ายไปโฟลเดอร์</span>
+      <svg class="ui-icon ui-menu__more" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </div>
+
+    <div class="ui-menu__item" role="menuitem" aria-disabled="true">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0-4.5-4.5M12 16l4.5-4.5"/><path d="M4 18v2h16v-2"/></svg>
+      <span class="ui-menu__text">
+        ส่งออกเป็น PDF
+        <small>ต้องอนุมัติก่อนจึงจะส่งออกได้</small>
+      </span>
+    </div>
+
+    <div class="ui-menu__sep" role="separator"></div>
+
+    <div class="ui-menu__item ui-menu__item--danger" role="menuitem">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13"/></svg>
+      <span class="ui-menu__text">ลบเอกสาร</span>
+    </div>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="รายการปกติ — ไอคอนซ้าย ปุ่มลัดขวา">
+  <div class="ui-menu__item"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M6 16 18 4l2 2L8 18z"/></svg>
+    <span class="ui-menu__text">แก้ไข</span><kbd class="ui-menu__key">E</kbd></div>
+</div>
+
+<div class="cs-variant" data-variant-label="ตัวที่ชี้อยู่ — พื้นเปลี่ยน ใช้ได้ทั้งเมาส์และลูกศร">
+  <div class="ui-menu__item" data-state="hover"><span class="ui-menu__text">ทำสำเนา</span></div>
+</div>
+
+<div class="cs-variant" data-variant-label="มีเมนูย่อย — ลูกศรขวาบอกว่ายังมีต่อ">
+  <div class="ui-menu__item" aria-haspopup="true"><span class="ui-menu__text">ย้ายไปโฟลเดอร์</span>
+    <svg class="ui-icon ui-menu__more" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></div>
+</div>
+
+<div class="cs-variant" data-variant-label="กดไม่ได้ — บอกเหตุผลไว้ในรายการ ไม่ปล่อยให้เดา">
+  <div class="ui-menu__item" aria-disabled="true">
+    <span class="ui-menu__text">ส่งออกเป็น PDF<small>ต้องอนุมัติก่อนจึงจะส่งออกได้</small></span></div>
+</div>
+
+<div class="cs-variant" data-variant-label="การกระทำที่ทำลาย — อยู่ล่างสุด แยกด้วยเส้น">
+  <div class="ui-menu">
+    <div class="ui-menu__item"><span class="ui-menu__text">ทำสำเนา</span></div>
+    <div class="ui-menu__sep" role="separator"></div>
+    <div class="ui-menu__item ui-menu__item--danger"><span class="ui-menu__text">ลบเอกสาร</span></div>
+  </div>
+</div>
+<!-- @end -->

@@ -1,0 +1,82 @@
+<!-- @card -->
+<div class="ui-chart">
+  <div class="ui-chart__plot">
+    <span class="ui-chart__col" style="--ui-col:45%"><span class="ui-chart__fill"></span></span>
+    <span class="ui-chart__col" style="--ui-col:70%"><span class="ui-chart__fill"></span></span>
+    <span class="ui-chart__col ui-chart__col--now" style="--ui-col:92%"><span class="ui-chart__fill"></span></span>
+  </div>
+  <div class="ui-chart__axis"><span>ม.ค.</span><span>ก.พ.</span><span>มี.ค.</span></div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <figure class="ui-chart" data-part="p1">
+    <figcaption class="ui-chart__head">
+      <b>ยอดที่ปิดได้รายเดือน</b>
+      <span class="ui-chart__sub">หน่วย: พันบาท · เดือนล่าสุดยังไม่จบเดือน</span>
+    </figcaption>
+    <div class="ui-chart__plot">
+      <span class="ui-chart__col" style="--ui-col:45%"><span class="ui-chart__fill"></span><span class="ui-chart__num">45</span></span>
+      <span class="ui-chart__col" style="--ui-col:62%"><span class="ui-chart__fill"></span><span class="ui-chart__num">62</span></span>
+      <span class="ui-chart__col" style="--ui-col:38%"><span class="ui-chart__fill"></span><span class="ui-chart__num">38</span></span>
+      <span class="ui-chart__col" style="--ui-col:70%"><span class="ui-chart__fill"></span><span class="ui-chart__num">70</span></span>
+      <span class="ui-chart__col ui-chart__col--now" style="--ui-col:92%"><span class="ui-chart__fill"></span><span class="ui-chart__num">92</span></span>
+    </div>
+    <div class="ui-chart__axis">
+      <span>ม.ค.</span><span>ก.พ.</span><span>มี.ค.</span><span>เม.ย.</span><span>พ.ค.</span>
+    </div>
+    <ul class="ui-chart__legend">
+      <li class="ui-chart__key"><span class="ui-chart__swatch" data-tone="1" aria-hidden="true"></span>ปิดได้แล้ว</li>
+      <li class="ui-chart__key"><span class="ui-chart__swatch ui-chart__swatch--now" aria-hidden="true"></span>เดือนที่ยังไม่จบ</li>
+    </ul>
+  </figure>
+
+  <figure class="ui-chart ui-chart--split" data-part="p2">
+    <figcaption class="ui-chart__head">
+      <b>สัดส่วนงานตามสถานะ</b>
+      <span class="ui-chart__sub">รวม 248 งาน</span>
+    </figcaption>
+    <div class="ui-chart__bar" role="img" aria-label="รอตรวจสอบ 52%, กำลังทำ 31%, เสร็จแล้ว 17%">
+      <span class="ui-chart__seg" data-tone="1" style="width:52%"></span>
+      <span class="ui-chart__seg" data-tone="2" style="width:31%"></span>
+      <span class="ui-chart__seg" data-tone="3" style="width:17%"></span>
+    </div>
+    <ul class="ui-chart__legend">
+      <li class="ui-chart__key"><span class="ui-chart__swatch" data-tone="1" aria-hidden="true"></span>รอตรวจสอบ <b>52%</b></li>
+      <li class="ui-chart__key"><span class="ui-chart__swatch" data-tone="2" aria-hidden="true"></span>กำลังทำ <b>31%</b></li>
+      <li class="ui-chart__key"><span class="ui-chart__swatch" data-tone="3" aria-hidden="true"></span>เสร็จแล้ว <b>17%</b></li>
+    </ul>
+  </figure>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="แท่ง — เทียบค่าข้ามช่วงเวลา ตัวเลขอยู่บนแท่ง">
+  <div class="ui-chart"><div class="ui-chart__plot">
+    <span class="ui-chart__col" style="--ui-col:45%"><span class="ui-chart__fill"></span><span class="ui-chart__num">45</span></span>
+    <span class="ui-chart__col" style="--ui-col:70%"><span class="ui-chart__fill"></span><span class="ui-chart__num">70</span></span>
+  </div></div>
+</div>
+
+<div class="cs-variant" data-variant-label="ช่วงที่ยังไม่จบ — ลายทแยงบอกว่ายังไม่ใช่ค่าสุดท้าย">
+  <div class="ui-chart"><div class="ui-chart__plot">
+    <span class="ui-chart__col ui-chart__col--now" style="--ui-col:92%"><span class="ui-chart__fill"></span><span class="ui-chart__num">92</span></span>
+  </div></div>
+</div>
+
+<div class="cs-variant" data-variant-label="แถบสัดส่วน — ใช้เมื่อรวมกันได้ 100%">
+  <div class="ui-chart__bar" role="img" aria-label="ตัวอย่าง">
+    <span class="ui-chart__seg" data-tone="1" style="width:52%"></span>
+    <span class="ui-chart__seg" data-tone="2" style="width:31%"></span>
+    <span class="ui-chart__seg" data-tone="3" style="width:17%"></span>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="คำอธิบายสี — ต้องมีเสมอ สีอย่างเดียวบอกไม่ได้ว่าคืออะไร">
+  <ul class="ui-chart__legend">
+    <li class="ui-chart__key"><span class="ui-chart__swatch" data-tone="1" aria-hidden="true"></span>รอตรวจสอบ <b>52%</b></li>
+    <li class="ui-chart__key"><span class="ui-chart__swatch" data-tone="2" aria-hidden="true"></span>กำลังทำ <b>31%</b></li>
+  </ul>
+</div>
+<!-- @end -->

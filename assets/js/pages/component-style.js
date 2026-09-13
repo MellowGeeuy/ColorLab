@@ -13,7 +13,7 @@ import { createSavedPaletteList } from '../modules/saved-palette-list.js';
 import { askConfirm } from '../modules/confirm-dialog.js';
 import { initOrbitDock } from '../modules/orbit-dock.js';
 import { createPaletteStore } from '../modules/palette-store.js';
-import { buildPaletteTokens } from '../utils/palette-tokens.js';
+import { buildPaletteTokens, buildRadiusTokens } from '../utils/palette-tokens.js';
 import {
   COMPONENTS, GROUPS, bySlug, loadMarkup, loadComponentCss, collectColorTokens,
 } from '../modules/component-catalog.js';
@@ -36,7 +36,10 @@ const INLINE_VARIANTS = new Set(['button', 'badge', 'field', 'skeleton', 'pagina
 const icon = (id, cls = 'icon') => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
 
 /** ชื่อภายในของหน้า (--pv-) กับชื่อที่ผู้ใช้จะได้ไปใช้ (--color-) ต้องแปลงที่เดียวเท่านั้น */
-const toPublic = (name) => name.replace('--pv-', '--color-');
+/* มุมโค้งเป็นคนละตระกูลกับสี ชื่อสาธารณะจึงเป็น --radius-* ไม่ใช่ --color-radius-* */
+const toPublic = (name) => (name.startsWith('--pv-radius-')
+  ? name.replace('--pv-radius-', '--radius-')
+  : name.replace('--pv-', '--color-'));
 
 function refreshTokens() {
   const { tokens: built } = buildPaletteTokens(store.getPalette(), store.getTheme());
@@ -50,6 +53,16 @@ function refreshTokens() {
   if (!publicTokens['--color-danger-hover']) {
     publicTokens['--color-danger-hover'] = built['--pv-danger-hover'] ?? built['--pv-danger'];
   }
+
+  /* มุมโค้งที่ผู้ใช้ตั้งไว้ — ใส่สองชื่อ
+     --radius-*    ชื่อสาธารณะที่ส่งออกไปกับชุด token
+     --cs-radius-* ชื่อที่ CSS ของคาตาล็อกอ่านจริง ต้องตั้งบน element ของพรีวิวโดยตรง
+                   เพราะ custom property ที่ประกาศไว้ที่ :root ถูกคำนวณค่าตั้งแต่ตรงนั้น
+                   การเขียน var() ซ้อนใน :root จึงไม่ไหลตามค่าที่ตั้งทีหลังบน scope */
+  Object.entries(buildRadiusTokens(store.getRadius())).forEach(([name, value]) => {
+    publicTokens[toPublic(name)] = value;
+    publicTokens[name.replace('--pv-radius-', '--cs-radius-')] = value;
+  });
 }
 
 /** เขียน token ลงเฉพาะกล่องพรีวิว ไม่ใช่ :root — ไม่งั้น UI ของเครื่องมือจะเปลี่ยนสีตาม palette ไปด้วย */

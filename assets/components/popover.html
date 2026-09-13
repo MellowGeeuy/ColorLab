@@ -1,0 +1,82 @@
+<!-- @card -->
+<div class="ui-pop">
+  <div class="ui-pop__head"><b>เปลี่ยนผู้รับผิดชอบ</b></div>
+  <p class="ui-pop__body">เลือกคนที่จะรับงานนี้ต่อ</p>
+  <div class="ui-pop__foot">
+    <span class="ui-btn ui-btn--sm ui-btn--ghost">ยกเลิก</span>
+    <span class="ui-btn ui-btn--sm">บันทึก</span>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-pop-demo">
+  <button type="button" class="ui-btn ui-btn--secondary" aria-expanded="true" aria-haspopup="dialog" data-part="p1">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+    เปลี่ยนผู้รับผิดชอบ
+  </button>
+
+  <div class="ui-pop" role="dialog" aria-label="เปลี่ยนผู้รับผิดชอบ" data-part="p2">
+    <div class="ui-pop__arrow" aria-hidden="true"></div>
+
+    <header class="ui-pop__head">
+      <b>เปลี่ยนผู้รับผิดชอบ</b>
+      <button type="button" class="ui-pop__x" aria-label="ปิด">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="ui-pop__body">
+      <div class="ui-listbox" role="listbox" aria-label="ผู้รับผิดชอบ">
+        <div class="ui-listbox__opt" role="option" aria-selected="true">
+          <span class="ui-avatar ui-avatar--xs" data-tone="1" aria-hidden="true">ก</span>
+          <span class="ui-listbox__text"><b>ผู้ใช้ ก.</b><small>งานค้าง 4 ชิ้น</small></span>
+          <svg class="ui-icon ui-listbox__tick" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+        </div>
+        <div class="ui-listbox__opt" role="option" aria-selected="false">
+          <span class="ui-avatar ui-avatar--xs" data-tone="2" aria-hidden="true">ข</span>
+          <span class="ui-listbox__text"><b>ผู้ใช้ ข.</b><small>งานค้าง 1 ชิ้น</small></span>
+        </div>
+      </div>
+      <p class="ui-pop__note">ผู้รับผิดชอบคนเดิมจะได้รับแจ้งเตือนว่ามีการเปลี่ยน</p>
+    </div>
+
+    <footer class="ui-pop__foot">
+      <button type="button" class="ui-btn ui-btn--sm ui-btn--ghost">ยกเลิก</button>
+      <button type="button" class="ui-btn ui-btn--sm">บันทึกการเปลี่ยน</button>
+    </footer>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="มีปุ่มข้างใน — ต่างจาก Tooltip ที่ห้ามมีอะไรให้กด">
+  <div class="ui-pop" style="position:static;max-width:230px">
+    <div class="ui-pop__head"><b>เปลี่ยนผู้รับผิดชอบ</b></div>
+    <div class="ui-pop__foot">
+      <button type="button" class="ui-btn ui-btn--sm ui-btn--ghost">ยกเลิก</button>
+      <button type="button" class="ui-btn ui-btn--sm">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ลูกศรชี้ต้นทาง — บอกว่าเปิดมาจากปุ่มไหน">
+  <div class="ui-pop" style="position:static;max-width:180px">
+    <div class="ui-pop__arrow" aria-hidden="true"></div>
+    <p class="ui-pop__body">เลือกคนที่จะรับงานนี้ต่อ</p>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="คำอธิบายเพิ่ม — บอกผลที่จะตามมาก่อนกดยืนยัน">
+  <p class="ui-pop__note">ผู้รับผิดชอบคนเดิมจะได้รับแจ้งเตือนว่ามีการเปลี่ยน</p>
+</div>
+
+<div class="cs-variant" data-variant-label="หัวกล่อง — มีปุ่มปิดเสมอ เพราะกดข้างนอกอย่างเดียวไม่พอ">
+  <div class="ui-pop__head">
+    <b>เปลี่ยนผู้รับผิดชอบ</b>
+    <button type="button" class="ui-pop__x" aria-label="ปิด">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+</div>
+<!-- @end -->

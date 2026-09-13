@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Color Theory — ColorLab</title>
-  <meta name="description" content="ทฤษฎีสีสำหรับงาน UX/UI อธิบายด้วยภาพ ตัวอย่าง และอนิเมชัน อ่านจบทีละเรื่องแล้วลงมือต่อใน Colorground">
+  <meta name="description" content="ทฤษฎีสีสำหรับงาน UX/UI สิบเอ็ดตอน แยกทีละเรื่อง อธิบายด้วยภาพ ตัวอย่างที่ลองเองได้ และค่าที่วัดจริง">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/breakpoints.css">
   <link rel="stylesheet" href="assets/css/design-system.css">
@@ -31,10 +31,10 @@
           <a class="groundnav__item" href="./" style="--dot-h:8" aria-current="page">
             <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-book"/></svg>Color Theory
           </a>
-          <a class="groundnav__item" href="component-style/" style="--dot-h:92">
+          <a class="groundnav__item" href="./component-style/" style="--dot-h:92">
             <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-layers"/></svg>Component Style
           </a>
-          <a class="groundnav__item" href="layout/" style="--dot-h:150">
+          <a class="groundnav__item" href="./layout/" style="--dot-h:150">
             <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
           </a>
         </nav>
@@ -55,7 +55,7 @@
             <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
           </button>
 
-          <a class="topnav__item topnav__item--hero" href="workspace/" aria-label="Colorground" title="Colorground">
+          <a class="topnav__item topnav__item--hero" href="./workspace/" aria-label="Colorground" title="Colorground">
             <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
             <span class="topnav__label">Colorground</span>
           </a>
@@ -63,903 +63,151 @@
       </div>
     </header>
 
-    <div class="read-progress" aria-hidden="true"><div class="read-progress__bar" id="progress-bar"></div></div>
-    <div class="toc-scrim" id="toc-scrim"></div>
-
-    <div class="reader">
-
-      <nav class="toc" id="toc" aria-label="สารบัญหัวข้อ">
-        <div class="toc__group">พื้นฐาน</div>
-        <ul class="toc__list">
-          <li class="toc__item"><a class="toc__link" href="#intro" style="--dot-h:8"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">สีทำงานก่อนตัวอักษร</span></a></li>
-          <li class="toc__item"><a class="toc__link" href="#fundamentals" style="--dot-h:28"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">สามแกนของสี</span></a></li>
-          <li class="toc__item"><a class="toc__link" href="#color-models" style="--dot-h:45"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">Color Models</span></a></li>
-        </ul>
-        <div class="toc__group">ทฤษฎีสี</div>
-        <ul class="toc__list">
-          <li class="toc__item"><a class="toc__link" href="#harmony" style="--dot-h:92"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">วงล้อสี &amp; Harmony</span></a></li>
-          <li class="toc__item"><a class="toc__link" href="#psychology" style="--dot-h:150"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">สีกับความรู้สึก</span></a></li>
-        </ul>
-        <div class="toc__group">ระบบสีใน UI</div>
-        <ul class="toc__list">
-          <li class="toc__item"><a class="toc__link" href="#ui-roles" style="--dot-h:172"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">สี่บทบาทของสี</span></a></li>
-          <li class="toc__item"><a class="toc__link" href="#scale-tokens" style="--dot-h:196"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">จากสีเดียวสู่สเกล</span></a></li>
-        </ul>
-        <div class="toc__group">การเข้าถึง</div>
-        <ul class="toc__list">
-          <li class="toc__item"><a class="toc__link" href="#contrast" style="--dot-h:214"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">Contrast &amp; WCAG</span></a></li>
-          <li class="toc__item"><a class="toc__link" href="#dark-mode" style="--dot-h:248"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">Dark Mode</span></a></li>
-        </ul>
-        <div class="toc__group">ลงมือใช้จริง</div>
-        <ul class="toc__list">
-          <li class="toc__item"><a class="toc__link" href="#applying" style="--dot-h:286"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">สัดส่วนการใช้สี</span></a></li>
-          <li class="toc__item"><a class="toc__link" href="#mistakes" style="--dot-h:322"><span class="toc__dot" aria-hidden="true"></span> <span class="toc__text">ก่อนแก้ / หลังแก้</span></a></li>
-        </ul>
-      </nav>
-
+    <div class="reader reader--hub">
       <main class="reader__main" id="reader-main">
         <div class="prose">
 
-          <header class="page-head">
-            <span class="page-head__eyebrow">UX/UI Design Reference</span>
-            <h1 class="page-head__title">ทฤษฎีสีสำหรับงานอินเทอร์เฟซ</h1>
-            <p class="page-head__lead">
-              สิบเอ็ดเรื่องสั้น เรื่องละไม่กี่บรรทัด ที่เหลืออธิบายด้วยภาพและตัวอย่างที่ขยับได้
-              อ่านจบเรื่องไหนแล้วกดลิงก์ท้ายเรื่องเพื่อลงมือทำต่อใน Colorground ด้วยชุดสีของคุณเอง
+          <header class="hubhead">
+            <span class="hubhead__eyebrow">UX/UI Design Reference</span>
+            <h1 class="hubhead__title">ทฤษฎีสีสำหรับงานอินเทอร์เฟซ</h1>
+            <p class="hubhead__lead">
+              สิบเอ็ดตอน แยกกันคนละหน้า อ่านเรียงหรือเลือกเฉพาะเรื่องที่ต้องใช้ก็ได้
+              ทุกตอนมีตัวอย่างที่กดเล่นได้ ค่าสีที่วัดจริง ข้อผิดที่เจอบ่อย และเช็กลิสต์ก่อนส่งงาน
             </p>
+            <div class="hubhead__actions">
+              <a class="btn btn--primary" href="theory/color-first/">เริ่มอ่านตอนแรก</a>
+              <a class="btn" href="workspace/">ข้ามไปสร้างชุดสีเลย</a>
+            </div>
           </header>
 
-          <!-- ========== 01 ========== -->
-          <section class="section" id="intro">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">01</span><span class="section__rule"></span></div>
-              <h2 class="section__title">สีทำงานก่อนตัวอักษร</h2>
-              <p class="section__intro">
-                สายตาแยกความต่างของสีได้ก่อนจะอ่านคำแรกจบ หน้าจอที่วางสีเป็นระบบจึงบอกได้ทันทีว่า
-                “กดตรงนี้” โดยไม่ต้องให้ผู้ใช้ไล่อ่านทั้งหน้าก่อน
-              </p>
-            </div>
-
-            <figure class="figure" data-reveal>
-              <div class="figure__stage">
-                <div class="gaze">
-                  <div>
-                    <span class="fig-label fig-label--bad">ทุกอย่างน้ำหนักเท่ากัน</span>
-                    <div class="gaze__screen">
-                      <div class="gaze__bar gaze__bar--title"></div>
-                      <div class="gaze__bar"></div>
-                      <div class="gaze__bar gaze__bar--short"></div>
-                      <div class="gaze__bar"></div>
-                      <div class="gaze__row">
-                        <div class="gaze__btn"></div>
-                        <div class="gaze__btn"></div>
-                      </div>
-                      <span class="gaze__dot" aria-hidden="true"></span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <span class="fig-label fig-label--good">มีปุ่มหลักเพียงจุดเดียว</span>
-                    <div class="gaze__screen gaze__screen--system">
-                      <div class="gaze__bar gaze__bar--title"></div>
-                      <div class="gaze__bar"></div>
-                      <div class="gaze__bar gaze__bar--short"></div>
-                      <div class="gaze__bar"></div>
-                      <div class="gaze__row">
-                        <div class="gaze__btn gaze__btn--primary"></div>
-                        <div class="gaze__btn"></div>
-                      </div>
-                      <span class="gaze__dot" aria-hidden="true"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>
-                <span>วงกลมคือสายตาผู้ใช้ ฝั่งซ้ายต้องกวาดหาไปทีละบล็อกเพราะไม่มีอะไรเด่นกว่ากัน
-                  ฝั่งขวามีพื้นทึบชิ้นเดียวในหน้า สายตาจึงลงไปที่ปุ่มตั้งแต่วินาทีแรก</span>
-              </figcaption>
-            </figure>
-
-            <div class="note note--tip">
-              <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
-              <p>กฎข้อเดียวที่ต้องจำทั้งหน้านี้ — สีต้องไม่เป็นช่องทางเดียวในการสื่อความหมาย
-                  ต้องมีข้อความ ไอคอน หรือรูปทรงกำกับเสมอ</p>
+          <section class="hubgroup">
+            <h2 class="hubgroup__title">พื้นฐาน</h2>
+            <div class="hubgroup__list">
+            <a class="hubcard" href="theory/color-first/" style="--dot-h:8">
+              <span class="hubcard__no">01</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">สีทำงานก่อนตัวหนังสือ</span>
+                <span class="hubcard__desc">ทำไมสายตาถึงอ่านสีก่อนอ่านคำ และทำไมสีถึงห้ามเป็นช่องทางเดียวที่บอกความหมาย</span>
+                <span class="hubcard__meta">พื้นฐาน · อ่าน ~6 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
+            <a class="hubcard" href="theory/three-axes/" style="--dot-h:28">
+              <span class="hubcard__no">02</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">สามแกนของสี</span>
+                <span class="hubcard__desc">เนื้อสี ความสด ความสว่าง — สามค่าที่อธิบายทุกสีได้ และแกนไหนตัดสินว่างานใช้ได้จริง</span>
+                <span class="hubcard__meta">พื้นฐาน · อ่าน ~7 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
+            <a class="hubcard" href="theory/color-models/" style="--dot-h:45">
+              <span class="hubcard__no">03</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">Color Models เลือกให้ถูกงาน</span>
+                <span class="hubcard__desc">HEX RGB HSL OKLCH ต่างกันตรงไหน และทำไมความสว่างของ HSL ถึงเชื่อไม่ได้</span>
+                <span class="hubcard__meta">พื้นฐาน · อ่าน ~7 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
             </div>
           </section>
 
-          <!-- ========== 02 ========== -->
-          <section class="section" id="fundamentals">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">02</span><span class="section__rule"></span></div>
-              <h2 class="section__title">สามแกนของสี</h2>
-              <p class="section__intro">
-                ทุกสีอธิบายได้ด้วยสามค่า — เนื้อสี ความสด และความสว่าง
-                นักออกแบบทำงานด้วย HSL เพราะขยับได้ทีละแกนโดยรู้ล่วงหน้าว่าจะได้อะไร
-              </p>
-            </div>
-
-            <figure class="figure" data-reveal>
-              <div class="figure__stage">
-                <div class="axes">
-                  <div class="axis axis--hue">
-                    <div class="axis__name">Hue <small>เนื้อสี 0–360</small></div>
-                    <div class="axis__track axis__track--hue"><span class="axis__knob"></span></div>
-                    <div class="axis__chip"></div>
-                  </div>
-                  <div class="axis axis--sat">
-                    <div class="axis__name">Saturation <small>ความสด 0–100%</small></div>
-                    <div class="axis__track axis__track--sat"><span class="axis__knob"></span></div>
-                    <div class="axis__chip"></div>
-                  </div>
-                  <div class="axis axis--light">
-                    <div class="axis__name">Lightness <small>ความสว่าง 0–100%</small></div>
-                    <div class="axis__track axis__track--light"><span class="axis__knob"></span></div>
-                    <div class="axis__chip"></div>
-                  </div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
-                <span>แต่ละแถวขยับทีละแกนโดยล็อกอีกสองแกนไว้ — เนื้อสีเปลี่ยนชนิดของสี
-                  ความสดเปลี่ยนความจัดจ้าน ความสว่างเปลี่ยนว่าอ่านออกหรือไม่</span>
-              </figcaption>
-            </figure>
-
-            <div class="tool">
-              <div class="tool__header">
-                <svg class="icon icon--lg" aria-hidden="true"><use href="#i-sliders"/></svg> ลองปรับเอง
-                <span class="tool__tag">ลากสไลเดอร์เพื่อดูผล</span>
-              </div>
-              <div class="tool__body">
-                <div class="hsl-demo">
-                  <div class="hsl-demo__controls">
-                    <div class="hsl-demo__row">
-                      <label class="field__label" for="hsl-hue">Hue</label>
-                      <input type="range" class="range range--hue" id="hsl-hue" min="0" max="360" value="220">
-                      <span class="hsl-demo__value" id="hsl-hue-value">220</span>
-                    </div>
-                    <div class="hsl-demo__row">
-                      <label class="field__label" for="hsl-sat">Saturation</label>
-                      <input type="range" class="range" id="hsl-sat" min="0" max="100" value="75">
-                      <span class="hsl-demo__value" id="hsl-sat-value">75%</span>
-                    </div>
-                    <div class="hsl-demo__row">
-                      <label class="field__label" for="hsl-light">Lightness</label>
-                      <input type="range" class="range" id="hsl-light" min="0" max="100" value="52">
-                      <span class="hsl-demo__value" id="hsl-light-value">52%</span>
-                    </div>
-                    <p class="u-small u-muted u-mb-0">
-                      HEX: <code id="hsl-hex">#3B82F6</code> &nbsp;·&nbsp; CSS: <code id="hsl-value">hsl(220 75% 52%)</code>
-                    </p>
-                  </div>
-                  <div class="hsl-demo__preview" id="hsl-preview">#3B82F6</div>
-                </div>
-              </div>
-            </div>
-
-            <figure class="figure">
-              <div class="figure__stage">
-                <div class="steps__use">
-                  <div class="steps__use-item"><b>Tint</b> สี + ขาว · ความสว่างขึ้น ความสดมักลด<br>ใช้กับพื้นหลังอ่อนและสถานะ hover</div>
-                  <div class="steps__use-item"><b>Shade</b> สี + ดำ · ความสว่างลด<br>ใช้กับสีตัวอักษรและปุ่มตอนกด</div>
-                  <div class="steps__use-item"><b>Tone</b> สี + เทา · ความสดลด<br>ใช้เมื่ออยากได้สีที่สุขุม ไม่แสบตา</div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
-                <span>สามคำนี้คือการขยับแกนเดิม ไม่ใช่สีใหม่ — รู้ว่ากำลังขยับแกนไหนก็เดาผลได้ทันที</span>
-              </figcaption>
-            </figure>
-          </section>
-
-          <!-- ========== 03 ========== -->
-          <section class="section" id="color-models">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">03</span><span class="section__rule"></span></div>
-              <h2 class="section__title">Color Models — เลือกให้ถูกงาน</h2>
-              <p class="section__intro">
-                HSL ปรับง่ายแต่มีจุดอ่อนข้อเดียวที่สำคัญมาก: ค่าความสว่างเท่ากันไม่ได้แปลว่าตาเห็นสว่างเท่ากัน
-                OKLCH เกิดมาเพื่อแก้เรื่องนี้โดยเฉพาะ
-              </p>
-            </div>
-
-            <figure class="figure" data-reveal>
-              <div class="figure__stage">
-                <div class="ramps">
-                  <div class="ramp-row">
-                    <span class="fig-label">HSL — ตั้ง Lightness ไว้ 55% เท่ากันทุกจุด</span>
-                    <div class="ramp-bar ramp-bar--hsl"></div>
-                    <div class="ramp-bar ramp-bar--hsl ramp-bar--mono"></div>
-                    <p class="ramp-row__note">แถบล่างคือแถบเดียวกันที่ถอดสีออกเหลือแต่ความสว่าง
-                      — ช่วงเหลืองสว่างพุ่งขึ้นชัดเจน ทั้งที่ตัวเลขบอกว่าเท่ากันหมด</p>
-                  </div>
-
-                  <div class="ramp-row">
-                    <span class="fig-label">OKLCH — ตั้งความสว่างไว้ 55% เท่ากันทุกจุด</span>
-                    <div class="ramp-bar ramp-bar--oklch"></div>
-                    <div class="ramp-bar ramp-bar--oklch ramp-bar--mono"></div>
-                    <p class="ramp-row__note">แถบล่างเรียบเสมอกันตลอด — ความสว่างที่ตาเห็นตรงกับตัวเลขจริง
-                      สเกลที่สร้างจากโมเดลนี้จึงไม่มีขั้นไหนโดดออกมา</p>
-                  </div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-contrast"/></svg>
-                <span>วิธีตรวจงานตัวเองอย่างเร็ว: ถอดสีออกให้เหลือขาวดำ ถ้าลำดับความเข้มยังอ่านรู้เรื่อง แปลว่าระบบสีแข็งแรง</span>
-              </figcaption>
-            </figure>
-
-            <div class="table-wrap">
-              <table class="table">
-                <thead><tr><th>โมเดล</th><th>เด่นที่</th><th>ข้อจำกัด</th></tr></thead>
-                <tbody>
-                  <tr><td><strong>HEX</strong></td><td>สั้น คัดลอกง่าย รองรับทุกที่</td><td>อ่านแล้วเดาไม่ออกว่าสีอะไร</td></tr>
-                  <tr><td><strong>RGB</strong></td><td>ตรงกับวิธีที่จอแสดงผล รองรับ alpha</td><td>ไม่สอดคล้องกับการรับรู้ของสายตา</td></tr>
-                  <tr><td><strong>HSL</strong></td><td>ปรับทีละแกนได้ เหมาะกับสร้างสเกล</td><td>ความสว่างเท่ากันแต่ตาเห็นไม่เท่ากัน</td></tr>
-                  <tr><td><strong>OKLCH</strong></td><td>ความสว่างตรงกับที่ตาเห็นจริง ไล่เฉดไม่ขุ่น</td><td>เบราว์เซอร์เก่ามากต้องมี fallback</td></tr>
-                </tbody>
-              </table>
+          <section class="hubgroup">
+            <h2 class="hubgroup__title">ทฤษฎีสี</h2>
+            <div class="hubgroup__list">
+            <a class="hubcard" href="theory/harmony/" style="--dot-h:92">
+              <span class="hubcard__no">04</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">วงล้อสีและชุดสีที่เข้ากัน</span>
+                <span class="hubcard__desc">สูตร harmony เจ็ดแบบบนวงล้อ ใช้กับงานจริงอย่างไร และทำไมสูตรถึงไม่การันตีว่าอ่านออก</span>
+                <span class="hubcard__meta">ทฤษฎีสี · อ่าน ~8 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
+            <a class="hubcard" href="theory/psychology/" style="--dot-h:150">
+              <span class="hubcard__no">05</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">สีกับความรู้สึก</span>
+                <span class="hubcard__desc">ความหมายของสีมาจากบริบทและวัฒนธรรม ไม่ใช่กฎสากล พร้อมตารางเทียบรายภูมิภาค</span>
+                <span class="hubcard__meta">ทฤษฎีสี · อ่าน ~6 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
             </div>
           </section>
 
-          <!-- ========== 04 ========== -->
-          <section class="section" id="harmony">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">04</span><span class="section__rule"></span></div>
-              <h2 class="section__title">วงล้อสีและชุดสีที่เข้ากัน</h2>
-              <p class="section__intro">
-                Harmony คือสูตรสำเร็จของการเลือกเนื้อสีที่อยู่ร่วมกันได้ไม่ตีกัน
-                ลากจุดบนวงล้อเพื่อเลือกสีตั้งต้น แล้วสลับสูตรดูผลบนการ์ดตัวอย่างจริง
-              </p>
-            </div>
-
-                        <figure class="figure" data-reveal>
-              <div class="figure__stage">
-                <div class="wheels">
-                  <div class="wheel-card">
-                    <div class="wheel-card__disc">
-                      <div class="wheel-card__pins">
-                      <span class="wheel-card__pin" style="--pin-a:225deg;--pin-h0:187"></span>
-                      <span class="wheel-card__pin" style="--pin-a:45deg;--pin-h0:26"></span>
-                      </div>
-                    </div>
-                    <div class="wheel-card__set">
-                      <span class="wheel-card__chip" style="--pin-h0:187"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:26"></span>
-                    </div>
-                    <span class="wheel-card__name">Complementary</span>
-                    <span class="wheel-card__hint">ตรงข้าม 180 องศา</span>
-                  </div>
-                  <div class="wheel-card">
-                    <div class="wheel-card__disc">
-                      <div class="wheel-card__pins">
-                      <span class="wheel-card__pin" style="--pin-a:195deg;--pin-h0:155"></span>
-                      <span class="wheel-card__pin" style="--pin-a:225deg;--pin-h0:187"></span>
-                      <span class="wheel-card__pin" style="--pin-a:255deg;--pin-h0:219"></span>
-                      </div>
-                    </div>
-                    <div class="wheel-card__set">
-                      <span class="wheel-card__chip" style="--pin-h0:155"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:187"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:219"></span>
-                    </div>
-                    <span class="wheel-card__name">Analogous</span>
-                    <span class="wheel-card__hint">ข้างเคียง 30 องศา</span>
-                  </div>
-                  <div class="wheel-card">
-                    <div class="wheel-card__disc">
-                      <div class="wheel-card__pins">
-                      <span class="wheel-card__pin" style="--pin-a:225deg;--pin-h0:187"></span>
-                      <span class="wheel-card__pin" style="--pin-a:345deg;--pin-h0:329"></span>
-                      <span class="wheel-card__pin" style="--pin-a:105deg;--pin-h0:54"></span>
-                      </div>
-                    </div>
-                    <div class="wheel-card__set">
-                      <span class="wheel-card__chip" style="--pin-h0:187"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:329"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:54"></span>
-                    </div>
-                    <span class="wheel-card__name">Triadic</span>
-                    <span class="wheel-card__hint">สามเหลี่ยม 120 องศา</span>
-                  </div>
-                  <div class="wheel-card">
-                    <div class="wheel-card__disc">
-                      <div class="wheel-card__pins">
-                      <span class="wheel-card__pin" style="--pin-a:225deg;--pin-h0:187"></span>
-                      <span class="wheel-card__pin" style="--pin-a:15deg;--pin-h0:8"></span>
-                      <span class="wheel-card__pin" style="--pin-a:75deg;--pin-h0:41"></span>
-                      </div>
-                    </div>
-                    <div class="wheel-card__set">
-                      <span class="wheel-card__chip" style="--pin-h0:187"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:8"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:41"></span>
-                    </div>
-                    <span class="wheel-card__name">Split Complementary</span>
-                    <span class="wheel-card__hint">ตรงข้ามแล้วแยกสอง 150 กับ 210 องศา</span>
-                  </div>
-                  <div class="wheel-card">
-                    <div class="wheel-card__disc">
-                      <div class="wheel-card__pins">
-                      <span class="wheel-card__pin" style="--pin-a:225deg;--pin-h0:187"></span>
-                      <span class="wheel-card__pin" style="--pin-a:285deg;--pin-h0:251"></span>
-                      <span class="wheel-card__pin" style="--pin-a:45deg;--pin-h0:26"></span>
-                      <span class="wheel-card__pin" style="--pin-a:105deg;--pin-h0:54"></span>
-                      </div>
-                    </div>
-                    <div class="wheel-card__set">
-                      <span class="wheel-card__chip" style="--pin-h0:187"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:251"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:26"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:54"></span>
-                    </div>
-                    <span class="wheel-card__name">Tetradic</span>
-                    <span class="wheel-card__hint">สี่เหลี่ยมผืนผ้า 60 กับ 180 องศา</span>
-                  </div>
-                  <div class="wheel-card">
-                    <div class="wheel-card__disc">
-                      <div class="wheel-card__pins">
-                      <span class="wheel-card__pin" style="--pin-a:225deg;--pin-h0:187"></span>
-                      <span class="wheel-card__pin" style="--pin-a:315deg;--pin-h0:282"></span>
-                      <span class="wheel-card__pin" style="--pin-a:45deg;--pin-h0:26"></span>
-                      <span class="wheel-card__pin" style="--pin-a:135deg;--pin-h0:81"></span>
-                      </div>
-                    </div>
-                    <div class="wheel-card__set">
-                      <span class="wheel-card__chip" style="--pin-h0:187"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:282"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:26"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:81"></span>
-                    </div>
-                    <span class="wheel-card__name">Square</span>
-                    <span class="wheel-card__hint">สี่เหลี่ยมจัตุรัส 90 องศา</span>
-                  </div>
-                  <div class="wheel-card">
-                    <div class="wheel-card__disc">
-                      <div class="wheel-card__pins">
-                      <span class="wheel-card__pin" style="--pin-a:225deg;--pin-h0:187"></span>
-                      </div>
-                    </div>
-                    <div class="wheel-card__set">
-                      <span class="wheel-card__chip" style="--pin-h0:187;--pin-l:78%"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:187;--pin-l:55%"></span>
-                      <span class="wheel-card__chip" style="--pin-h0:187;--pin-l:32%"></span>
-                    </div>
-                    <span class="wheel-card__name">Monochromatic</span>
-                    <span class="wheel-card__hint">เนื้อสีเดียว ไล่ความสว่าง</span>
-                  </div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-palette"/></svg>
-                <span>สูตร harmony คือรูปทรงบนวงล้อ ไม่ใช่ชุดสีตายตัว จุดทั้งชุดหมุนไปพร้อมกันได้
-                  ระยะห่างระหว่างจุดต่างหากที่เป็นตัวสูตร</span>
-              </figcaption>
-            </figure>
-
-            <div class="harmony-explorer" id="harmony-explorer" data-reveal>
-              <div class="harmony-explorer__head">
-                <h3 class="harmony-explorer__title">เลือกสูตร Harmony</h3>
-                <p class="harmony-explorer__sub">ลากจุดบนวงล้อเพื่อเปลี่ยนสีตั้งต้น แล้วกดสลับสูตรดูชุดสีที่ได้</p>
-              </div>
-
-              <div class="harmony-explorer__chips" aria-label="สูตร Harmony">
-                <button type="button" class="harmony-explorer__chip is-active" data-harmony="complementary" aria-pressed="true">Complementary</button>
-                <button type="button" class="harmony-explorer__chip" data-harmony="analogous" aria-pressed="false">Analogous</button>
-                <button type="button" class="harmony-explorer__chip" data-harmony="triadic" aria-pressed="false">Triadic</button>
-                <button type="button" class="harmony-explorer__chip" data-harmony="split-complementary" aria-pressed="false">Split Complementary</button>
-                <button type="button" class="harmony-explorer__chip" data-harmony="tetradic" aria-pressed="false">Tetradic</button>
-                <button type="button" class="harmony-explorer__chip" data-harmony="square" aria-pressed="false">Square</button>
-                <button type="button" class="harmony-explorer__chip" data-harmony="monochromatic" aria-pressed="false">Monochromatic</button>
-              </div>
-
-              <div class="harmony-explorer__body">
-                <div class="harmony-explorer__disc" id="harmony-explorer-disc"
-                     role="slider" tabindex="0" aria-label="ตำแหน่งสีตั้งต้นบนวงล้อ"
-                     aria-valuemin="0" aria-valuemax="359" aria-valuenow="225"></div>
-
-                <div class="harmony-explorer__info">
-                  <p class="harmony-explorer__hint" id="harmony-explorer-hint"></p>
-                  <div class="harmony-explorer__set" id="harmony-explorer-set"></div>
-
-                  <div class="harmony-explorer__preview" id="harmony-explorer-preview">
-                    <span class="harmony-explorer__preview-title">ตัวอย่างการใช้งาน</span>
-                    <p class="harmony-explorer__preview-text">สีแรกใช้เป็นสีหลัก สีสุดท้ายใช้เน้นเฉพาะจุด</p>
-                    <div class="harmony-explorer__preview-actions">
-                      <span class="harmony-explorer__fake-btn" data-role="primary">ปุ่มหลัก</span>
-                      <span class="harmony-explorer__fake-btn harmony-explorer__fake-btn--ghost" data-role="accent">ปุ่มรอง</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-<div class="note note--tip">
-              <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
-              <p>Harmony บอกแค่ว่าเนื้อสีไหนเข้ากัน ไม่ได้รับประกันว่าอ่านออก
-                  สีคู่ตรงข้ามที่มีความสว่างเท่ากันจะสั่นตาเมื่อวางซ้อนกัน ต้องปรับความสว่างให้ต่างกันเสมอ</p>
+          <section class="hubgroup">
+            <h2 class="hubgroup__title">ระบบสีใน UI</h2>
+            <div class="hubgroup__list">
+            <a class="hubcard" href="theory/color-roles/" style="--dot-h:172">
+              <span class="hubcard__no">06</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">สี่บทบาทของสีในหน้าจอเดียว</span>
+                <span class="hubcard__desc">Primary Neutral Semantic Accent — วิธีแบ่งบทบาทและตั้งชื่อ token ให้แก้ที่เดียวจบ</span>
+                <span class="hubcard__meta">ระบบสีใน UI · อ่าน ~7 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
+            <a class="hubcard" href="theory/scales/" style="--dot-h:196">
+              <span class="hubcard__no">07</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">จากสีเดียวสู่สเกล 11 ขั้น</span>
+                <span class="hubcard__desc">ทำไมต้องมี 11 ขั้น ขั้นไหนใช้กับอะไร และวิธีแมปสเกลเข้ากับสถานะของคอมโพเนนต์</span>
+                <span class="hubcard__meta">ระบบสีใน UI · อ่าน ~7 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
             </div>
           </section>
 
-          <!-- ========== 05 ========== -->
-          <section class="section" id="psychology">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">05</span><span class="section__rule"></span></div>
-              <h2 class="section__title">สีกับความรู้สึก</h2>
-              <p class="section__intro">
-                ความหมายของสีมาจากวัฒนธรรมและบริบทของผลิตภัณฑ์ ไม่ใช่กฎสากล
-                วิธีที่เร็วที่สุดคือเอาสีไปวางบนของจริงแล้วดูว่ามันพูดอะไร
-              </p>
-            </div>
-
-            <figure class="figure">
-              <div class="figure__stage">
-                <div class="mood">
-                  <div class="mood__picker" role="radiogroup" aria-label="เลือกสีแบรนด์ของตัวอย่าง">
-                    <input class="mood__radio" type="radio" name="mood" id="mood-blue" checked>
-                    <label class="mood__option" for="mood-blue" style="--mood-h:225"><span class="mood__dot"></span> น้ำเงิน</label>
-
-                    <input class="mood__radio" type="radio" name="mood" id="mood-green">
-                    <label class="mood__option" for="mood-green" style="--mood-h:150"><span class="mood__dot"></span> เขียว</label>
-
-                    <input class="mood__radio" type="radio" name="mood" id="mood-red">
-                    <label class="mood__option" for="mood-red" style="--mood-h:5"><span class="mood__dot"></span> แดง</label>
-
-                    <input class="mood__radio" type="radio" name="mood" id="mood-purple">
-                    <label class="mood__option" for="mood-purple" style="--mood-h:280"><span class="mood__dot"></span> ม่วง</label>
-                  </div>
-
-                  <div class="mood__card">
-                    <span class="mood__eyebrow">บัญชีของคุณ</span>
-                    <div class="mood__title">โอนเงิน 12,400 บาท</div>
-                    <p class="mood__text u-mb-0">ตรวจสอบปลายทางอีกครั้งก่อนยืนยัน รายการนี้ยกเลิกไม่ได้หลังจากกดแล้ว</p>
-                    <div class="mood__actions">
-                      <span class="mood__btn">ยืนยันการโอน</span>
-                      <span class="mood__btn mood__btn--ghost">ย้อนกลับ</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
-                <span>ข้อความเดิมทุกตัวอักษร เปลี่ยนแค่เนื้อสี — น้ำเงินอ่านว่าปลอดภัย เขียวอ่านว่าผ่านแล้ว
-                  แดงอ่านว่าอันตรายทั้งที่เป็นปุ่มยืนยันเหมือนกัน</span>
-              </figcaption>
-            </figure>
-
-            <div class="steps__use">
-              <div class="steps__use-item"><b>น้ำเงิน</b> ไว้ใจได้ มั่นคง · ธนาคาร ซอฟต์แวร์องค์กร<br>ระวัง: ถูกใช้จนเกร่อ ไม่กระตุ้นความอยากอาหาร</div>
-              <div class="steps__use-item"><b>เขียว</b> สำเร็จ ปลอดภัย · การเงิน สุขภาพ ปุ่มยืนยัน<br>ระวัง: อย่าใช้สื่อ “ผ่าน” โดยไม่มีไอคอนกำกับ</div>
-              <div class="steps__use-item"><b>แดง</b> อันตราย เร่งด่วน · error การลบ ป้ายลดราคา<br>ระวัง: ใช้มากทำให้ผู้ใช้เครียด</div>
-              <div class="steps__use-item"><b>เหลือง / ส้ม</b> ระวัง เป็นกันเอง · คำเตือน อีคอมเมิร์ซ<br>ระวัง: คอนทราสต์ต่ำมากบนพื้นขาว</div>
-              <div class="steps__use-item"><b>ม่วง</b> สร้างสรรค์ พรีเมียม · แอป AI สินค้าหรู<br>ระวัง: เข้มไปดูหม่น อ่อนไปดูเป็นของเล่น</div>
-              <div class="steps__use-item"><b>เทา</b> เป็นกลาง เงียบ · โครงหน้าจอ ข้อความรอง<br>ระวัง: เทาอ่อนเกินไปคือปัญหาคอนทราสต์อันดับหนึ่ง</div>
+          <section class="hubgroup">
+            <h2 class="hubgroup__title">การเข้าถึง</h2>
+            <div class="hubgroup__list">
+            <a class="hubcard" href="theory/contrast/" style="--dot-h:214">
+              <span class="hubcard__no">08</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">Contrast และเกณฑ์ WCAG</span>
+                <span class="hubcard__desc">เกณฑ์คอนทราสต์ของ WCAG 2.2 ทั้งข้อความและองค์ประกอบที่ไม่ใช่ข้อความ พร้อมเครื่องวัดในหน้า</span>
+                <span class="hubcard__meta">การเข้าถึง · อ่าน ~9 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
+            <a class="hubcard" href="theory/dark-mode/" style="--dot-h:248">
+              <span class="hubcard__no">09</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">Dark Mode ที่ทำถูกวิธี</span>
+                <span class="hubcard__desc">ธีมมืดไม่ใช่การกลับสี แต่คือการออกแบบชุดสีใหม่ที่มีกฎเรื่องความสูงและความสดของตัวเอง</span>
+                <span class="hubcard__meta">การเข้าถึง · อ่าน ~7 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
             </div>
           </section>
 
-          <!-- ========== 06 ========== -->
-          <section class="section" id="ui-roles">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">06</span><span class="section__rule"></span></div>
-              <h2 class="section__title">สี่บทบาทของสีในหน้าจอเดียว</h2>
-              <p class="section__intro">
-                ระบบสีที่ดีไม่ได้เริ่มจาก “ชอบสีอะไร” แต่เริ่มจาก “ต้องการบทบาทอะไรบ้าง”
-                โปรเจกต์ส่วนใหญ่ต้องการแค่สี่กลุ่มนี้
-              </p>
-            </div>
-
-            <figure class="figure" data-reveal>
-              <div class="figure__stage">
-                <div class="roles">
-                  <div class="roles__screen">
-                    <div class="roles__topline">
-                      <span class="roles__part roles__logo" data-role="primary"></span>
-                      <span class="roles__part roles__nav" data-role="neutral"></span>
-                    </div>
-
-                    <div class="roles__body">
-                      <span class="roles__part roles__line roles__line--60" data-role="neutral"></span>
-                      <span class="roles__part roles__line roles__line--80" data-role="neutral"></span>
-                      <span class="roles__part roles__line" data-role="neutral"></span>
-                    </div>
-
-                    <div class="roles__states">
-                      <span class="roles__part roles__pill roles__pill--success" data-role="semantic">สำเร็จ</span>
-                      <span class="roles__part roles__pill roles__pill--warning" data-role="semantic">รอตรวจ</span>
-                      <span class="roles__part roles__pill roles__pill--danger" data-role="semantic">ล้มเหลว</span>
-                    </div>
-
-                    <div class="roles__chart">
-                      <span class="roles__part roles__col" data-role="accent" style="height:70%;background-color:#0ea5e9"></span>
-                      <span class="roles__part roles__col" data-role="accent" style="height:45%;background-color:#d946ef"></span>
-                      <span class="roles__part roles__col" data-role="accent" style="height:88%;background-color:#f97316"></span>
-                      <span class="roles__part roles__col" data-role="accent" style="height:32%;background-color:#84cc16"></span>
-                    </div>
-
-                    <span class="roles__part roles__cta" data-role="primary">บันทึกการตั้งค่า</span>
-                  </div>
-
-                  <div class="roles__legend">
-                    <div class="roles__key" data-role="primary">
-                      <span class="roles__swatch roles__swatch--primary"></span>
-                      <span><strong>Primary</strong> — การกระทำหลักและตัวตนของแบรนด์
-                        <small>ใช้น้อยที่สุดในหน้า แต่ต้องเห็นก่อนเพื่อน</small></span>
-                    </div>
-                    <div class="roles__key" data-role="neutral">
-                      <span class="roles__swatch roles__swatch--neutral"></span>
-                      <span><strong>Neutral</strong> — พื้นหลัง ตัวอักษร เส้นขอบ
-                        <small>กินพื้นที่ราว 90% ของหน้าจอ ต้องมี 9–11 ขั้น</small></span>
-                    </div>
-                    <div class="roles__key" data-role="semantic">
-                      <span class="roles__swatch roles__swatch--semantic"></span>
-                      <span><strong>Semantic</strong> — success / warning / danger / info
-                        <small>ความหมายตายตัว ห้ามหยิบไปใช้ตกแต่ง</small></span>
-                    </div>
-                    <div class="roles__key" data-role="accent">
-                      <span class="roles__swatch roles__swatch--accent"></span>
-                      <span><strong>Accent</strong> — แยกหมวดหมู่ในกราฟและแท็ก
-                        <small>ไม่ควรเกิน 6 สี และต้องไม่ชนกับ semantic</small></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg>
-                <span>ภาพนี้ไฮไลต์ทีละบทบาทวนไปเรื่อย ๆ สังเกตว่าสีแบรนด์โผล่แค่สองจุดในทั้งหน้าจอ</span>
-              </figcaption>
-            </figure>
-
-            <div class="note note--tip">
-              <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
-              <p>ตั้งชื่อ token ตามหน้าที่ ไม่ใช่ตามชื่อสี — <code>--color-primary</code>
-                  ไม่ใช่ <code>--indigo-600</code> เพราะวันที่แบรนด์เปลี่ยนสี คุณจะได้แก้ที่เดียว</p>
+          <section class="hubgroup">
+            <h2 class="hubgroup__title">ลงมือใช้จริง</h2>
+            <div class="hubgroup__list">
+            <a class="hubcard" href="theory/proportion/" style="--dot-h:286">
+              <span class="hubcard__no">10</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">สัดส่วนการใช้สี</span>
+                <span class="hubcard__desc">กฎ 60/30/10 ในงาน UI จริง พร้อมเครื่องมือวัดสัดส่วนพื้นที่ของหน้าจอตัวอย่าง</span>
+                <span class="hubcard__meta">ลงมือใช้จริง · อ่าน ~6 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
+            <a class="hubcard" href="theory/fixes/" style="--dot-h:322">
+              <span class="hubcard__no">11</span>
+              <span class="hubcard__body">
+                <span class="hubcard__title">ก่อนแก้ / หลังแก้</span>
+                <span class="hubcard__desc">สี่ปัญหาที่เจอบ่อยที่สุดเวลารีวิวงาน พร้อมวิธีตรวจงานตัวเองห้าขั้นก่อนส่ง</span>
+                <span class="hubcard__meta">ลงมือใช้จริง · อ่าน ~6 นาที</span>
+              </span>
+              <svg class="icon hubcard__arrow" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </a>
             </div>
           </section>
-
-          <!-- ========== 07 ========== -->
-          <section class="section" id="scale-tokens">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">07</span><span class="section__rule"></span></div>
-              <h2 class="section__title">จากสีเดียวสู่สเกล</h2>
-              <p class="section__intro">
-                สีแบรนด์หนึ่งสีไม่พอสำหรับงานจริง คุณต้องการอย่างน้อยสิบเอ็ดขั้น
-                เพื่อรองรับพื้นหลัง เส้นขอบ ตัวอักษร และทุกสถานะของปุ่ม
-              </p>
-            </div>
-
-            <figure class="figure" data-reveal>
-              <div class="figure__stage">
-                                <div class="scale-demo">
-                  <div class="ramp-picker" role="radiogroup" aria-label="เลือกสีตั้งต้นของสเกล">
-                    <input class="ramp-picker__radio" type="radio" name="ramp" id="ramp-indigo" checked>
-                    <label class="ramp-picker__option" for="ramp-indigo" style="--ramp-h:243"><span class="ramp-picker__dot"></span> Indigo</label>
-
-                    <input class="ramp-picker__radio" type="radio" name="ramp" id="ramp-emerald">
-                    <label class="ramp-picker__option" for="ramp-emerald" style="--ramp-h:160"><span class="ramp-picker__dot"></span> Emerald</label>
-
-                    <input class="ramp-picker__radio" type="radio" name="ramp" id="ramp-rose">
-                    <label class="ramp-picker__option" for="ramp-rose" style="--ramp-h:347"><span class="ramp-picker__dot"></span> Rose</label>
-
-                    <input class="ramp-picker__radio" type="radio" name="ramp" id="ramp-amber">
-                    <label class="ramp-picker__option" for="ramp-amber" style="--ramp-h:38"><span class="ramp-picker__dot"></span> Amber</label>
-                  </div>
-
-<div class="steps">
-                  <div class="steps__cell">50</div>
-                  <div class="steps__cell">100</div>
-                  <div class="steps__cell">200</div>
-                  <div class="steps__cell">300</div>
-                  <div class="steps__cell">400</div>
-                  <div class="steps__cell">500</div>
-                  <div class="steps__cell">600</div>
-                  <div class="steps__cell">700</div>
-                  <div class="steps__cell">800</div>
-                  <div class="steps__cell">900</div>
-                  <div class="steps__cell">950</div>
-                </div>
-                </div>
-
-                <div class="steps__use">
-                  <div class="steps__use-item"><b>50–100</b> พื้นหลังอ่อน แถบไฮไลต์ พื้นของ callout</div>
-                  <div class="steps__use-item"><b>200–300</b> เส้นขอบ ตัวคั่น พื้นของสถานะ disabled</div>
-                  <div class="steps__use-item"><b>400–500</b> ไอคอน องค์ประกอบตกแต่ง placeholder</div>
-                  <div class="steps__use-item"><b>600–700</b> สีหลักของปุ่มและลิงก์ — ขั้นนี้ผ่านคอนทราสต์บนพื้นขาว</div>
-                  <div class="steps__use-item"><b>800–950</b> ตัวอักษรบนพื้นสีอ่อน พื้นหลังของธีมมืด</div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
-                <span>อย่าปรับแค่ความสว่างอย่างเดียว — ที่ปลายสว่างและปลายมืดต้องลดความสดลงด้วย
-                  ไม่งั้นขั้นปลาย ๆ จะดูขุ่นและไม่เข้าพวก</span>
-              </figcaption>
-            </figure>
-          </section>
-
-          <!-- ========== 08 ========== -->
-          <section class="section" id="contrast">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">08</span><span class="section__rule"></span></div>
-              <h2 class="section__title">Contrast &amp; WCAG</h2>
-              <p class="section__intro">
-                นี่คือส่วนเดียวของทฤษฎีสีที่มีผิดถูกชัดเจน วัดเป็นตัวเลขได้ ตั้งแต่ 1:1 จนถึง 21:1
-                และมีเส้นที่ห้ามต่ำกว่า
-              </p>
-            </div>
-
-            <figure class="figure figure--fixed">
-              <div class="figure__stage">
-                <div class="legibility">
-                  <div class="legibility__row legibility__row--1">
-                    <span>ข้อความรองที่เห็นบ่อยในงานดีไซน์</span>
-                    <span class="badge badge--fail">ไม่ผ่าน</span>
-                    <span class="legibility__ratio u-num">1.9:1</span>
-                  </div>
-                  <div class="legibility__row legibility__row--2">
-                    <span>ข้อความรองที่เห็นบ่อยในงานดีไซน์</span>
-                    <span class="badge badge--fail">ไม่ผ่าน</span>
-                    <span class="legibility__ratio u-num">3.1:1</span>
-                  </div>
-                  <div class="legibility__row legibility__row--3">
-                    <span>ข้อความรองที่เห็นบ่อยในงานดีไซน์</span>
-                    <span class="badge badge--pass">ผ่าน AA</span>
-                    <span class="legibility__ratio u-num">5.7:1</span>
-                  </div>
-                  <div class="legibility__row legibility__row--4">
-                    <span>ข้อความรองที่เห็นบ่อยในงานดีไซน์</span>
-                    <span class="badge badge--pass">ผ่าน AAA</span>
-                    <span class="legibility__ratio u-num">10.4:1</span>
-                  </div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>
-                <span>สองแถวบนคือสีเทาที่ดูดีบนจอดีไซเนอร์ แต่หายไปเลยบนมือถือกลางแดด
-                  ตั้งเพดานล่างไว้ที่ 4.5:1 แล้วล็อกไว้ใน token</span>
-              </figcaption>
-            </figure>
-
-            <div class="table-wrap">
-              <table class="table">
-                <thead><tr><th>องค์ประกอบ</th><th>AA</th><th>AAA</th></tr></thead>
-                <tbody>
-                  <tr><td>ตัวอักษรปกติ (เล็กกว่า 24px)</td><td class="u-num u-num-end">4.5:1</td><td class="u-num u-num-end">7:1</td></tr>
-                  <tr><td>ตัวอักษรใหญ่ (24px ขึ้นไป)</td><td class="u-num u-num-end">3:1</td><td class="u-num u-num-end">4.5:1</td></tr>
-                  <tr><td>ไอคอน เส้นขอบ input องค์ประกอบที่กดได้</td><td class="u-num u-num-end">3:1</td><td class="u-num u-num-end">—</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- ========== 09 ========== -->
-          <section class="section" id="dark-mode">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">09</span><span class="section__rule"></span></div>
-              <h2 class="section__title">Dark Mode ที่ทำถูกวิธี</h2>
-              <p class="section__intro">
-                ธีมมืดไม่ใช่การกลับสีทั้งหน้า แต่เป็นการออกแบบสเกลใหม่ที่มีกฎของตัวเอง
-                กดปุ่มรูปพระจันทร์มุมขวาบนเพื่อดูหน้านี้ในธีมมืดได้เลย
-              </p>
-            </div>
-
-            <figure class="figure">
-              <div class="figure__stage">
-                <div class="themes">
-                  <div>
-                    <span class="fig-label fig-label--bad">ดำสนิท + ขาวล้วน</span>
-                    <div class="theme-card theme-card--wrong">
-                      <div class="theme-card__title">ยอดคงเหลือ</div>
-                      <p class="theme-card__text u-mb-0">ตัวอักษรขาวล้วนบนพื้นดำสนิททำให้เกิดแสงฟุ้งรอบตัวอักษร อ่านนานแล้วตาล้า</p>
-                      <span class="theme-card__btn">ดูรายการ</span>
-                      <span class="theme-card__meta">#000000 · 21:1 · แสบตา</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <span class="fig-label fig-label--good">เทาเข้มอมสีแบรนด์</span>
-                    <div class="theme-card theme-card--right">
-                      <div class="theme-card__title">ยอดคงเหลือ</div>
-                      <p class="theme-card__text u-mb-0">พื้นเทาเข้มกับตัวอักษรเทาอ่อน คอนทราสต์พอดีให้อ่านยาวได้โดยไม่ล้า</p>
-                      <span class="theme-card__btn">ดูรายการ</span>
-                      <span class="theme-card__meta">#0F1729 · 12.6:1 · สบายตา</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
-                <span>ธีมมืดต้องลดความสดของสีแบรนด์ลง 10–20% และยกความสว่างขึ้น
-                  ไม่งั้นปุ่มจะจมหายไปกับพื้น และบอกระดับความสูงด้วยพื้นที่สว่างขึ้น ไม่ใช่เงา</span>
-              </figcaption>
-            </figure>
-          </section>
-
-          <!-- ========== 10 ========== -->
-          <section class="section" id="applying">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">10</span><span class="section__rule"></span></div>
-              <h2 class="section__title">สัดส่วนการใช้สี</h2>
-              <p class="section__intro">
-                รู้ทฤษฎีแล้วยังต้องรู้ว่าใช้เท่าไร สัดส่วนคือสิ่งที่แยกงานมืออาชีพออกจากงานมือใหม่
-              </p>
-            </div>
-
-            <figure class="figure" data-reveal>
-              <div class="figure__stage">
-                <div class="ratio">
-                  <span class="fig-label">กฎ 60 / 30 / 10 ที่ยืมมาจากงานตกแต่งภายใน</span>
-                  <div class="ratio__bar">
-                    <span class="ratio__seg ratio__seg--base">60% พื้นหลัง</span>
-                    <span class="ratio__seg ratio__seg--second">30% พื้นผิวรอง</span>
-                    <span class="ratio__seg ratio__seg--accent">10%</span>
-                  </div>
-
-                  <span class="fig-label">สัดส่วนจริงบนหน้าจอเครื่องมือ</span>
-                  <div class="ratio__real">
-                    <span></span><span></span>
-                  </div>
-                  <p class="ramp-row__note u-mb-0">ในงาน UI สัดส่วนจริงโหดกว่านั้น — พื้นหลังกับตัวอักษรกินราว 90%
-                    เหลือให้สีแบรนด์แค่ 10% และยิ่งใช้น้อย สายตายิ่งวิ่งไปหาเร็ว</p>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg>
-                <span>ปุ่มหลักหนึ่งปุ่มต่อหนึ่งหน้าจอ ปุ่มรองใช้เส้นขอบ ปุ่มที่ถอยกลับได้ใช้แค่ข้อความ</span>
-              </figcaption>
-            </figure>
-
-            <figure class="figure" data-reveal>
-              <div class="figure__stage">
-                <div class="proof">
-                  <div>
-                    <span class="fig-label fig-label--good">สีแบรนด์ราว 10% ของพื้นที่</span>
-                    <div class="proof__screen">
-                      <div class="proof__bar">
-                        <span class="proof__logo"></span>
-                        <span class="proof__navline"></span>
-                      </div>
-                      <div class="proof__body">
-                        <span class="proof__line proof__line--80"></span>
-                        <span class="proof__line"></span>
-                        <span class="proof__line proof__line--60"></span>
-                      </div>
-                      <div class="proof__row">
-                        <span class="proof__btn proof__btn--solid">บันทึก</span>
-                        <span class="proof__btn">ดูตัวอย่าง</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <span class="fig-label fig-label--bad">สีแบรนด์ราว 40% ของพื้นที่</span>
-                    <div class="proof__screen proof__screen--loud">
-                      <div class="proof__bar">
-                        <span class="proof__logo"></span>
-                        <span class="proof__navline"></span>
-                      </div>
-                      <div class="proof__body">
-                        <span class="proof__line proof__line--80"></span>
-                        <span class="proof__line"></span>
-                        <span class="proof__line proof__line--60"></span>
-                      </div>
-                      <div class="proof__row">
-                        <span class="proof__btn proof__btn--solid">บันทึก</span>
-                        <span class="proof__btn">ดูตัวอย่าง</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-target"/></svg>
-                <span>เนื้อหาสองฝั่งเท่ากันทุกชิ้น ต่างกันแค่สัดส่วนสีแบรนด์ — ฝั่งซ้ายรู้ทันทีว่าปุ่มไหนคือขั้นตอนถัดไป
-                  ฝั่งขวาทุกชิ้นแย่งกันเด่นจนไม่มีชิ้นไหนเด่น</span>
-              </figcaption>
-            </figure>
-
-          </section>
-
-          <!-- ========== 11 ========== -->
-          <section class="section" id="mistakes">
-            <div class="section__head">
-              <div class="section__kicker"><span class="section__no">11</span><span class="section__rule"></span></div>
-              <h2 class="section__title">ก่อนแก้ / หลังแก้</h2>
-              <p class="section__intro">
-                สามปัญหาที่เจอซ้ำที่สุดเวลารีวิวงาน ลากเส้นแบ่งเพื่อเทียบสองฝั่งด้วยตาตัวเอง
-              </p>
-            </div>
-
-            <figure class="figure figure--fixed">
-              <div class="figure__stage">
-                <div class="compare" data-compare>
-                  <div class="compare__frame">
-                    <div class="compare__side compare__side--before">
-                      <span class="compare__tag">ก่อนแก้</span>
-                      <p class="demo-text demo-text--faint u-mb-0">ข้อความรองสีเทาอ่อนที่ดูสะอาดตาบนจอดีไซเนอร์
-                        แต่ผู้ใช้กลางแดดอ่านไม่ออกเลย</p>
-                      <span class="compare__stat compare__stat--bad">คอนทราสต์ 1.9:1 · ไม่ผ่านเกณฑ์</span>
-                    </div>
-                    <div class="compare__side compare__side--after">
-                      <span class="compare__tag">หลังแก้</span>
-                      <p class="demo-text demo-text--fixed u-mb-0">ข้อความรองสีเทาอ่อนที่ดูสะอาดตาบนจอดีไซเนอร์
-                        แต่ผู้ใช้กลางแดดอ่านไม่ออกเลย</p>
-                      <span class="compare__stat compare__stat--good">คอนทราสต์ 12.6:1 · ผ่าน AAA</span>
-                    </div>
-                    <span class="compare__divider" aria-hidden="true"></span>
-                  </div>
-                  <label class="compare__label" for="cmp-text">ตัวอักษรเทาอ่อนเกินไป — ลากเพื่อเทียบ</label>
-                  <input class="compare__range range" type="range" id="cmp-text" min="0" max="100" value="50">
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-x-circle"/></svg>
-                <span>ตั้งเพดานล่างของสีตัวอักษรไว้ที่ 4.5:1 ตั้งแต่ตอนวาง token จะไม่ต้องมาไล่แก้ทีหลัง</span>
-              </figcaption>
-            </figure>
-
-            <figure class="figure figure--fixed">
-              <div class="figure__stage">
-                <div class="compare" data-compare>
-                  <div class="compare__frame">
-                    <div class="compare__side compare__side--before">
-                      <span class="compare__tag">ก่อนแก้</span>
-                      <span class="demo-fill demo-fill--loud"></span>
-                      <span class="compare__stat compare__stat--bad">ความสด 95% เต็มพื้นที่ · ขอบสีสั่น ตาล้า</span>
-                    </div>
-                    <div class="compare__side compare__side--after">
-                      <span class="compare__tag">หลังแก้</span>
-                      <span class="demo-fill demo-fill--calm"></span>
-                      <span class="compare__stat compare__stat--good">ความสด 30% · สีสดเก็บไว้กับชิ้นเล็ก</span>
-                    </div>
-                    <span class="compare__divider" aria-hidden="true"></span>
-                  </div>
-                  <label class="compare__label" for="cmp-fill">สีสดเต็มพิกัดบนพื้นที่กว้าง — ลากเพื่อเทียบ</label>
-                  <input class="compare__range range" type="range" id="cmp-fill" min="0" max="100" value="50">
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-ban"/></svg>
-                <span>ความสด 100% บนพื้นที่ใหญ่ทำให้ขอบสีดูสั่นและตาล้า พื้นที่กว้างใช้ความสด 10–30%
-                  แล้วเก็บสีสดไว้กับชิ้นเล็ก ๆ</span>
-              </figcaption>
-            </figure>
-
-            <figure class="figure figure--fixed">
-              <div class="figure__stage">
-                <div class="compare" data-compare>
-                  <div class="compare__frame">
-                    <div class="compare__side compare__side--before">
-                      <span class="compare__tag">ก่อนแก้</span>
-                      <div class="demo-buttons">
-                        <span class="demo-btn demo-btn--solid">บันทึก</span>
-                        <span class="demo-btn demo-btn--solid">ส่งอนุมัติ</span>
-                        <span class="demo-btn demo-btn--solid">ดูตัวอย่าง</span>
-                      </div>
-                      <span class="compare__stat compare__stat--bad">ปุ่มหลัก 3 ปุ่ม · ไม่รู้ว่าอันไหนขั้นตอนถัดไป</span>
-                    </div>
-                    <div class="compare__side compare__side--after">
-                      <span class="compare__tag">หลังแก้</span>
-                      <div class="demo-buttons">
-                        <span class="demo-btn demo-btn--solid">ส่งอนุมัติ</span>
-                        <span class="demo-btn demo-btn--ghost">บันทึก</span>
-                        <span class="demo-btn demo-btn--ghost">ดูตัวอย่าง</span>
-                      </div>
-                      <span class="compare__stat compare__stat--good">ปุ่มหลัก 1 ปุ่ม · ที่เหลือเป็นเส้นขอบ</span>
-                    </div>
-                    <span class="compare__divider" aria-hidden="true"></span>
-                  </div>
-                  <label class="compare__label" for="cmp-btn">ปุ่มหลักหลายปุ่มในหน้าเดียว — ลากเพื่อเทียบ</label>
-                  <input class="compare__range range" type="range" id="cmp-btn" min="0" max="100" value="50">
-                </div>
-              </div>
-              <figcaption class="figure__caption">
-                <svg class="icon" aria-hidden="true"><use href="#i-alert-octagon"/></svg>
-                <span>ทุกปุ่มเด่นเท่ากันแปลว่าไม่มีปุ่มไหนเด่น ผู้ใช้จะลังเลว่าขั้นตอนถัดไปคืออันไหน</span>
-              </figcaption>
-            </figure>
-          </section>
-
-          <!-- ========== 12 ========== -->
-          
 
         </div>
       </main>

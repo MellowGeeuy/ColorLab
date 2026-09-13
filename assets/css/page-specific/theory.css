@@ -156,7 +156,6 @@
 .prose p,
 .prose > ul,
 .prose > ol,
-.page-head__lead,
 .section__intro {
   max-width: 68ch;
 }
@@ -164,44 +163,6 @@
 .prose p {
   font-size: var(--text-base);
   line-height: var(--lh-lg);
-}
-
-/* --------------------------------------------------------------------------
-   Hero ของหน้า
-   -------------------------------------------------------------------------- */
-.page-head { margin-block-end: var(--space-8); }
-
-.page-head__eyebrow {
-  display: inline-block;
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  line-height: var(--lh-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-primary-text);
-  margin-block-end: var(--space-3);
-}
-
-.page-head__title {
-  font-size: var(--text-3xl);
-  line-height: var(--lh-3xl);
-  margin-block-end: var(--space-4);
-}
-
-.page-head__lead {
-  font-size: var(--text-lg);
-  line-height: var(--lh-lg);
-  color: var(--color-text-muted);
-  margin-block-end: var(--space-6);
-}
-
-.page-head__strip {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  height: var(--space-2);
-  border-radius: var(--radius-full);
-  overflow: hidden;
 }
 
 /* --------------------------------------------------------------------------
@@ -401,4 +362,333 @@
   .toc-toggle { display: inline-flex; }
 
   .prose { padding: var(--space-5) var(--space-5) var(--space-10); }
+}
+
+/* ==========================================================================
+   โครงของ "หนึ่งตอนหนึ่งหน้า"
+   เนื้อหาถูกแยกออกเป็น 11 หน้าตั้งแต่เวอร์ชันนี้ สารบัญจึงเปลี่ยนหน้าที่จาก
+   "กระโดดภายในหน้าเดียว" เป็น "นำทางข้ามหน้า" แล้วกางหัวข้อย่อยของหน้าที่เปิดอยู่
+   ========================================================================== */
+
+/* ลิงก์กลับสารบัญรวม อยู่หัวรางเสมอ — เป็นทางออกทางเดียวที่ไม่ต้องใช้ปุ่ม back */
+.toc__home {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h-md);
+  margin-inline: var(--space-2);
+  margin-block-end: var(--space-2);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.toc__home:hover { background-color: var(--color-surface-alt); color: var(--color-text); text-decoration: none; }
+.toc__home .icon { justify-self: center; }
+
+/* เลขตอนแทนจุดกลม — ตอนรางหุบอยู่ ตัวเลขบอกได้มากกว่าจุดว่าอยู่ตอนไหนของทั้งหมด
+   สีของเลขยังไล่ hue ตามหัวข้อเหมือนเดิม ระบบเดียวกับที่หน้านี้สอน */
+.toc__no {
+  justify-self: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: hsl(var(--dot-h, 225) 55% 31%);
+}
+
+/* ความสว่างที่ตั้งไว้ค่าเดียวให้ทุกเนื้อสีคือกับดักที่ตอนที่ 07 เตือนไว้เอง —
+   ที่ 42% เนื้อสีเขียวได้แค่ 2.97:1 บนพื้นขาว ส่วนที่ 31% ทุกเนื้อสีผ่าน 4.5:1
+   ธีมมืดต้องไปทางกลับกัน คือยกขึ้นเป็น 66% ถึงจะผ่านบนพื้นเข้ม */
+[data-theme="dark"] .toc__no { color: hsl(var(--dot-h, 225) 55% 66%); }
+
+.toc__link.is-current {
+  background-color: hsl(var(--dot-h, 225) 60% 42% / 0.12);
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+}
+
+/* หัวข้อย่อยของตอนที่กำลังอ่าน โผล่เฉพาะตอนรางกางออก — ตอนหุบอยู่มันคือ
+   ข้อความที่ถูกตัดครึ่งซึ่งอ่านไม่ได้อยู่แล้ว และยังดันเลขตอนอื่นให้เลื่อนหาย */
+.toc__sub {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 var(--space-2) 2.25rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height var(--duration-base) var(--ease-out),
+              opacity var(--duration-fast) var(--ease-out);
+}
+
+.toc:hover .toc__sub,
+.toc:focus-within .toc__sub { max-height: 16rem; opacity: 1; }
+
+.toc__sub li { margin: 0; }
+
+.toc__link--sub {
+  display: block;
+  min-height: auto;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+}
+
+.toc__link--sub.is-active {
+  background-color: transparent;
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+}
+
+/* --------------------------------------------------------------------------
+   หัวของแต่ละตอน
+   -------------------------------------------------------------------------- */
+.topic-head { margin-block-end: var(--space-8); }
+
+.topic-head__eyebrow {
+  display: block;
+  margin-block-end: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary-text);
+}
+
+.topic-head__title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-3xl);
+  line-height: var(--lh-3xl);
+  letter-spacing: -0.01em;
+}
+
+.topic-head__lead {
+  max-width: 60ch;
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-lg);
+  line-height: var(--lh-xl);
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   เคสจริงที่เปิดเรื่อง — สองใบวางคู่กันเสมอ เพราะทุกเคสคือ "ถ้าไม่ทำ" กับ "ถ้าทำ"
+   -------------------------------------------------------------------------- */
+.case {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-4);
+  margin-block: var(--space-4);
+}
+
+.case__item {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.case__tag {
+  display: block;
+  margin-block-end: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  color: var(--color-text-subtle);
+}
+
+.case__item p { margin: 0; font-size: var(--text-sm); line-height: var(--lh-base); }
+
+/* --------------------------------------------------------------------------
+   ข้อผิดที่เจอบ่อย — ชื่อข้อกับคำอธิบายต้องแยกออกจากกันด้วยตาในครั้งเดียว
+   เพราะคนส่วนใหญ่กวาดอ่านเฉพาะชื่อข้อก่อน แล้วค่อยกลับมาอ่านเฉพาะข้อที่โดน
+   -------------------------------------------------------------------------- */
+.pitfalls { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+
+.pitfall {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--color-danger);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background-color: var(--color-surface-alt);
+}
+
+.pitfall__name { font-size: var(--text-base); font-weight: var(--weight-semibold); }
+.pitfall__body { font-size: var(--text-sm); line-height: var(--lh-base); color: var(--color-text-muted); }
+
+/* --------------------------------------------------------------------------
+   ท้ายตอน — สรุป เช็กลิสต์ แหล่งอ้างอิง
+   -------------------------------------------------------------------------- */
+.wrap__title {
+  margin-block: var(--space-6) var(--space-3);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+}
+
+.wrap__title:first-child { margin-block-start: 0; }
+
+.takeaway { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); counter-reset: takeaway; }
+
+.takeaway li {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: var(--lh-base);
+}
+
+.takeaway li::before {
+  counter-increment: takeaway;
+  content: counter(takeaway);
+  justify-self: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-primary-text);
+}
+
+.refs { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+
+.refs li { display: grid; gap: 2px; margin: 0; }
+.refs a { font-size: var(--text-base); font-weight: var(--weight-medium); }
+.refs span { font-size: var(--text-xs); line-height: var(--lh-sm); color: var(--color-text-subtle); }
+
+/* ขั้นตอนแบบมีลำดับ — ใช้ในตอนที่ 11 */
+.steps-list { margin: 0; padding-inline-start: var(--space-6); display: grid; gap: var(--space-3); }
+.steps-list li { margin: 0; }
+.steps-list b { display: block; font-size: var(--text-base); }
+.steps-list span { display: block; font-size: var(--text-sm); line-height: var(--lh-base); color: var(--color-text-muted); }
+
+/* --------------------------------------------------------------------------
+   ตัวเปลี่ยนตอน
+   -------------------------------------------------------------------------- */
+.pager {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-3);
+  margin-block: var(--space-10) var(--space-16);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.pager__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.pager__link:hover { border-color: var(--color-primary); text-decoration: none; }
+.pager__link--next { justify-content: end; text-align: end; }
+
+.pager__link span { display: grid; gap: 2px; font-weight: var(--weight-semibold); }
+.pager__link small { font-size: var(--text-xs); font-weight: var(--weight-regular); color: var(--color-text-subtle); }
+.pager__link .icon { flex-shrink: 0; color: var(--color-text-subtle); }
+
+/* --------------------------------------------------------------------------
+   หน้าสารบัญรวม
+   ไม่มีรางสารบัญด้านซ้าย เพราะทั้งหน้าคือสารบัญอยู่แล้ว
+   -------------------------------------------------------------------------- */
+/* .reader__main ถูกตั้งไว้ที่ grid-column: 2 เพราะรางสารบัญเป็น absolute
+   หน้าสารบัญไม่มีราง จึงต้องดึงกลับมาคอลัมน์แรก ไม่งั้นจะไปตกในคอลัมน์ที่ถูกสร้างขึ้นมาเอง
+   แล้วคอลัมน์อ่านจะแคบลงครึ่งหนึ่งโดยไม่มีอะไรอยู่ข้าง ๆ */
+/* หน้าสารบัญไม่มีรางให้เปิด ปุ่มสารบัญบนแถบบนจึงต้องหายไปด้วย
+   ไม่งั้นจอแคบจะมีปุ่มที่กดแล้วไม่เกิดอะไรขึ้นค้างอยู่ */
+body:has(.reader--hub) .toc-toggle { display: none; }
+
+.reader--hub { grid-template-columns: minmax(0, 1fr); }
+.reader--hub .reader__main { grid-column: 1; padding-inline: var(--space-6); }
+
+.hubhead { margin-block: var(--space-8) var(--space-10); }
+
+.hubhead__eyebrow {
+  display: block;
+  margin-block-end: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary-text);
+}
+
+.hubhead__title { margin: 0 0 var(--space-3); font-size: var(--text-3xl); line-height: var(--lh-3xl); }
+
+.hubhead__lead {
+  max-width: 64ch;
+  margin: 0 0 var(--space-5);
+  font-size: var(--text-lg);
+  line-height: var(--lh-xl);
+  color: var(--color-text-muted);
+}
+
+.hubhead__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+.hubgroup { margin-block-end: var(--space-8); }
+
+.hubgroup__title {
+  margin: 0 0 var(--space-3);
+  /* h2 ไม่สืบทอด line-height จาก body ต้องระบุเอง ไม่งั้นได้ normal ที่แคบไป */
+  line-height: var(--lh-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.hubgroup__list { display: grid; gap: var(--space-2); }
+
+/* การ์ดหนึ่งใบคือหนึ่งตอน — เลขตอนซ้ายสุดทำหน้าที่เดียวกับเลขในราง
+   ให้กวาดหาตอนที่ต้องการได้โดยไม่ต้องอ่านชื่อทุกใบ */
+.hubcard {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.hubcard:hover {
+  border-color: hsl(var(--dot-h, 225) 60% 42%);
+  background-color: hsl(var(--dot-h, 225) 60% 42% / 0.05);
+  text-decoration: none;
+}
+
+.hubcard__no {
+  justify-self: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: hsl(var(--dot-h, 225) 55% 31%);
+}
+
+[data-theme="dark"] .hubcard__no { color: hsl(var(--dot-h, 225) 55% 66%); }
+
+.hubcard__body { display: grid; gap: 2px; }
+.hubcard__title { font-size: var(--text-md); font-weight: var(--weight-semibold); }
+.hubcard__desc { font-size: var(--text-sm); line-height: var(--lh-base); color: var(--color-text-muted); }
+.hubcard__meta { font-size: var(--text-xs); color: var(--color-text-subtle); }
+.hubcard__arrow { color: var(--color-text-subtle); }
+
+@media (max-width: 680px) {
+  .reader--hub .reader__main { padding-inline: var(--space-4); }
+  .hubcard { grid-template-columns: 2rem minmax(0, 1fr); gap: var(--space-3); }
+  .hubcard__arrow { display: none; }
+  .topic-head__title { font-size: var(--text-2xl); line-height: var(--lh-2xl); }
+  .pager__link--next { justify-content: start; text-align: start; }
 }

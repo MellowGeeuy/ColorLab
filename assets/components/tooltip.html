@@ -1,0 +1,71 @@
+<!-- @card -->
+<div class="ui-tip-demo">
+  <span class="ui-tip" role="tooltip">ยอดก่อนหักส่วนลด</span>
+  <button type="button" class="ui-tip-trigger" aria-label="คำอธิบายยอดรวม">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16.5V11M12 7.8h.01"/></svg>
+  </button>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <div class="ui-tip-demo" data-part="p1">
+    <span class="ui-tip ui-tip--top" role="tooltip" id="tip-total">
+      ยอดก่อนหักส่วนลดและภาษี
+    </span>
+    <span class="ui-tip-row">
+      <span class="ui-tip-row__label">ยอดรวม</span>
+      <button type="button" class="ui-tip-trigger" aria-describedby="tip-total" aria-label="คำอธิบายยอดรวม">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16.5V11M12 7.8h.01"/></svg>
+      </button>
+      <span class="ui-tip-row__value">120,000</span>
+    </span>
+  </div>
+
+  <div class="ui-tip-demo">
+    <span class="ui-tip-row">
+      <button type="button" class="ui-btn ui-btn--sm ui-btn--secondary" aria-describedby="tip-export" data-part="p2">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0-4.5-4.5M12 16l4.5-4.5"/><path d="M4 18v2h16v-2"/></svg>
+        ส่งออก
+      </button>
+    </span>
+    <span class="ui-tip ui-tip--bottom" role="tooltip" id="tip-export">
+      ส่งออกเฉพาะแถวที่ตัวกรองเลือกอยู่ (154 แถว)
+    </span>
+  </div>
+
+  <div class="ui-tip-demo">
+    <span class="ui-tip ui-tip--top" role="tooltip">
+      ปิดไว้เพราะยังไม่ได้เลือกรายการ
+    </span>
+    <span class="ui-tip-row">
+      <span class="ui-tip-wrap" tabindex="0">
+        <button type="button" class="ui-btn ui-btn--sm" disabled>ส่งอนุมัติ</button>
+      </span>
+      <span class="ui-tip-row__hint">ปุ่มที่กดไม่ได้ต้องมีตัวครอบที่โฟกัสได้ ไม่งั้นคีย์บอร์ดจะอ่านคำอธิบายไม่ได้</span>
+    </span>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="อยู่ด้านบน — ตำแหน่งตั้งต้น เพราะไม่บังสิ่งที่กำลังกด">
+  <span class="ui-tip ui-tip--top" role="tooltip">ยอดก่อนหักส่วนลด</span>
+</div>
+
+<div class="cs-variant" data-variant-label="อยู่ด้านล่าง — ใช้เมื่อของอยู่ชิดขอบบนของจอ">
+  <span class="ui-tip ui-tip--bottom" role="tooltip">ส่งออกเฉพาะแถวที่เลือก</span>
+</div>
+
+<div class="cs-variant" data-variant-label="ข้อความยาว — ตัดบรรทัดได้ แต่ไม่ควรเกินสองบรรทัด">
+  <span class="ui-tip ui-tip--top ui-tip--wide" role="tooltip">
+    ยอดนี้คำนวณจากราคาตั้งต้นก่อนหักส่วนลดตามสัญญาและก่อนรวมภาษี
+  </span>
+</div>
+
+<div class="cs-variant" data-variant-label="ปุ่มไอคอนล้วน — ต้องมีคำอธิบายเสมอ ไอคอนอย่างเดียวเดาไม่ออก">
+  <button type="button" class="ui-tip-trigger" aria-label="คำอธิบายยอดรวม">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16.5V11M12 7.8h.01"/></svg>
+  </button>
+</div>
+<!-- @end -->

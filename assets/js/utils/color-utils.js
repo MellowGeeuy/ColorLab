@@ -86,6 +86,66 @@ export function formatHsl({ h, s, l }) {
   return `hsl(${Math.round(h)} ${Math.round(s)}% ${Math.round(l)}%)`;
 }
 
+/* --- OKLCH ---------------------------------------------------------------
+   สูตร Oklab ของ Björn Ottosson (2020) — ใช้ในหน้า Color Theory เพื่อแสดงว่า
+   "ความสว่างที่ตั้งเท่ากัน" ใน HSL กับใน OKLCH ให้ผลกับสายตาต่างกันแค่ไหน
+
+   ต่างจาก HSL ตรงที่ต้องแปลงผ่าน linear-light ก่อน — HSL ทำงานบนค่าที่ผ่าน
+   gamma มาแล้วจึงคำนวณเร็วแต่ไม่ตรงกับการรับรู้ ส่วน Oklab ยอมแลกด้วยการ
+   ถอด gamma ออกไปคำนวณในปริภูมิที่ระยะห่างเท่ากันแปลว่าตาเห็นต่างเท่ากัน
+
+   ค่า L อยู่ในช่วง 0–1 (ไม่ใช่ 0–100) และ H เป็นองศาเหมือน HSL แต่คนละสเกล
+   — hue 220 ของ HSL ไม่ใช่ hue 220 ของ OKLCH                              */
+
+const srgbToLinear = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+const linearToSrgb = (c) => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055);
+
+export function oklchToRgb({ l, c, h }) {
+  const rad = (h * Math.PI) / 180;
+  const a = c * Math.cos(rad);
+  const b = c * Math.sin(rad);
+
+  const lc = (l + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const mc = (l - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const sc = (l - 0.0894841775 * a - 1.2914855480 * b) ** 3;
+
+  return {
+    r: clamp(Math.round(linearToSrgb(4.0767416621 * lc - 3.3077115913 * mc + 0.2309699292 * sc) * 255), 0, 255),
+    g: clamp(Math.round(linearToSrgb(-1.2684380046 * lc + 2.6097574011 * mc - 0.3413193965 * sc) * 255), 0, 255),
+    b: clamp(Math.round(linearToSrgb(-0.0041960863 * lc - 0.7034186147 * mc + 1.7076147010 * sc) * 255), 0, 255),
+  };
+}
+
+export function oklchToHex(oklch) {
+  return rgbToHex(oklchToRgb(oklch));
+}
+
+export function rgbToOklch({ r, g, b }) {
+  const rl = srgbToLinear(r / 255);
+  const gl = srgbToLinear(g / 255);
+  const bl = srgbToLinear(b / 255);
+
+  const lc = Math.cbrt(0.4122214708 * rl + 0.5363325363 * gl + 0.0514459929 * bl);
+  const mc = Math.cbrt(0.2119034982 * rl + 0.6806995451 * gl + 0.1073969566 * bl);
+  const sc = Math.cbrt(0.0883024619 * rl + 0.2817188376 * gl + 0.6299787005 * bl);
+
+  const l = 0.2104542553 * lc + 0.7936177850 * mc - 0.0040720468 * sc;
+  const a = 1.9779984951 * lc - 2.4285922050 * mc + 0.4505937099 * sc;
+  const bb = 0.0259040371 * lc + 0.7827717662 * mc - 0.8086757660 * sc;
+
+  const hue = (Math.atan2(bb, a) * 180) / Math.PI;
+  return { l, c: Math.hypot(a, bb), h: hue < 0 ? hue + 360 : hue };
+}
+
+export function hexToOklch(hex) {
+  const rgb = hexToRgb(hex);
+  return rgb ? rgbToOklch(rgb) : null;
+}
+
+export function formatOklch({ l, c, h }) {
+  return `oklch(${(l * 100).toFixed(1)}% ${c.toFixed(3)} ${h.toFixed(1)})`;
+}
+
 /* --- Luminance & contrast (WCAG 2.2) ------------------------------------ */
 
 function channelLuminance(value) {

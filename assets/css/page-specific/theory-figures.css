@@ -92,6 +92,10 @@
 
 .note--tip .icon { color: var(--color-warning); }
 
+/* พื้นของกล่องนี้เป็นสีอำพัน ไม่ใช่พื้นปกติ สีลิงก์มาตรฐานจึงเหลือ 4.25:1 ในธีมมืด
+   ใช้ระดับ text ของสีแบรนด์แทน ได้ 7.10:1 ในธีมสว่างและ 6.35:1 ในธีมมืด */
+.note--tip a { color: var(--color-primary-text); }
+
 /* ไฮไลต์คำในประโยค ใช้ชุดสีเดียวกับ tip */
 .u-mark {
   padding: 1px 4px;
@@ -204,6 +208,122 @@
 }
 
 /* --------------------------------------------------------------------------
+   01 · สีชุดเดิมเมื่อมองด้วยสายตาคนละแบบ
+   ตารางสองฝั่งมีเนื้อหาเท่ากันทุกช่อง ต่างกันแค่ฝั่งขวามีไอคอนกับข้อความกำกับ
+   สีทุกจุดอ่านจาก --cvd-color ที่ JS คำนวณใหม่ทุกครั้งที่เปลี่ยนโหมด
+   CSS จึงไม่ต้องรู้เลยว่าโหมดไหนให้สีอะไร และเพิ่มโหมดใหม่ได้โดยไม่แตะไฟล์นี้
+   -------------------------------------------------------------------------- */
+.cvd-demo { display: grid; gap: var(--space-3); }
+
+.cvd-demo__modes { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.cvd-demo__mode {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+/* ปุ่มที่เลือกอยู่บอกด้วยพื้น เส้นขอบ และน้ำหนักตัวอักษรพร้อมกัน ไม่ใช่สีอย่างเดียว
+   — ภาพนี้กำลังสอนว่าห้ามผูกความหมายไว้กับสี ตัวควบคุมของมันเองยิ่งห้ามผิดกฎข้อนั้น */
+.cvd-demo__mode.is-active {
+  background-color: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-surface);
+  font-weight: var(--weight-semibold);
+}
+
+/* จองความสูงไว้ล่วงหน้า ข้อความอธิบายยาวไม่เท่ากันทุกโหมด
+   ถ้าไม่จอง ตารางข้างล่างจะกระตุกขึ้นลงทุกครั้งที่กดเปลี่ยนโหมด */
+.cvd-demo__note {
+  margin: 0;
+  min-height: var(--lh-base);
+  font-size: var(--text-sm);
+  line-height: var(--lh-base);
+  color: var(--color-text-muted);
+}
+
+.cvd-demo__panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--space-4);
+}
+
+.cvd-list { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+
+.cvd-list__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  font-size: var(--text-sm);
+}
+
+.cvd-list__dot {
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: var(--radius-full);
+  background-color: var(--cvd-color, var(--color-border));
+  transition: background-color 240ms ease;
+}
+
+/* ป้ายฝั่งขวากว้างเท่ากันทุกแถวด้วย min-width ไม่ใช่ padding
+   ความยาวคำภาษาไทยของสามสถานะไม่เท่ากัน ถ้าปล่อยให้ป้ายหดตามคำ
+   ขอบซ้ายของเลขที่ออร์เดอร์จะไม่ตรงกันสักแถว */
+.cvd-list__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 6.25rem;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  background-color: var(--cvd-color, var(--color-border));
+  color: var(--cvd-on-color, #ffffff);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  transition: background-color 240ms ease, color 240ms ease;
+}
+
+.cvd-list__pill .icon { width: 0.9em; height: 0.9em; }
+
+.cvd-list__id { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); }
+.cvd-list__sum { font-variant-numeric: tabular-nums; color: var(--color-text); }
+
+/* บรรทัดสรุปว่าโหมดนี้เปลี่ยนค่าสีไปเป็นอะไรบ้าง — ต้องมีเพราะ "ดูแล้วคล้ายกัน"
+   เป็นความรู้สึก ส่วน hex สองค่าที่ห่างกันไม่กี่หน่วยเป็นหลักฐาน */
+.cvd-demo__readout { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.cvd-demo__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.cvd-demo__chip code { font-size: var(--text-xs); background: none; border: none; padding: 0; }
+
+.cvd-demo__chip-dot {
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: var(--radius-full);
+  background-color: var(--cvd-color, var(--color-border));
+}
+
+/* --------------------------------------------------------------------------
    02 · สามแกนของสี
    แต่ละแถบขยับทีละแกนโดยล็อกอีกสองแกนไว้ ให้เห็นว่าแกนนั้นเปลี่ยนอะไรจริง ๆ
    -------------------------------------------------------------------------- */
@@ -284,6 +404,66 @@
 .axis--light .axis__chip { background-color: hsl(225 75% calc(12% + var(--axis-t) * 80%)); }
 
 /* --------------------------------------------------------------------------
+   02 · ขยับทีละแกนบนปุ่มจริง
+   ทุกใบเป็นปุ่มเดียวกันหมด ต่างกันแค่ค่าของแกนเดียวในแถวนั้น
+   สีส่งมาจาก HTML ผ่าน --al-bg เพราะเป็นค่าที่คำบรรยายอ้างถึงเป็นตัวเลข
+   ถ้าให้ CSS คำนวณเอง ค่าที่เขียนกำกับกับสีที่เห็นจะหลุดจากกันเมื่อไรก็ได้
+   -------------------------------------------------------------------------- */
+.axis-lab { display: grid; gap: var(--space-5); }
+
+.axis-lab__row { display: grid; gap: var(--space-2); }
+
+.axis-lab__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.axis-lab__head b { font-weight: var(--weight-semibold); }
+.axis-lab__head span { font-size: var(--text-xs); color: var(--color-text-subtle); }
+
+.axis-lab__chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  gap: var(--space-2);
+}
+
+/* ตัวอักษรบนชิปเป็นสีขาวทุกใบโดยตั้งใจ — ภาพนี้กำลังพิสูจน์ว่าแกนไหนทำให้ตัวอักษรขาวหาย
+   ถ้าสลับเป็นสีเข้มให้ใบที่อ่อน จะไม่เหลืออะไรให้ดูอีกเลย */
+.axis-lab__chip {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--al-bg);
+  color: #ffffff;
+  text-align: center;
+}
+
+.axis-lab__chip b { font-size: var(--text-sm); font-weight: var(--weight-semibold); }
+
+.axis-lab__chip code {
+  font-size: 0.625rem;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.axis-lab__chip i {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
+.axis-lab .ramp-row__note { margin: 0; }
+
+/* --------------------------------------------------------------------------
    03 · HSL เทียบ OKLCH
    แถบล่างคือแถบเดียวกันที่ถอดสีออกเหลือแต่ความสว่าง — เห็นทันทีว่า HSL
    สว่างไม่เท่ากันตลอดแถบ (ช่วงเหลืองสว่างพุ่ง) ส่วน OKLCH เรียบสม่ำเสมอ
@@ -314,6 +494,119 @@
   font-size: var(--text-xs);
   line-height: var(--lh-sm);
   color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   03 · สีเดียวกัน เขียนได้สี่แบบ
+   ช่องสีทึบใบเดียวอยู่ซ้าย รายการวิธีเขียนอยู่ขวา — จงใจให้เห็นก่อนว่า
+   "มันคือสีเดียว" แล้วค่อยอ่านว่าเขียนได้กี่แบบ ไม่ใช่เห็นสี่ช่องแล้วเข้าใจว่าสี่สี
+   -------------------------------------------------------------------------- */
+.notation {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.notation__swatch {
+  display: grid;
+  align-content: end;
+  gap: 2px;
+  min-height: 9rem;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.notation__swatch-name { font-size: var(--text-md); font-weight: var(--weight-semibold); }
+.notation__swatch-sub { font-size: var(--text-xs); opacity: 0.85; }
+
+.notation__list { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+
+.notation__list li {
+  display: grid;
+  grid-template-columns: 4rem auto;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+}
+
+.notation__list b { font-size: var(--text-xs); letter-spacing: 0.04em; color: var(--color-text-muted); }
+.notation__list code { justify-self: start; font-size: var(--text-xs); }
+
+/* คำอธิบายกินสองคอลัมน์เพื่อให้บรรทัดยาวพอ ไม่ต้องตัดคำกลางประโยคในจอแคบ */
+.notation__list span {
+  grid-column: 1 / -1;
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   03 · ตั้งความสว่างเท่ากันแล้ววัดจริง
+   สองแถวใช้โครงเดียวกัน ต่างกันแค่ที่มาของสี — ฝั่งหนึ่งมาจาก hslToHex()
+   อีกฝั่งมาจาก oklchToHex() ช่องขวาของแต่ละแถวคือช่องเดียวกันที่ถอดสีออก
+   -------------------------------------------------------------------------- */
+.model-lab { display: grid; gap: var(--space-4); }
+
+.model-lab__control {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 3.5rem;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.model-lab__control .field__label { margin: 0; }
+.model-lab__hue { font-family: var(--font-mono); font-size: var(--text-sm); text-align: end; }
+
+.model-lab__rows {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--space-4);
+}
+
+.model-lab__row { display: grid; gap: var(--space-2); align-content: start; }
+
+.model-lab__pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+
+.model-lab__swatch { height: var(--space-16); border-radius: var(--radius-md); }
+.model-lab__swatch--hsl { background-color: var(--model-hsl, #308ce8); }
+.model-lab__swatch--ok { background-color: var(--model-ok, #478ebc); }
+
+/* ถอดสีออกด้วย filter ไม่ใช่คำนวณเทาเอง — ช่องนี้ต้องเป็นช่องเดียวกับฝั่งซ้ายจริง ๆ
+   ถ้าคำนวณแยกเมื่อไร จะเถียงไม่ได้ว่าเทาที่เห็นมาจากสีที่อยู่ข้าง ๆ */
+.model-lab__swatch--mono { filter: grayscale(1); }
+
+.model-lab__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.model-lab__meta b { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text); }
+
+.model-lab__summary {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-sunken);
+  font-size: var(--text-sm);
+  line-height: var(--lh-base);
+  color: var(--color-text-muted);
+}
+
+.model-lab__summary b { color: var(--color-text); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 680px) {
+  .notation { grid-template-columns: minmax(0, 1fr); }
+  .notation__swatch { min-height: 5rem; }
 }
 
 /* --------------------------------------------------------------------------
@@ -632,6 +925,187 @@
 }
 
 /* --------------------------------------------------------------------------
+   04 · สูตรเดียวกันเมื่อลงงานจริง
+   สามใบนี้เริ่มจากเนื้อสีเดียวกันที่ 220° ต่างกันแค่หยิบเพื่อนบ้านคนละแบบ
+   ค่าสีทุกตัวส่งมาจาก HTML ผ่าน --hu-* เพราะเป็น "ตัวอย่างที่กำลังอธิบาย"
+   ไม่ใช่สีของ UI จริง — ตั้งไว้ใน CSS เมื่อไรจะสลับตามธีมแล้วสอนผิดทันที
+   -------------------------------------------------------------------------- */
+.harmony-use {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
+}
+
+/* subgrid ทำให้ป้ายกำกับ ตัวอย่าง และคำอธิบายของทั้งสามใบตกเส้นเดียวกัน
+   แม้คำอธิบายจะยาวไม่เท่ากัน — ไม่งั้นกรอบตัวอย่างจะเริ่มคนละระดับ */
+.harmony-use__case {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.harmony-use__case .ramp-row__note { margin: 0; }
+
+/* Complementary — สีตรงข้ามอยู่บนปุ่มชิ้นเดียว ไม่ได้แบ่งพื้นที่คนละครึ่ง */
+.hu-banner {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--hu-bg);
+  color: var(--hu-fg);
+}
+
+.hu-banner__eyebrow {
+  display: block;
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--hu-dim);
+}
+
+.hu-banner__title {
+  margin: var(--space-2) 0 var(--space-3);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-base);
+}
+
+.hu-banner__btn {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--hu-cta);
+  color: var(--hu-on-cta);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+/* Analogous — สามการ์ดที่ต่างกัน 30° ต่อใบ */
+.hu-cards { display: grid; gap: var(--space-2); }
+
+.hu-card {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--hu-bg);
+  color: var(--hu-fg);
+}
+
+.hu-card__label { font-size: var(--text-sm); }
+.hu-card b { font-size: var(--text-lg); font-variant-numeric: tabular-nums; }
+
+/* Triadic — กราฟสามชุดที่ต้องแยกออกจากกันได้ด้วยตาบนพื้นขาว */
+.hu-chart { display: grid; gap: var(--space-3); }
+
+.hu-chart__bars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: var(--space-3);
+  height: 6rem;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+}
+
+.hu-chart__bars span {
+  height: var(--hu-h);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background-color: var(--hu-bg);
+}
+
+.hu-chart__legend { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+
+.hu-chart__legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* จุดสีของ legend วาดด้วย ::before ไม่ใช่ element จริง — เป็นของตกแต่งล้วน
+   ข้อมูลที่ต้องอ่านให้ได้อยู่ในข้อความกับตัวเลขข้าง ๆ อยู่แล้ว */
+.hu-chart__legend li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--hu-bg);
+}
+
+.hu-chart__legend .u-num { margin-inline-start: auto; font-size: var(--text-xs); color: var(--color-text-subtle); }
+
+/* --------------------------------------------------------------------------
+   04 · ขอบสีสั่น — คู่ตรงข้ามที่ความสว่างเท่ากัน
+   --vibe-a / --vibe-b มาจาก JS ทั้งคู่ CSS แค่เอาไปทา ไม่มีสีตั้งต้นฝังไว้เลย
+   เพราะค่าที่อ่านได้ใต้ภาพต้องมาจากสีชุดเดียวกับที่ตาเห็นเสมอ
+   -------------------------------------------------------------------------- */
+.vibe { display: grid; gap: var(--space-3); }
+
+.vibe__band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 7.5rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.vibe__half--a { background-color: var(--vibe-a); }
+
+.vibe__half--b {
+  display: grid;
+  place-items: center;
+  background-color: var(--vibe-b);
+}
+
+/* เส้นคั่นเป็น box-shadow ด้านในไม่ใช่ border เพราะ border จะกินความกว้างของครึ่งขวา
+   ทำให้รอยต่อขยับตำแหน่งตอนติ๊ก แล้วคนดูจะแยกไม่ออกว่าที่ดีขึ้นเพราะเส้นหรือเพราะขนาดเปลี่ยน */
+.vibe__band.is-split .vibe__half--b { box-shadow: inset 4px 0 0 #ffffff; }
+
+.vibe__text {
+  padding: 0 var(--space-3);
+  color: var(--vibe-a);
+  font-size: var(--text-xl);
+  line-height: var(--lh-xl);
+  font-weight: var(--weight-bold);
+  text-align: center;
+}
+
+.vibe__controls {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.vibe__controls .field__label { margin: 0; white-space: nowrap; }
+
+.vibe__check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.vibe__readout { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); font-size: var(--text-sm); }
+.vibe__readout .u-num { font-family: var(--font-mono); font-size: var(--text-md); color: var(--color-text); }
+
+@media (max-width: 680px) {
+  .vibe__controls { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* --------------------------------------------------------------------------
    05 · สีแบรนด์เปลี่ยน ความรู้สึกเปลี่ยน
    การ์ดใบเดียวกันทุกตัวอักษร เปลี่ยนแค่ hue ของสีแบรนด์
    -------------------------------------------------------------------------- */
@@ -730,6 +1204,97 @@
   background-color: transparent;
   color: hsl(var(--mood-h) 65% var(--mood-text-l, 42%));
   border: 1px solid hsl(var(--mood-h) 55% 65%);
+}
+
+/* --------------------------------------------------------------------------
+   05 · สีเดิมเป๊ะ คนละบริบท
+   ภาพก่อนหน้าเปลี่ยนสีโดยตรึงเนื้อหา ภาพนี้ตรึงสีแล้วเปลี่ยนเนื้อหา
+   สองภาพคู่กันจึงปิดข้อสรุปได้ว่าความหมายเกิดจากคู่ของ "สี + สิ่งที่มันเกาะอยู่"
+   ค่าสีประกาศครั้งเดียวที่ --ctx เพื่อให้พิสูจน์ได้ว่าทั้งสามใบใช้ค่าเดียวกันจริง
+   -------------------------------------------------------------------------- */
+.context {
+  --ctx: #dc2626;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
+}
+
+.context__case {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.context__case .ramp-row__note { margin: 0; }
+.context__case .ramp-row__note b { color: var(--color-text); font-weight: var(--weight-semibold); }
+
+.context__card {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+}
+
+.context__badge {
+  justify-self: start;
+  padding: 1px var(--space-2);
+  border: 1px solid var(--ctx);
+  border-radius: var(--radius-full);
+  color: var(--ctx);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+
+.context__title { margin: 0; font-size: var(--text-md); font-weight: var(--weight-semibold); line-height: var(--lh-base); }
+.context__body { margin: 0; font-size: var(--text-xs); line-height: var(--lh-sm); color: var(--color-text-muted); }
+
+.context__link { justify-self: start; color: var(--ctx); font-size: var(--text-sm); text-decoration: underline; }
+
+/* ใบโปรโมชัน — สีเดียวกันแต่ขึ้นเป็นพื้นเต็มผืน ไม่ใช่เส้นขอบบาง ๆ
+   ปริมาณที่ใช้ต่างกันเป็นอีกครึ่งหนึ่งของเหตุผลที่ความหมายเปลี่ยน */
+.context__card--sale { background-color: var(--ctx); border-color: var(--ctx); color: #ffffff; }
+.context__card--sale .context__title,
+.context__card--sale .context__body { color: inherit; }
+.context__badge--solid { background-color: #ffffff; border-color: #ffffff; color: var(--ctx); }
+
+.context__cta {
+  justify-self: start;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+  color: var(--ctx);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.context__spice { display: flex; align-items: center; gap: var(--space-1); }
+
+/* พริกวาดด้วยสี่เหลี่ยมมุมมน ไม่ใช่ไอคอนจริง — ที่ต้องการคือ "ก้อนสีแดงเรียงกัน"
+   ให้เห็นว่าแดงก้อนเดียวกันทำหน้าที่วัดระดับความเผ็ดได้ด้วย */
+.context__chili {
+  width: 0.75rem;
+  height: 1rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-border);
+}
+
+.context__chili.is-on { background-color: var(--ctx); }
+.context__spice-label { margin-inline-start: var(--space-2); font-size: var(--text-xs); color: var(--color-text-muted); }
+
+/* หัวตารางแบบมีคำบรรยาย — ตารางในหน้านี้ส่วนใหญ่ไม่ต้องการ แต่ตารางวัฒนธรรม
+   ต้องบอกกรอบการอ่านก่อน ไม่งั้นจะถูกอ่านเป็นกฎแทนที่จะเป็นข้อควรระวัง */
+.table__caption {
+  caption-side: top;
+  padding-block-end: var(--space-2);
+  text-align: start;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
 }
 
 /* --------------------------------------------------------------------------
@@ -843,6 +1408,37 @@
   25%, 97%  { opacity: 0.4; background-color: transparent; }
   100%      { opacity: 1; background-color: var(--color-accent-soft); }
 }
+
+/* --------------------------------------------------------------------------
+   06 · โค้ดจริงของระบบ token สองชั้น
+   ยกมาจาก design-system.css ตรง ๆ จึงต้องอ่านง่ายในกล่องเดียวโดยไม่ต้องมีแท็บ
+   หรือปุ่มคัดลอกแบบหน้า Component Style — ที่นี่โค้ดเป็นภาพประกอบ ไม่ใช่ของให้หยิบไปใช้
+   -------------------------------------------------------------------------- */
+.snippet {
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--lh-sm);
+  color: var(--color-text);
+  tab-size: 2;
+}
+
+.snippet code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  white-space: pre;
+}
+
+/* ชื่อ token ในตารางเทียบระบบยาวกว่าช่องเสมอ ปล่อยให้ตัดบรรทัดได้ดีกว่าดันตารางล้น */
+.table code { white-space: nowrap; }
+.table small { color: var(--color-text-subtle); }
 
 /* --------------------------------------------------------------------------
    07 · สเกล 11 ขั้น
@@ -968,6 +1564,43 @@
 .steps__use-item b { display: block; font-family: var(--font-mono); color: var(--color-primary-text); }
 
 /* --------------------------------------------------------------------------
+   07 · ตารางค่าจริงของสเกล
+   แถวทั้งหมดสร้างจาก JS ที่อ่านสีมาจาก .steps ข้างบนอีกที สไตล์ที่นี่จึงมีแค่
+   ของที่ HTML ล้วนให้ไม่ได้ — ช่องสีตัวอย่างกับการหรี่ตัวเลขที่ไม่ผ่านเกณฑ์
+   -------------------------------------------------------------------------- */
+.scale-table { display: grid; gap: var(--space-3); }
+
+.scale-table__chip {
+  display: block;
+  width: var(--space-8);
+  height: var(--space-5);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+/* ตัวเลขที่ไม่ผ่าน 4.5:1 หรี่ลงแต่ยังอ่านออก — ไม่ใช้สีแดงเพราะทั้งคอลัมน์
+   จะกลายเป็นป้ายเตือนทั้งที่ขั้นอ่อน ๆ ไม่ได้มีไว้ทำตัวอักษรอยู่แล้ว */
+.scale-table__weak { color: var(--color-text-subtle); }
+
+.scale-table__note {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-sunken);
+  font-size: var(--text-sm);
+  line-height: var(--lh-base);
+  color: var(--color-text-muted);
+}
+
+.scale-table__note b { color: var(--color-text); font-variant-numeric: tabular-nums; }
+
+/* จอแคบ: ตารางเลื่อนแนวนอนได้อยู่แล้วจาก .table-wrap แต่ถ้าปล่อยให้คอลัมน์สุดท้าย
+   ตัดคำ แถวจะสูงขึ้นสามเท่าโดยที่ข้อความนั้นอยู่นอกจอ — ห้ามตัดคำแล้วให้เลื่อนอ่านแทน */
+@media (max-width: 680px) {
+  .scale-table .table td:last-child,
+  .scale-table .table th:last-child { white-space: nowrap; }
+}
+
+/* --------------------------------------------------------------------------
    08 · เส้นแบ่งที่อ่านออก / อ่านไม่ออก
    ข้อความชุดเดียวกันไล่จากคอนทราสต์ต่ำไปสูง พร้อมป้ายบอกว่าผ่านเกณฑ์ตรงไหน
    -------------------------------------------------------------------------- */
@@ -975,7 +1608,7 @@
 
 .legibility__row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 5rem 4.5rem;
+  grid-template-columns: minmax(0, 1fr) 5.5rem 6.5rem 4.5rem;
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-2) var(--space-4);
@@ -993,10 +1626,143 @@
   color: var(--color-text-muted);
 }
 
-.legibility__row--1 { color: hsl(225 8% 72%); }
-.legibility__row--2 { color: hsl(225 8% 60%); }
-.legibility__row--3 { color: hsl(225 10% 46%); }
-.legibility__row--4 { color: hsl(225 14% 30%); }
+/* สี่ค่านี้ต้องตรงกับ hex ที่เขียนกำกับในแต่ละแถวเป๊ะ ๆ เพราะตัวเลขคอนทราสต์ข้าง ๆ
+   คำนวณจากค่าเหล่านี้บนพื้น #ffffff — แก้ที่นี่แล้วต้องแก้ทั้ง hex และอัตราส่วนใน HTML ด้วย
+   สามค่าที่มีชื่อ token คือ neutral-400 / 500 / 600 ของ design-system.css ตรง ๆ */
+.legibility__row--1 { color: #94a3b8; }  /* neutral-400 · 2.56:1 */
+.legibility__row--2 { color: #8694a7; }  /*              3.08:1 */
+.legibility__row--3 { color: #64748b; }  /* neutral-500 · 4.76:1 */
+.legibility__row--4 { color: #475569; }  /* neutral-600 · 7.58:1 */
+
+/* code ทั่วหน้ามีทั้งพื้นและเส้นขอบ แต่ตรงนี้ hex เป็นแค่ป้ายกำกับของแถว
+   ถ้าปล่อยให้มีกรอบจะอ่านเป็นช่องกรอกข้อมูลทั้งที่กดอะไรไม่ได้ */
+.legibility__hex {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* --------------------------------------------------------------------------
+   08 · เครื่องวัดคอนทราสต์ย่อ
+   ตัวอย่างข้างในถูกทาด้วย --wcag-fg / --wcag-bg ที่ JS ตั้งให้ทั้งก้อน
+   จึงมั่นใจได้ว่าสิ่งที่ตาเห็นกับตัวเลขที่อ่านได้มาจากคู่สีเดียวกันเสมอ
+   -------------------------------------------------------------------------- */
+.wcag-demo { display: grid; gap: var(--space-4); }
+
+.wcag-demo__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-4);
+}
+
+.wcag-demo__field { display: grid; gap: var(--space-1); justify-items: start; }
+.wcag-demo__field .field__label { margin: 0; }
+.wcag-demo__field code { font-size: var(--text-xs); }
+
+/* ช่องเลือกสีของเบราว์เซอร์มี padding ในตัวที่ปิดไม่ได้ทุกที่ กรอบจึงหนาเกินจริง
+   ตัดด้วย appearance: none แล้ววาดกรอบเองให้เท่ากับ control ตัวอื่นในหน้า */
+.wcag-demo__swatch {
+  appearance: none;
+  width: 4.5rem;
+  height: var(--control-h-md);
+  padding: 2px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  cursor: pointer;
+}
+
+.wcag-demo__swatch::-webkit-color-swatch-wrapper { padding: 0; }
+.wcag-demo__swatch::-webkit-color-swatch { border: none; border-radius: 6px; }
+.wcag-demo__swatch::-moz-color-swatch { border: none; border-radius: 6px; }
+
+.wcag-demo__presets { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.wcag-demo__preset {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.wcag-demo__preset:hover { border-color: var(--color-primary); color: var(--color-primary-text); }
+
+.wcag-demo__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.wcag-demo__preview {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--wcag-bg, #ffffff);
+  color: var(--wcag-fg, #8694a7);
+}
+
+.wcag-demo__sample { margin: 0; color: inherit; }
+.wcag-demo__sample--sm { font-size: var(--text-base); line-height: var(--lh-base); }
+.wcag-demo__sample--lg { font-size: 1.5rem; line-height: var(--lh-xl); font-weight: var(--weight-semibold); }
+
+.wcag-demo__ui { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+
+.wcag-demo__icon { display: inline-flex; color: inherit; }
+.wcag-demo__icon .icon { width: 1.5rem; height: 1.5rem; }
+
+/* ตัวอย่างของเกณฑ์ 1.4.11 ต้องเป็น "เส้นขอบ" จริง ๆ ไม่ใช่ข้อความสีเดียวกัน
+   เพราะข้อนั้นวัดขอบขององค์ประกอบเทียบกับพื้นรอบข้าง ไม่ได้วัดตัวอักษรข้างใน */
+.wcag-demo__input {
+  flex: 1;
+  min-width: 12rem;
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid currentColor;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+}
+
+.wcag-demo__score { display: grid; gap: var(--space-2); justify-items: start; }
+
+.wcag-demo__ratio {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-2xl);
+  color: var(--color-text);
+}
+
+.wcag-demo__levels { display: grid; gap: var(--space-2); width: 100%; margin: 0; padding: 0; list-style: none; }
+
+.wcag-demo__level {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: 0;
+  padding-block-end: var(--space-2);
+  border-block-end: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+}
+
+.wcag-demo__level:last-child { padding-block-end: 0; border-block-end: none; }
+.wcag-demo__level-name { display: grid; }
+.wcag-demo__level-name small { font-size: var(--text-xs); color: var(--color-text-subtle); }
+.wcag-demo__level-name small code { font-size: inherit; }
+
+@media (max-width: 680px) {
+  .wcag-demo__body { grid-template-columns: minmax(0, 1fr); }
+}
 
 /* --------------------------------------------------------------------------
    09 · ธีมมืดที่ทำถูก / ทำผิด
@@ -1049,6 +1815,75 @@
 .theme-card--right .theme-card__btn { background-color: #818cf8; color: #0f172a; }
 
 .theme-card__meta { font-family: var(--font-mono); font-size: 0.625rem; color: #94a3b8; }
+
+/* --------------------------------------------------------------------------
+   09 · บันไดความสูงของธีมมืด
+   ชั้นซ้อนกันจริงในโครง DOM ไม่ใช่วางเรียงข้างกันแล้วบอกว่าซ้อน — เพราะประเด็น
+   คือ "ชั้นบนสว่างกว่าชั้นที่รองอยู่" ซึ่งต้องเห็นขอบต่อกันถึงจะเถียงได้
+   ทั้งบล็อกตรึงเป็นสีธีมมืดทั้งสองธีม ตัวอย่างนี้พูดถึงธีมมืดโดยเฉพาะ
+   -------------------------------------------------------------------------- */
+.elev { border-radius: var(--radius-md); overflow: hidden; }
+
+.elev__layer {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--elev-bg);
+  color: #e2e8f0;
+}
+
+.elev__head { display: grid; gap: 2px; }
+.elev__name { font-size: var(--text-sm); font-weight: var(--weight-semibold); }
+
+.elev__meta { font-size: var(--text-xs); color: #94a3b8; }
+
+/* code ในบล็อกนี้ต้องไม่ดึงสีจากธีม เพราะพื้นรอบตัวมันถูกตรึงเป็นสีมืดไว้แล้ว */
+.elev__meta code {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   09 · สีแบรนด์เดียวกัน สามวิธีใช้บนพื้นมืด
+   พื้นของทั้งสามใบต้องเป็นสีเดียวกันเป๊ะ ไม่งั้นเทียบตัวเลขกันไม่ได้
+   -------------------------------------------------------------------------- */
+.dark-brand {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
+}
+
+.dark-brand__case {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.dark-brand__case .ramp-row__note { margin: 0; }
+.dark-brand__case .ramp-row__note b { color: var(--color-text); font-variant-numeric: tabular-nums; }
+
+.dark-brand__panel {
+  display: grid;
+  place-items: center;
+  min-height: 6rem;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: #0f1729;
+}
+
+.dark-brand__btn {
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  background-color: var(--db);
+  color: var(--db-on);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
 
 /* --------------------------------------------------------------------------
    10 · สัดส่วน 60 / 30 / 10
@@ -1185,6 +2020,146 @@
 }
 
 /* --------------------------------------------------------------------------
+   10 · วัดสัดส่วนพื้นที่จริง
+   data-area เป็นแหล่งความจริงแหล่งเดียว — CSS ทาสีตามค่ามัน JS ก็นับตามค่ามัน
+   ห้ามทาสีชิ้นไหนด้วยคลาสอื่นเด็ดขาด ไม่งั้นภาพกับตัวเลขจะเริ่มเล่าคนละเรื่อง
+   ตรึงเป็นชุดสีสว่างทั้งสองธีมเพราะตัวอย่างกำลังพูดถึงหน้าจอสว่างหนึ่งหน้า
+   -------------------------------------------------------------------------- */
+.area-meter {
+  --am-bg: #ffffff;
+  --am-surface: #dbe2ea;
+  --am-text: #94a3b8;
+  --am-brand: #4f46e5;
+  display: grid;
+  gap: var(--space-3);
+}
+
+[data-area="bg"]      { background-color: var(--am-bg); }
+[data-area="surface"] { background-color: var(--am-surface); }
+[data-area="text"]    { background-color: var(--am-text); }
+[data-area="brand"]   { background-color: var(--am-brand); }
+
+.area-meter__frame {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--space-2);
+  height: 15rem;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--am-bg);
+}
+
+.arena__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.arena__logo { width: var(--space-6); height: var(--space-4); border-radius: var(--radius-sm); }
+.arena__nav { width: var(--space-10); height: var(--space-2); border-radius: var(--radius-full); }
+
+.arena__body { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: var(--space-2); }
+
+.arena__side {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.arena__item { height: var(--space-2); border-radius: var(--radius-full); }
+
+.arena__main { display: grid; align-content: start; gap: var(--space-2); }
+
+.arena__card {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+}
+
+.arena__line { height: var(--space-2); border-radius: var(--radius-full); }
+.arena__line--80 { width: 80%; }
+.arena__line--60 { width: 60%; }
+.arena__tag { justify-self: start; width: var(--space-12); height: var(--space-4); border-radius: var(--radius-full); }
+
+.arena__cta {
+  justify-self: start;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+
+.area-meter__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+/* แถบสัดส่วนใช้ flex-grow เป็นตัวคุมความกว้าง ไม่ใช่ width เป็นเปอร์เซ็นต์
+   ผลรวมจึงเต็มแถบพอดีเสมอแม้ตัวเลขจะปัดเศษไม่ลงตัว */
+.area-meter__bar {
+  display: flex;
+  height: var(--space-6);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.area-meter__seg { display: block; min-width: 2px; }
+
+.area-meter__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.area-meter__legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.area-meter__dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.area-meter__legend b { font-variant-numeric: tabular-nums; color: var(--color-text); }
+
+/* .badge ตั้ง white-space: nowrap ไว้เพราะปกติเป็นป้ายคำเดียว — สามป้ายสรุปในหน้านี้
+   เป็นประโยคเต็ม ต้องปลดล็อกให้ตัดบรรทัดได้ ไม่งั้นดันหน้าจอแคบจนเลื่อนแนวนอน */
+.area-meter__verdict,
+.vibe__verdict,
+.wcag-demo__verdict { white-space: normal; justify-self: start; }
+
+/* จอแคบ: ตัดการ์ดใบที่สองออกไปเลย ไม่ใช่ปล่อยให้ล้นกรอบ — ชิ้นที่ล้นยังถูกวัดอยู่
+   เพราะ getBoundingClientRect ไม่สนใจว่าพ้นกรอบไปหรือยัง เปอร์เซ็นต์จะเพี้ยนทันที
+   ส่วน display: none ให้ขนาดเป็นศูนย์ จึงหลุดจากการนับไปพร้อมกับที่หายจากภาพ */
+@media (max-width: 680px) {
+  .area-meter__frame { height: 14rem; }
+  .arena__body { grid-template-columns: 3.5rem minmax(0, 1fr); }
+  .arena__card:nth-of-type(2) { display: none; }
+}
+
+/* --------------------------------------------------------------------------
    11 · ลากเทียบก่อนแก้ / หลังแก้
    ภาพสองใบซ้อนกันสนิท ใบบนถูกตัดตามตำแหน่งของ range ที่ผู้ใช้ลาก
    -------------------------------------------------------------------------- */
@@ -1281,6 +2256,49 @@
 .demo-btn--solid { background-color: var(--color-primary); color: var(--color-on-primary); }
 .demo-btn--ghost { border: 1px solid var(--color-border-strong); color: var(--color-text-muted); }
 
+/* กรอบเทียบที่มีเนื้อหาหลายบรรทัดต้องสูงกว่าค่าเริ่มต้น — สองฝั่งวางทับกันแบบ absolute
+   ถ้าเตี้ยไปฝั่งใดฝั่งหนึ่งจะถูกตัด แล้วการเทียบจะไม่ยุติธรรม */
+.compare__frame--tall { min-height: 11rem; }
+
+/* ป้ายก่อนแก้/หลังแก้ลอยอยู่มุมบนแบบ absolute — กรอบที่เนื้อหาเต็มต้องเว้นที่ให้มันเอง
+   ไม่งั้นบรรทัดแรกจะวิ่งไปซ้อนใต้ป้ายพอดี */
+.compare__frame--tall .compare__side {
+  align-content: start;
+  padding-block-start: var(--space-8);
+}
+
+.status-list { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+
+.status-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.status-list__dot {
+  flex-shrink: 0;
+  width: var(--space-3);
+  height: var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: var(--sd);
+}
+
+.status-list__id { color: var(--color-text-muted); }
+
+.status-list__state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-start: auto;
+  color: var(--sd);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+
+.status-list__state .icon { width: 0.9em; height: 0.9em; }
+
 /* --------------------------------------------------------------------------
    ผู้ใช้ที่ขอลดการเคลื่อนไหว — ให้เห็นสถานะปลายทางแบบนิ่ง ๆ ไม่ใช่ไม่เห็นอะไรเลย
    -------------------------------------------------------------------------- */
@@ -1298,6 +2316,10 @@
   .is-in-view .ratio__seg--second { width: 30%; }
   .is-in-view .ratio__seg--accent { width: 10%; }
   .is-in-view .gaze__dot { opacity: 1; transform: translate(2.5rem, 9.5rem); }
+
+  /* สองตัวนี้ไม่ใช่อนิเมชันเล่าเรื่อง เป็นแค่การไล่สีตอนสลับโหมด — ตัดทิ้งได้เลย */
+  .cvd-list__dot,
+  .cvd-list__pill { transition: none; }
 }
 
 @media (max-width: 680px) {
@@ -1305,5 +2327,266 @@
   .axis { grid-template-columns: 5rem minmax(0, 1fr) 2.75rem; gap: var(--space-2); }
   .steps { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .legibility__row { grid-template-columns: minmax(0, 1fr) 4.5rem; }
-  .legibility__row .badge { display: none; }
+  .legibility__row .badge,
+  .legibility__hex { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   01 · จำลองหน้าจอกลางแดด
+   ใช้ filter กับทั้งบล็อกทีเดียว ไม่ใช่ทาสีใหม่ทีละชิ้น — เพราะแสงจ้าในโลกจริง
+   ก็ทำแบบนั้น คือบีบช่วงความสว่างของทุกอย่างพร้อมกัน ไม่ได้เลือกว่าจะบีบชิ้นไหน
+   -------------------------------------------------------------------------- */
+.glare { display: grid; gap: var(--space-3); }
+
+.glare__screen {
+  --glare-contrast: 1;
+  --glare-bright: 1;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: #f1f5f9;
+  filter: contrast(var(--glare-contrast)) brightness(var(--glare-bright));
+  transition: filter var(--duration-base) var(--ease-out);
+}
+
+.glare__card {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+}
+
+.glare__title { font-size: var(--text-md); font-weight: var(--weight-semibold); color: #0f172a; }
+.glare__text { margin: 0; font-size: var(--text-sm); color: #475569; }
+
+/* ข้อความสีเทาอ่อนคือชิ้นที่ควรหายไปก่อนเพื่อน จึงตั้งไว้ที่ระดับที่ผ่านเกณฑ์แบบเฉียด ๆ */
+.glare__muted { margin: 0; font-size: var(--text-xs); color: #94a3b8; }
+
+.glare__row { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-block-start: var(--space-1); }
+
+.glare__btn {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.glare__btn--primary { background-color: #4f46e5; color: #ffffff; }
+.glare__btn--ghost { border: 1px solid #cbd5e1; color: #475569; }
+.glare__link { font-size: var(--text-sm); color: #6366f1; text-decoration: underline; }
+
+.glare__controls { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--space-3); }
+.glare__controls .field__label { margin: 0; white-space: nowrap; }
+.glare__readout { font-size: var(--text-sm); color: var(--color-text-muted); min-height: var(--lh-base); }
+
+/* --------------------------------------------------------------------------
+   02 · Tint / Shade / Tone จากสีตั้งต้นเดียว
+   -------------------------------------------------------------------------- */
+.mixer { display: grid; gap: var(--space-4); }
+
+.mixer__control { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.mixer__control .field__label { margin: 0; }
+
+.mixer__rows { display: grid; gap: var(--space-4); }
+.mixer__row { display: grid; gap: var(--space-2); }
+
+.mixer__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2); font-size: var(--text-sm); }
+.mixer__head b { font-weight: var(--weight-semibold); }
+.mixer__head span { font-size: var(--text-xs); color: var(--color-text-subtle); }
+
+.mixer__strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr)); gap: var(--space-2); }
+
+.mixer__chip {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.mixer__chip b { font-size: var(--text-xs); font-weight: var(--weight-semibold); }
+.mixer__chip code { font-size: 0.625rem; background: none; border: none; padding: 0; color: inherit; opacity: 0.85; }
+.mixer__chip i {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-style: normal;
+  opacity: 0.85;
+}
+
+.mixer__note { font-size: var(--text-xs); line-height: var(--lh-base); color: var(--color-text-muted); }
+
+/* --------------------------------------------------------------------------
+   05 · เลือกหมวดธุรกิจ
+   ทำด้วย :has() ล้วนแบบเดียวกับตัวเลือกสีแบรนด์ในตอนเดียวกัน ไม่ต้องมี JS
+   -------------------------------------------------------------------------- */
+.sector { display: grid; gap: var(--space-4); position: relative; }
+
+.sector__picker { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.sector__radio {
+  position: absolute;
+  width: 1px; height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sector__option {
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-h-md);
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.sector__radio:checked + .sector__option {
+  background-color: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-surface);
+  font-weight: var(--weight-semibold);
+}
+
+.sector__radio:focus-visible + .sector__option { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+.sector__panel { display: none; }
+.sector:has(#sector-fin:checked)    [data-sector="fin"],
+.sector:has(#sector-health:checked) [data-sector="health"],
+.sector:has(#sector-food:checked)   [data-sector="food"],
+.sector:has(#sector-ai:checked)     [data-sector="ai"] { display: grid; gap: var(--space-2); }
+
+.sector__panel p { margin: 0; font-size: var(--text-sm); line-height: var(--lh-base); }
+.sector__panel b { font-weight: var(--weight-semibold); }
+
+.sector__swatches { display: flex; gap: var(--space-2); margin-block-end: var(--space-1); }
+.sector__swatches span {
+  width: var(--space-12);
+  height: var(--space-8);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+/* --------------------------------------------------------------------------
+   06 · เลือกดูทีละบทบาท
+   -------------------------------------------------------------------------- */
+.rolepick { display: grid; gap: var(--space-3); }
+
+.rolepick__chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.rolepick__chip {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.rolepick__chip.is-active {
+  background-color: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-surface);
+  font-weight: var(--weight-semibold);
+}
+
+.rolepick__screen {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+}
+
+.rolepick__bar { display: flex; align-items: center; gap: var(--space-3); }
+.rolepick__lines { display: grid; gap: var(--space-2); }
+.rolepick__line { height: var(--space-2); border-radius: var(--radius-full); }
+.rolepick__pills { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.rolepick__pill {
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+
+.rolepick__pill--ok   { background-color: var(--color-success-soft); color: var(--color-success-text); }
+.rolepick__pill--warn { background-color: var(--color-warning-soft); color: var(--color-warning-text); }
+.rolepick__pill--bad  { background-color: var(--color-danger-soft);  color: var(--color-danger-text); }
+
+.rolepick__chart { display: flex; align-items: end; gap: var(--space-2); height: var(--space-16); }
+.rolepick__chart span { flex: 1; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+
+.rolepick__cta {
+  justify-self: start;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+/* ชิ้นที่ไม่ได้เลือกหรี่ลง ไม่ใช่ซ่อน — ต้องยังเห็นหน้าจอเต็มเพื่อเทียบสัดส่วนได้ */
+.rolepick__part { transition: opacity var(--duration-base) var(--ease-out); }
+.rolepick__part.is-dim { opacity: 0.12; }
+
+.rolepick__bar .rolepick__part[data-role="primary"] { background-color: var(--color-primary); border-radius: var(--radius-sm); }
+.rolepick__bar .rolepick__part[data-role="neutral"],
+.rolepick__line { background-color: var(--color-border-strong); }
+
+.rolepick__note { font-size: var(--text-sm); line-height: var(--lh-base); color: var(--color-text-muted); min-height: var(--lh-lg); }
+
+/* --------------------------------------------------------------------------
+   09 · ยกระดับความสูงในธีมมืด
+   พื้นตรึงเป็นสีมืดทั้งสองธีม เพราะทั้งตัวอย่างพูดถึงธีมมืดโดยเฉพาะ
+   -------------------------------------------------------------------------- */
+.elevlab { display: grid; gap: var(--space-4); }
+
+.elevlab__stage {
+  display: grid;
+  place-items: center;
+  padding: var(--space-8) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: #0f1729;
+}
+
+.elevlab__card {
+  --elev-inset: 0px;
+  display: grid;
+  gap: var(--space-2);
+  width: min(22rem, 100%);
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  color: #e2e8f0;
+  transform: translateY(calc(var(--elev-inset) * -1));
+  transition: background-color var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+
+.elevlab__title { font-size: var(--text-md); font-weight: var(--weight-semibold); }
+.elevlab__text { font-size: var(--text-sm); line-height: var(--lh-base); color: #94a3b8; }
+
+.elevlab__controls { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); }
+.elevlab__controls .field__label { margin: 0; white-space: nowrap; }
+.elevlab__controls .u-num { font-family: var(--font-mono); font-size: var(--text-xs); white-space: nowrap; }
+
+.elevlab__readout { font-size: var(--text-sm); color: var(--color-text-muted); }
+.elevlab__readout b { font-family: var(--font-mono); color: var(--color-text); }
+
+@media (max-width: 680px) {
+  .glare__controls,
+  .elevlab__controls { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glare__screen,
+  .elevlab__card,
+  .rolepick__part { transition: none; }
 }

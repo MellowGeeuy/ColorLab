@@ -43,32 +43,73 @@ const HISTORY_LIMIT = 40;
 let seq = 0;
 const nextId = () => `item-${Date.now().toString(36)}-${(seq += 1)}`;
 
-/** ขนาดตั้งต้นของแต่ละ component เป็นจำนวนช่อง — ค่าที่ทำให้ของนั้นดูสมส่วนตั้งแต่วางครั้งแรก */
+/**
+ * ขนาดตั้งต้นของแต่ละ component เป็นจำนวนช่อง
+ *
+ * ความสูงไม่ได้กะเอา แต่วัดจากความสูงจริงของ markup ชุด preview ที่แคนวาสวาด
+ * ณ ความกว้างตั้งต้นของตัวมันเอง แล้วแปลงเป็นจำนวนแถวที่ทำให้เนื้อหาไม่ถูกตัด
+ *
+ * ที่ต้องทำแบบนี้เพราะ .lay-item__stage ตัด overflow ทิ้ง ของที่สูงเกินกล่องจะหายไปเงียบ ๆ
+ * ผังที่วาดไว้จึงไม่ตรงกับไฟล์ที่ส่งออก — ของเดิม 14 จาก 21 ตัวถูกตัดตั้งแต่วางครั้งแรก
+ * เช่น card ต้องการ 15 แถวแต่ได้ 7 (หายไป 444px) และ badge ต้องการ 8 แถวแต่ได้ 2
+ *
+ * เวลาแก้ไฟล์ใน assets/components/ ต้องวัดใหม่ ไม่งั้นค่าที่นี่จะล้าสมัยโดยไม่มีอะไรฟ้อง
+ */
 export const DEFAULT_SIZE = {
-  table: { w: 12, h: 7 },
+  table: { w: 12, h: 8 },
   toolbar: { w: 12, h: 2 },
   pagination: { w: 12, h: 2 },
-  list: { w: 6, h: 6 },
-  badge: { w: 3, h: 2 },
-  button: { w: 3, h: 2 },
-  field: { w: 6, h: 4 },
+  list: { w: 6, h: 7 },
+  badge: { w: 3, h: 8 },
+  button: { w: 3, h: 5 },
+  field: { w: 6, h: 9 },
   empty: { w: 6, h: 5 },
   skeleton: { w: 6, h: 4 },
 
   navbar: { w: 12, h: 2 },
-  sidebar: { w: 3, h: 5 },
+  sidebar: { w: 3, h: 9 },
   breadcrumb: { w: 5, h: 1 },
-  tabs: { w: 6, h: 2 },
+  tabs: { w: 6, h: 5 },
 
-  hero: { w: 8, h: 5 },
-  'section-head': { w: 12, h: 2 },
-  card: { w: 4, h: 7 },
-  stat: { w: 6, h: 3 },
-  accordion: { w: 8, h: 3 },
+  hero: { w: 8, h: 7 },
+  'section-head': { w: 12, h: 4 },
+  card: { w: 4, h: 15 },
+  stat: { w: 6, h: 7 },
+  accordion: { w: 8, h: 7 },
   footer: { w: 12, h: 5 },
 
-  alert: { w: 8, h: 3 },
-  modal: { w: 6, h: 5 },
+  alert: { w: 8, h: 8 },
+  modal: { w: 6, h: 7 },
+
+  select: { w: 6, h: 10 },
+  checkbox: { w: 6, h: 9 },
+  switch: { w: 6, h: 7 },
+  combobox: { w: 6, h: 10 },
+  upload: { w: 6, h: 9 },
+  stepper: { w: 4, h: 7 },
+  slider: { w: 6, h: 6 },
+  'tag-input': { w: 6, h: 6 },
+
+  toast: { w: 6, h: 4 },
+  progress: { w: 6, h: 6 },
+  spinner: { w: 5, h: 6 },
+  tooltip: { w: 5, h: 5 },
+  rating: { w: 5, h: 4 },
+
+  avatar: { w: 5, h: 3 },
+  'kv-list': { w: 6, h: 8 },
+  timeline: { w: 6, h: 7 },
+  chart: { w: 6, h: 8 },
+  tree: { w: 4, h: 5 },
+  calendar: { w: 5, h: 5 },
+
+  menu: { w: 4, h: 6 },
+  steps: { w: 8, h: 6 },
+  'bottom-nav': { w: 5, h: 2 },
+
+  drawer: { w: 6, h: 5 },
+  popover: { w: 5, h: 7 },
+  login: { w: 5, h: 12 },
 };
 
 let screenSeq = 0;
@@ -839,18 +880,31 @@ export function createHistory(initial) {
   let past = [];
   let present = initial;
   let future = [];
+  /** สถานะก่อนเริ่มการแก้แบบต่อเนื่อง (ลาก/ยืด) — null เมื่อไม่ได้อยู่ระหว่างลาก */
+  let liveFrom = null;
 
   return {
     get: () => present,
     canUndo: () => past.length > 0,
     canRedo: () => future.length > 0,
 
-    /** commit=false ใช้ระหว่างลาก เพื่อไม่ให้ได้ประวัติร้อยขั้นจากการลากครั้งเดียว */
+    /**
+     * commit=false ใช้ระหว่างลาก เพื่อไม่ให้ได้ประวัติร้อยขั้นจากการลากครั้งเดียว
+     *
+     * แต่ต้องจำ "สถานะก่อนเริ่มลาก" ไว้ด้วย ไม่งั้นตอนปิดท้ายจะ push สถานะระหว่างลาง
+     * ลงประวัติแทนสถานะตั้งต้น แล้วผู้ใช้ต้องกด undo สองครั้งถึงจะกลับไปที่เดิม
+     * (บั๊กนี้มีมาตั้งแต่ต้น เจอตอนวัดด้วยการลากอัตโนมัติ)
+     */
     set(next, commit = true) {
-      if (commit) {
-        past = [...past.slice(-HISTORY_LIMIT + 1), present];
-        future = [];
+      if (!commit) {
+        if (liveFrom === null) liveFrom = present;
+        present = next;
+        return present;
       }
+
+      past = [...past.slice(-HISTORY_LIMIT + 1), liveFrom ?? present];
+      liveFrom = null;
+      future = [];
       present = next;
       return present;
     },

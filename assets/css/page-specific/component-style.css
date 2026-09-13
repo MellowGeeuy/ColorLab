@@ -369,7 +369,8 @@
   font-weight: var(--weight-medium);
   letter-spacing: 0;
   text-transform: none;
-  color: var(--color-text-subtle);
+  /* วางบนพื้น surface-alt ไม่ใช่พื้นขาว — text-subtle ได้แค่ 4.34:1 ที่นั่น */
+  color: var(--color-text-muted);
 }
 
 /* เส้นไล่เฉดคั่นระหว่างชื่อหมวดกับลูกศร ทำให้แถวหัวข้ออ่านเป็นแถบเดียวยาวเต็มความกว้าง */

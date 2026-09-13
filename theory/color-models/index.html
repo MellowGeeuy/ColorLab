@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03 Color Models เลือกให้ถูกงาน — ColorLab</title>
+  <meta name="description" content="HEX RGB HSL OKLCH ต่างกันตรงไหน และทำไมความสว่างของ HSL ถึงเชื่อไม่ได้">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/breakpoints.css">
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="../../assets/css/app-shell.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory-figures.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/color-theory.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="topbar">
+      <div class="topbar__side">
+        <a class="topbar__brand" href="../../">
+          <span class="topbar__logo" aria-hidden="true"></span>
+          <span class="topbar__name">ColorLab</span>
+        </a>
+
+        <nav class="groundnav" aria-label="เมนูหลัก">
+          <a class="groundnav__item" href="../../" style="--dot-h:8" aria-current="page">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-book"/></svg>Color Theory
+          </a>
+          <a class="groundnav__item" href="../../component-style/" style="--dot-h:92">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-layers"/></svg>Component Style
+          </a>
+          <a class="groundnav__item" href="../../layout/" style="--dot-h:150">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
+          </a>
+        </nav>
+      </div>
+
+      <div class="topbar__side topbar__side--end">
+        <div class="topbar__actions">
+          <span class="topbar__status" id="read-status" role="status" aria-live="polite"></span>
+          <button type="button" class="btn btn--icon btn--sm toc-toggle" id="toc-toggle"
+                  aria-controls="toc" aria-expanded="false" aria-label="เปิดสารบัญ">
+            <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm btn--guide" id="guide-open"
+                  aria-haspopup="dialog" aria-label="เปิดคู่มือใช้งาน" title="คู่มือใช้งาน">
+            <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm" id="theme-toggle" aria-label="สลับโหมดสีของหน้าเว็บ">
+            <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+          </button>
+
+          <a class="topnav__item topnav__item--hero" href="../../workspace/" aria-label="Colorground" title="Colorground">
+            <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+            <span class="topnav__label">Colorground</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="read-progress" aria-hidden="true"><div class="read-progress__bar" id="progress-bar"></div></div>
+    <div class="toc-scrim" id="toc-scrim"></div>
+
+    <div class="reader">
+
+      <nav class="toc" id="toc" aria-label="สารบัญทั้งคอร์ส">
+        <a class="toc__home" href="../"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg> สารบัญทั้งหมด</a>
+        <div class="toc__group">พื้นฐาน</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-first/" style="--dot-h:8"><span class="toc__no">01</span> <span class="toc__text">สีทำงานก่อนตัวหนังสือ</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../three-axes/" style="--dot-h:28"><span class="toc__no">02</span> <span class="toc__text">สามแกนของสี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link is-current" href="../color-models/" style="--dot-h:45" aria-current="page"><span class="toc__no">03</span> <span class="toc__text">Color Models</span></a>
+            <ul class="toc__sub">
+              <li><a class="toc__link toc__link--sub" href="#why">ทำไมต้องรู้</a></li>
+              <li><a class="toc__link toc__link--sub" href="#core">หลักการ</a></li>
+              <li><a class="toc__link toc__link--sub" href="#deep">เขียน OKLCH ยังไงให้เบราว์เซอร์เก่าไม่พัง</a></li>
+              <li><a class="toc__link toc__link--sub" href="#pitfalls">ข้อผิดที่เจอบ่อย</a></li>
+              <li><a class="toc__link toc__link--sub" href="#wrap">สรุป</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="toc__group">ทฤษฎีสี</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../harmony/" style="--dot-h:92"><span class="toc__no">04</span> <span class="toc__text">วงล้อสี & Harmony</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../psychology/" style="--dot-h:150"><span class="toc__no">05</span> <span class="toc__text">สีกับความรู้สึก</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ระบบสีใน UI</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-roles/" style="--dot-h:172"><span class="toc__no">06</span> <span class="toc__text">สี่บทบาทของสี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../scales/" style="--dot-h:196"><span class="toc__no">07</span> <span class="toc__text">จากสีเดียวสู่สเกล</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">การเข้าถึง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../contrast/" style="--dot-h:214"><span class="toc__no">08</span> <span class="toc__text">Contrast & WCAG</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../dark-mode/" style="--dot-h:248"><span class="toc__no">09</span> <span class="toc__text">Dark Mode</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ลงมือใช้จริง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../proportion/" style="--dot-h:286"><span class="toc__no">10</span> <span class="toc__text">สัดส่วนการใช้สี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../fixes/" style="--dot-h:322"><span class="toc__no">11</span> <span class="toc__text">ก่อนแก้ / หลังแก้</span></a>
+          </li>
+        </ul>
+      </nav>
+
+      <main class="reader__main" id="reader-main">
+        <div class="prose">
+
+          <header class="topic-head">
+            <span class="topic-head__eyebrow">ตอนที่ 03 · พื้นฐาน</span>
+            <h1 class="topic-head__title">Color Models เลือกให้ถูกงาน</h1>
+            <p class="topic-head__lead">HSL ปรับง่ายก็จริง แต่มีจุดอ่อนสำคัญอยู่ข้อหนึ่ง คือตั้งค่าความสว่างเท่ากัน แต่ตาไม่ได้เห็นว่าสว่างเท่ากัน OKLCH ทำขึ้นมาเพื่อแก้เรื่องนี้โดยเฉพาะ</p>
+          </header>
+
+          <section class="section" id="why">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">01</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ทำไมต้องรู้เรื่องนี้</h2>
+            </div>
+
+              <p>อาการที่ทำให้คนเจอเรื่องนี้ครั้งแรกมักเป็นสองอย่างนี้</p>
+
+              <div class="case">
+                <div class="case__item">
+                  <span class="case__tag">อาการที่ 1 · ไล่สีแล้วขุ่นกลางทาง</span>
+                  <p>ไล่จากน้ำเงินไปเหลือง แต่ช่วงกลางกลายเป็นเทาสกปรก ทั้งที่สองปลายสวยดี</p>
+                </div>
+                <div class="case__item">
+                  <span class="case__tag">อาการที่ 2 · สเกลที่มีขั้นโดด</span>
+                  <p>สร้างสเกล 11 ขั้นด้วยการลดความสว่างทีละเท่า ๆ กัน แต่พอวางเรียงแล้วมีบางขั้นกระโดด
+                    ทั้งที่ตัวเลขห่างเท่ากันเป๊ะ</p>
+                </div>
+              </div>
+
+              <p>ทั้งสองอาการมาจากรากเดียวกัน คือโมเดลสีที่ใช้อยู่คิดเลขในปริภูมิที่ไม่ตรงกับการมองเห็น</p>
+          </section>
+
+          <section class="section" id="core">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">02</span><span class="section__rule"></span></div>
+              <h2 class="section__title">หลักการ</h2>
+            </div>
+
+            <figure class="figure" data-reveal>
+              <div class="figure__stage">
+                <div class="ramps">
+                  <div class="ramp-row">
+                    <span class="fig-label">HSL — ตั้ง Lightness ไว้ 55% เท่ากันทุกจุด</span>
+                    <div class="ramp-bar ramp-bar--hsl"></div>
+                    <div class="ramp-bar ramp-bar--hsl ramp-bar--mono"></div>
+                    <p class="ramp-row__note">แถบล่างคือแถบเดิมที่ถอดสีออกให้เหลือแต่ความสว่าง
+                      ช่วงสีเหลืองสว่างพุ่งขึ้นชัดเจน ทั้งที่ตัวเลขบอกว่าเท่ากันหมด</p>
+                  </div>
+
+                  <div class="ramp-row">
+                    <span class="fig-label">OKLCH — ตั้งความสว่างไว้ 55% เท่ากันทุกจุด</span>
+                    <div class="ramp-bar ramp-bar--oklch"></div>
+                    <div class="ramp-bar ramp-bar--oklch ramp-bar--mono"></div>
+                    <p class="ramp-row__note">แถบล่างเรียบเสมอกันตลอด แปลว่าความสว่างที่ตาเห็นตรงกับตัวเลข
+                      ชุดสีที่สร้างจากโมเดลนี้จึงไม่มีขั้นไหนโดดออกมา</p>
+                  </div>
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-contrast"/></svg>
+                <span>วิธีตรวจงานตัวเองแบบเร็ว ๆ คือถอดสีออกให้เหลือขาวดำ ถ้ายังแยกอ่อนแก่ได้อยู่ แปลว่าระบบสีใช้ได้</span>
+              </figcaption>
+            </figure>
+
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th>โมเดล</th><th>เด่นที่</th><th>ข้อจำกัด</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>HEX</strong></td><td>สั้น คัดลอกง่าย รองรับทุกที่</td><td>อ่านแล้วเดาไม่ออกว่าสีอะไร</td></tr>
+                  <tr><td><strong>RGB</strong></td><td>ตรงกับวิธีที่จอแสดงผล รองรับ alpha</td><td>ไม่สอดคล้องกับการรับรู้ของสายตา</td></tr>
+                  <tr><td><strong>HSL</strong></td><td>ปรับทีละแกนได้ เหมาะกับสร้างสเกล</td><td>ความสว่างเท่ากันแต่ตาเห็นไม่เท่ากัน</td></tr>
+                  <tr><td><strong>OKLCH</strong></td><td>ความสว่างตรงกับที่ตาเห็นจริง ไล่เฉดไม่ขุ่น</td><td>เบราว์เซอร์เก่ามากต้องมี fallback</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- สีเดียวกันเป๊ะ เขียนได้สี่แบบ — ค่าทุกบรรทัดแปลงจาก #3B82F6 ด้วย
+                 hexToHsl() และ hexToOklch() ใน color-utils.js ไม่ได้พิมพ์เอง -->
+            <figure class="figure figure--fixed" data-reveal>
+              <div class="figure__stage">
+                <div class="notation">
+                  <div class="notation__swatch">
+                    <span class="notation__swatch-name">สีเดียว</span>
+                    <span class="notation__swatch-sub">สี่วิธีเขียน</span>
+                  </div>
+                  <ul class="notation__list">
+                    <li>
+                      <b>HEX</b><code>#3B82F6</code>
+                      <span>สั้นที่สุด คัดลอกง่าย ใช้ได้ทุกที่ แต่มองแล้วเดาไม่ออกว่าเป็นสีอะไร และขยับทีละนิดไม่ได้</span>
+                    </li>
+                    <li>
+                      <b>RGB</b><code>rgb(59 130 246)</code>
+                      <span>ตรงกับวิธีที่จอผสมแสงจริง ใส่ความโปร่งใสได้ แต่บวกลบทีละช่องแล้วเดาผลไม่ถูก</span>
+                    </li>
+                    <li>
+                      <b>HSL</b><code>hsl(217 91% 60%)</code>
+                      <span>อ่านแล้วรู้ทันทีว่าเป็นน้ำเงินอมฟ้า สดมาก ค่อนข้างสว่าง และขยับทีละค่าได้แบบตอนที่แล้ว</span>
+                    </li>
+                    <li>
+                      <b>OKLCH</b><code>oklch(62.3% 0.188 259.8)</code>
+                      <span>โครงเหมือน HSL แต่เลข 62.3% คือความสว่างที่ตาเห็นจริง ไม่ใช่แค่ตัวเลขทางคณิต</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>
+                <span>สี่บรรทัดนี้คือสีเดียวกันทั้งหมด เบราว์เซอร์วาดออกมาเหมือนกันเป๊ะ
+                  ต่างกันแค่ว่าอ่านแล้วเอาไปทำงานต่อได้ง่ายแค่ไหน เลือกแบบที่เหมาะกับงาน ไม่ใช่เลือกตามความเคยชิน</span>
+              </figcaption>
+            </figure>
+
+            <!-- ลากเปลี่ยนเนื้อสีแล้วดูตัวเลขความสว่างสัมพัทธ์ของทั้งสองโมเดล -->
+            <div class="tool">
+              <div class="tool__header">
+                <svg class="icon icon--lg" aria-hidden="true"><use href="#i-contrast"/></svg> ตั้งความสว่างเท่ากัน แล้วลองวัดดู
+                <span class="tool__tag">ลากเปลี่ยนเนื้อสี</span>
+              </div>
+              <div class="tool__body">
+                <div class="model-lab" data-model-lab>
+
+                  <div class="model-lab__control">
+                    <label class="field__label" for="model-hue">เนื้อสี</label>
+                    <input type="range" class="range range--hue" id="model-hue" data-model-range min="0" max="359" value="240">
+                    <span class="model-lab__hue u-num" data-model-hue>240°</span>
+                  </div>
+
+                  <div class="model-lab__rows">
+                    <div class="model-lab__row">
+                      <span class="fig-label">HSL — ตั้ง Lightness ไว้ 55% ตลอด</span>
+                      <div class="model-lab__pair">
+                        <span class="model-lab__swatch model-lab__swatch--hsl"></span>
+                        <span class="model-lab__swatch model-lab__swatch--hsl model-lab__swatch--mono"></span>
+                      </div>
+                      <p class="model-lab__meta">
+                        <code data-model-hsl-hex></code>
+                        ความสว่างที่ตาเห็น <b class="u-num" data-model-hsl-lum></b>
+                      </p>
+                    </div>
+
+                    <div class="model-lab__row">
+                      <span class="fig-label">OKLCH — ตั้ง Lightness ไว้ 62% ตลอด</span>
+                      <div class="model-lab__pair">
+                        <span class="model-lab__swatch model-lab__swatch--ok"></span>
+                        <span class="model-lab__swatch model-lab__swatch--ok model-lab__swatch--mono"></span>
+                      </div>
+                      <p class="model-lab__meta">
+                        <code data-model-ok-hex></code>
+                        ความสว่างที่ตาเห็น <b class="u-num" data-model-ok-lum></b>
+                      </p>
+                    </div>
+                  </div>
+
+                  <p class="model-lab__summary u-mb-0">
+                    ลากจนครบวงจะได้ช่วงนี้ — ฝั่ง <b>HSL อยู่ระหว่าง 8.6% ถึง 75.1%</b> ต่างกัน 8.8 เท่า
+                    ส่วน <b>OKLCH อยู่ระหว่าง 22.2% ถึง 25.5%</b> ต่างกันแค่ 1.15 เท่า
+                    ทั้งที่สองฝั่งตั้งค่าความสว่างไว้ค่าเดียว ไม่ได้ขยับเลย
+                  </p>
+
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="deep">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">03</span><span class="section__rule"></span></div>
+              <h2 class="section__title">เขียน OKLCH ยังไงให้เบราว์เซอร์เก่าไม่พัง</h2>
+            </div>
+
+              <p>OKLCH ใช้ได้ในเบราว์เซอร์หลักทุกตัวแล้ว แต่ถ้าต้องรองรับเครื่องเก่า
+                วิธีที่ปลอดภัยที่สุดคือเขียนค่าเดิมไว้ก่อน แล้วค่อยทับด้วย <code>@supports</code></p>
+
+              <figure class="figure" data-reveal>
+                <div class="figure__stage">
+                  <pre class="snippet"><code>.btn {
+  /* ค่าที่เบราว์เซอร์ทุกตัวเข้าใจ วางไว้ก่อนเสมอ */
+  background-color: #4f46e5;
+}
+
+/* เบราว์เซอร์ที่รู้จัก oklch เท่านั้นที่จะอ่านบล็อกนี้ */
+@supports (color: oklch(0% 0 0)) {
+  .btn {
+    background-color: oklch(51.3% 0.234 277);
+  }
+}</code></pre>
+                </div>
+                <figcaption class="figure__caption">
+                  <svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>
+                  <span>ลำดับสำคัญ — เบราว์เซอร์เก่าจะข้ามบรรทัดที่อ่านไม่ออกไปเอง
+                    แต่ถ้าเขียน oklch ไว้ก่อนแล้วตามด้วย hex จะกลายเป็นว่าเครื่องใหม่ได้ hex แทน</span>
+                </figcaption>
+              </figure>
+
+              <p>อีกเรื่องที่ OKLCH เปิดให้ทำได้คือสีนอกขอบเขต sRGB จอสมัยใหม่หลายรุ่นแสดง
+                Display P3 ได้ ซึ่งกว้างกว่า sRGB ราว 50% แต่ต้องระวังว่าสีที่หลุดขอบเขต
+                จะถูกเบราว์เซอร์ดึงกลับเข้ามาเอง และความสว่างอาจเพี้ยนไปจากที่ตั้งไว้</p>
+          </section>
+
+          <section class="section" id="pitfalls">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">04</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ข้อผิดที่เจอบ่อย</h2>
+            </div>
+
+              <ul class="pitfalls">
+                <li class="pitfall">
+                  <b class="pitfall__name">ใช้ HSL สร้างสเกลแล้วเชื่อตัวเลข Lightness</b>
+                  <span class="pitfall__body">สีเหลืองกับสีน้ำเงินที่ L เท่ากันให้ความสว่างที่ตาเห็นต่างกันเกือบ 9 เท่า ต้องวัดคอนทราสต์เสมอ</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">ไล่สีใน sRGB แล้วได้ช่วงกลางขุ่น</b>
+                  <span class="pitfall__body">ใช้ <code>in oklch</code> หรือ <code>in oklab</code> ใน gradient เพื่อให้ช่วงกลางไม่ตกลงไปทางเทา</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">เขียน oklch ทับ hex ผิดลำดับ</b>
+                  <span class="pitfall__body">ค่า fallback ต้องอยู่ก่อน ไม่งั้นเบราว์เซอร์ใหม่จะได้ค่าเก่าแทน</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">ใช้ HEX เป็นแหล่งความจริงของระบบสี</b>
+                  <span class="pitfall__body">HEX แก้ทีละนิดไม่ได้ ถ้าต้องสร้างสเกลหรือปรับทั้งชุด ให้เก็บเป็น HSL หรือ OKLCH แล้วค่อยแปลง</span>
+                </li>
+              </ul>
+          </section>
+
+          <section class="section" id="wrap">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">05</span><span class="section__rule"></span></div>
+              <h2 class="section__title">สรุปและแหล่งอ้างอิง</h2>
+            </div>
+
+              <h3 class="wrap__title">สรุปสามข้อ</h3>
+
+              <ul class="takeaway">
+                <li>HEX และ RGB เหมาะกับการเก็บและส่งค่า แต่แก้ทีละนิดไม่ได้</li>
+                <li>HSL เหมาะกับการปรับทีละแกน แต่ตัวเลขความสว่างไม่ตรงกับที่ตาเห็น</li>
+                <li>OKLCH ให้ความสว่างที่ตรงกับการรับรู้จริง เหมาะที่สุดกับการสร้างสเกล</li>
+              </ul>
+
+              <h3 class="wrap__title">อ่านต่อจากต้นทาง</h3>
+
+              <ul class="refs">
+                <li><a href="https://www.w3.org/TR/css-color-4/" target="_blank" rel="noopener noreferrer">CSS Color Module Level 4</a><span>สเปกที่นิยาม oklch() lch() และการไล่สีข้ามปริภูมิ</span></li>
+                <li><a href="https://en.wikipedia.org/wiki/Oklab_color_space" target="_blank" rel="noopener noreferrer">Oklab color space</a><span>ที่มาของ Oklab และเหตุผลที่ออกแบบให้เท่ากันเชิงการรับรู้</span></li>
+                <li><a href="https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl" target="_blank" rel="noopener noreferrer">OKLCH in CSS — Evil Martians</a><span>บทความที่อธิบายข้อดีเชิงปฏิบัติพร้อมตัวอย่างจริง</span></li>
+              </ul>
+          </section>
+
+          <nav class="pager" aria-label="ไปตอนก่อนหน้าหรือตอนถัดไป">
+            <a class="pager__link pager__link--prev" href="../three-axes/"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg><span><small>ตอนก่อนหน้า</small>สามแกนของสี</span></a>
+            <a class="pager__link pager__link--next" href="../harmony/"><span><small>ตอนถัดไป</small>วงล้อสีและชุดสีที่เข้ากัน</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          </nav>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../../assets/js/pages/theory.js"></script>
+</body>
+</html>

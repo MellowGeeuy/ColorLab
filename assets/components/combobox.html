@@ -1,0 +1,103 @@
+<!-- @card -->
+<div class="ui-combo">
+  <div class="ui-combo__control">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.7-3.7"/></svg>
+    <span class="ui-combo__value">บริษัท ก.</span>
+  </div>
+  <div class="ui-combo__list">
+    <div class="ui-combo__opt" data-state="active"><b>บริษัท ก.</b><small>ลูกค้าเดิม</small></div>
+    <div class="ui-combo__opt"><b>บริษัท ข.</b><small>ลูกค้าใหม่</small></div>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <div class="ui-field">
+    <label class="ui-field__label" for="combo-input">ค้นหาคู่ค้า</label>
+    <div class="ui-combo" data-part="p1">
+      <div class="ui-combo__control" data-state="focus">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.7-3.7"/></svg>
+        <input class="ui-combo__input" id="combo-input" type="text" role="combobox" aria-expanded="true"
+               aria-controls="combo-list" aria-autocomplete="list" value="บริษัท" autocomplete="off">
+        <button type="button" class="ui-combo__clear" aria-label="ล้างคำค้น">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="ui-combo__list" id="combo-list" role="listbox" aria-label="ผลการค้นหา">
+        <div class="ui-combo__group">ใช้ล่าสุด</div>
+        <div class="ui-combo__opt" role="option" aria-selected="true" data-state="active">
+          <span class="ui-combo__text"><b><mark class="ui-mark">บริษัท</mark> ก.</b><small>เลขที่สัญญา C-1042 · ใช้เมื่อวาน</small></span>
+          <svg class="ui-icon ui-combo__tick" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+        </div>
+        <div class="ui-combo__group">ทั้งหมด</div>
+        <div class="ui-combo__opt" role="option" aria-selected="false">
+          <span class="ui-combo__text"><b><mark class="ui-mark">บริษัท</mark> ข.</b><small>เลขที่สัญญา C-1108</small></span>
+        </div>
+        <div class="ui-combo__opt" role="option" aria-selected="false">
+          <span class="ui-combo__text"><b><mark class="ui-mark">บริษัท</mark> ค.</b><small>ยังไม่มีสัญญา</small></span>
+        </div>
+      </div>
+    </div>
+    <p class="ui-field__helper">พิมพ์อย่างน้อย 2 ตัวอักษร ระบบจะค้นจากชื่อและเลขที่สัญญา</p>
+  </div>
+
+  <div class="ui-field">
+    <span class="ui-field__label">ไม่พบผลลัพธ์</span>
+    <div class="ui-combo">
+      <div class="ui-combo__control">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.7-3.7"/></svg>
+        <span class="ui-combo__value">บริษัท ฮ.</span>
+      </div>
+      <div class="ui-combo__list">
+        <p class="ui-combo__empty">
+          ไม่พบคู่ค้าที่ตรงกับ “บริษัท ฮ.”
+          <button type="button" class="ui-btn ui-btn--sm ui-btn--ghost" data-part="p2">เพิ่มเป็นคู่ค้าใหม่</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ปิดอยู่ — หน้าตาเหมือนช่องกรอกธรรมดา">
+  <div class="ui-combo">
+    <div class="ui-combo__control">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.7-3.7"/></svg>
+      <span class="ui-combo__value ui-combo__value--empty">ค้นหาคู่ค้า</span>
+    </div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="เปิดรายการ — ตัวที่ลูกศรชี้อยู่ต่างจากตัวที่เลือกไว้">
+  <div class="ui-combo">
+    <div class="ui-combo__control" data-state="focus">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.7-3.7"/></svg>
+      <span class="ui-combo__value">บริษัท</span>
+    </div>
+    <div class="ui-combo__list">
+      <div class="ui-combo__opt" data-state="active"><span class="ui-combo__text"><b>บริษัท ก.</b></span></div>
+      <div class="ui-combo__opt"><span class="ui-combo__text"><b>บริษัท ข.</b></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="เน้นคำที่ตรง — บอกว่าทำไมผลนี้ขึ้นมา">
+  <div class="ui-combo__opt"><span class="ui-combo__text"><b><mark class="ui-mark">บริษัท</mark> ค.</b><small>ยังไม่มีสัญญา</small></span></div>
+</div>
+
+<div class="cs-variant" data-variant-label="กำลังค้น — ที่ว่างต้องเท่าเดิม ไม่งั้นรายการกระโดด">
+  <div class="ui-combo__list">
+    <p class="ui-combo__empty"><span class="ui-spinner ui-spinner--xs" aria-hidden="true"></span> กำลังค้นหา</p>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ไม่พบผลลัพธ์ — ต้องเสนอทางออก ไม่ใช่แค่บอกว่าไม่พบ">
+  <div class="ui-combo__list">
+    <p class="ui-combo__empty">ไม่พบคู่ค้าที่ตรงกับคำค้น
+      <button type="button" class="ui-btn ui-btn--sm ui-btn--ghost">เพิ่มเป็นคู่ค้าใหม่</button>
+    </p>
+  </div>
+</div>
+<!-- @end -->

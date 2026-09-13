@@ -1,0 +1,82 @@
+<!-- @card -->
+<ol class="ui-time">
+  <li class="ui-time__item"><span class="ui-time__dot" aria-hidden="true"></span>
+    <span class="ui-time__text"><b>ส่งอนุมัติ</b><small>วันนี้ 09:12</small></span></li>
+  <li class="ui-time__item"><span class="ui-time__dot" aria-hidden="true"></span>
+    <span class="ui-time__text"><b>สร้างเอกสาร</b><small>เมื่อวาน 16:40</small></span></li>
+</ol>
+<!-- @end -->
+
+<!-- @preview -->
+<ol class="ui-time" data-part="p1">
+  <li class="ui-time__item ui-time__item--now">
+    <span class="ui-time__dot" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5l3 2"/></svg>
+    </span>
+    <span class="ui-time__text">
+      <b>รอผู้อนุมัติลำดับที่สอง</b>
+      <small>ค้างอยู่ 2 วัน · ผู้ใช้ ค. ลาถึงสิ้นเดือน</small>
+      <span class="ui-time__actions">
+        <button type="button" class="ui-btn ui-btn--sm ui-btn--secondary" data-part="p2">เปลี่ยนผู้อนุมัติ</button>
+        <button type="button" class="ui-btn ui-btn--sm ui-btn--ghost">เตือนอีกครั้ง</button>
+      </span>
+    </span>
+  </li>
+
+  <li class="ui-time__item ui-time__item--done">
+    <span class="ui-time__dot" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+    </span>
+    <span class="ui-time__text">
+      <b>ผู้อนุมัติลำดับที่หนึ่งอนุมัติแล้ว</b>
+      <small>
+        <span class="ui-avatar ui-avatar--xs" data-tone="1" aria-hidden="true">ก</span>
+        ผู้ใช้ ก. · วันนี้ 09:40
+      </small>
+    </span>
+  </li>
+
+  <li class="ui-time__item ui-time__item--done">
+    <span class="ui-time__dot" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+    </span>
+    <span class="ui-time__text">
+      <b>ส่งอนุมัติ</b>
+      <small>ผู้ใช้ ข. · วันนี้ 09:12</small>
+    </span>
+  </li>
+
+  <li class="ui-time__item ui-time__item--done">
+    <span class="ui-time__dot" aria-hidden="true"></span>
+    <span class="ui-time__text">
+      <b>สร้างเอกสาร</b>
+      <small>ผู้ใช้ ข. · เมื่อวาน 16:40</small>
+    </span>
+  </li>
+</ol>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ขั้นที่ทำแล้ว — มีเครื่องหมายถูก ไม่ใช่จุดสีอย่างเดียว">
+  <ol class="ui-time"><li class="ui-time__item ui-time__item--done">
+    <span class="ui-time__dot" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+    <span class="ui-time__text"><b>ส่งอนุมัติ</b><small>วันนี้ 09:12</small></span></li></ol>
+</div>
+
+<div class="cs-variant" data-variant-label="ขั้นที่กำลังค้าง — เน้นด้วยขอบและไอคอนนาฬิกา">
+  <ol class="ui-time"><li class="ui-time__item ui-time__item--now">
+    <span class="ui-time__dot" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5l3 2"/></svg></span>
+    <span class="ui-time__text"><b>รอผู้อนุมัติลำดับที่สอง</b><small>ค้างอยู่ 2 วัน</small></span></li></ol>
+</div>
+
+<div class="cs-variant" data-variant-label="มีปุ่มในขั้นตอน — ให้แก้ปัญหาได้จากตรงนี้เลย">
+  <span class="ui-time__actions">
+    <button type="button" class="ui-btn ui-btn--sm ui-btn--secondary">เปลี่ยนผู้อนุมัติ</button>
+    <button type="button" class="ui-btn ui-btn--sm ui-btn--ghost">เตือนอีกครั้ง</button>
+  </span>
+</div>
+
+<div class="cs-variant" data-variant-label="เวลาแบบสัมพัทธ์ — คู่กับเวลาจริงเสมอ ไม่บอกแค่ 2 วันก่อน">
+  <span class="ui-time__text"><b>ส่งอนุมัติ</b><small>2 วันก่อน · 11 ก.ย. 09:12</small></span>
+</div>
+<!-- @end -->

@@ -1,0 +1,86 @@
+<!-- @card -->
+<div class="ui-progress">
+  <span class="ui-progress__head"><b>กำลังส่งออก</b><span class="ui-progress__num">62%</span></span>
+  <span class="ui-bar" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="กำลังส่งออก">
+    <span class="ui-bar__fill" style="width:62%"></span>
+  </span>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <div class="ui-progress" data-part="p1">
+    <span class="ui-progress__head">
+      <b>กำลังส่งออกไฟล์</b>
+      <span class="ui-progress__num">62%</span>
+    </span>
+    <span class="ui-bar" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"
+          aria-label="กำลังส่งออกไฟล์">
+      <span class="ui-bar__fill" style="width:62%"></span>
+    </span>
+    <span class="ui-progress__note">154 จาก 248 รายการ · เหลืออีกประมาณ 40 วินาที</span>
+  </div>
+
+  <div class="ui-progress">
+    <span class="ui-progress__head">
+      <b>กำลังเชื่อมต่อกับระบบบัญชี</b>
+    </span>
+    <span class="ui-bar ui-bar--indeterminate" role="progressbar" aria-label="กำลังเชื่อมต่อ">
+      <span class="ui-bar__fill"></span>
+    </span>
+    <span class="ui-progress__note">ยังบอกไม่ได้ว่าเหลืออีกเท่าไร กดยกเลิกได้ตลอด</span>
+  </div>
+
+  <div class="ui-progress ui-progress--done">
+    <span class="ui-progress__head">
+      <b>นำเข้าข้อมูลเสร็จแล้ว</b>
+      <span class="ui-progress__num">100%</span>
+    </span>
+    <span class="ui-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="นำเข้าข้อมูล">
+      <span class="ui-bar__fill" style="width:100%"></span>
+    </span>
+    <span class="ui-progress__note ui-progress__note--done">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/></svg>
+      248 รายการ · ข้าม 2 รายการที่ซ้ำ
+    </span>
+  </div>
+
+  <div class="ui-progress-ring" data-part="p2">
+    <span class="ui-ring" style="--ui-ring-value:62" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="พื้นที่ที่ใช้ไป">
+      <span class="ui-ring__num">62%</span>
+    </span>
+    <span class="ui-progress__note">พื้นที่เก็บข้อมูลที่ใช้ไป 6.2 จาก 10 GB</span>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="รู้ปลายทาง — ต้องมีตัวเลขกำกับ แถบอย่างเดียวบอกได้แค่คร่าว ๆ">
+  <div class="ui-progress">
+    <span class="ui-progress__head"><b>กำลังส่งออก</b><span class="ui-progress__num">62%</span></span>
+    <span class="ui-bar" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="ตัวอย่าง">
+      <span class="ui-bar__fill" style="width:62%"></span>
+    </span>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ยังไม่รู้ปลายทาง — แถบวิ่ง ไม่แสร้งบอกเปอร์เซ็นต์">
+  <span class="ui-bar ui-bar--indeterminate" role="progressbar" aria-label="ตัวอย่าง"><span class="ui-bar__fill"></span></span>
+</div>
+
+<div class="cs-variant" data-variant-label="เสร็จแล้ว — สรุปผลด้วย ไม่ใช่แค่เต็มหลอด">
+  <div class="ui-progress ui-progress--done">
+    <span class="ui-bar"><span class="ui-bar__fill" style="width:100%"></span></span>
+    <span class="ui-progress__note ui-progress__note--done">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/></svg>
+      248 รายการ · ข้าม 2 รายการที่ซ้ำ
+    </span>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="แบบวง — ใช้เมื่อที่แคบ เช่นในการ์ดสรุป">
+  <span class="ui-ring" style="--ui-ring-value:62" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="ตัวอย่าง">
+    <span class="ui-ring__num">62%</span>
+  </span>
+</div>
+<!-- @end -->

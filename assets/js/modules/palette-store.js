@@ -3,8 +3,14 @@
  */
 
 import {
-  DEFAULT_PALETTE, MAX_ACCENTS, normalizePalette, PRESETS,
+  DEFAULT_PALETTE, MAX_ACCENTS, normalizePalette, PRESETS, RADIUS,
 } from '../utils/palette-tokens.js';
+
+/** ความโค้งของมุมเป็นการตัดสินใจระดับเดียวกับสี จึงเก็บและโหลดไปพร้อมชุดสีเสมอ */
+const readRadius = (value) => {
+  const px = Math.round(Number(value));
+  return Number.isFinite(px) ? Math.min(RADIUS.max, Math.max(RADIUS.min, px)) : RADIUS.base;
+};
 
 const STORAGE_KEY = 'uxui-theory-palette';
 
@@ -21,6 +27,7 @@ export function createPaletteStore() {
   const stored = readStored();
   let palette = normalizePalette(stored?.palette ?? DEFAULT_PALETTE);
   let theme = stored?.theme === 'dark' ? 'dark' : 'light';
+  let radius = readRadius(stored?.radius);
   const listeners = new Set();
 
   const notify = () => listeners.forEach((listener) => listener(palette, theme));
@@ -36,13 +43,14 @@ export function createPaletteStore() {
       const next = JSON.parse(event.newValue);
       palette = normalizePalette(next.palette ?? palette);
       theme = next.theme === 'dark' ? 'dark' : 'light';
+      radius = readRadius(next.radius);
       notify();
     } catch { /* ข้อมูลเสีย: คงค่าเดิมไว้ ดีกว่าล้างงานของผู้ใช้ */ }
   });
 
   const persist = () => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ palette, theme }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ palette, theme, radius }));
     } catch { /* โหมดส่วนตัว: ใช้งานต่อได้ แค่ไม่ถูกจำไว้ */ }
   };
 
@@ -60,6 +68,14 @@ export function createPaletteStore() {
 
     getPalette: () => ({ ...palette, accents: [...palette.accents] }),
     getTheme: () => theme,
+    getRadius: () => radius,
+
+    setRadius(px) {
+      const next = readRadius(px);
+      if (next === radius) return;
+      radius = next;
+      emit();
+    },
 
     setRole(role, hex) {
       if (palette[role] === hex) return;

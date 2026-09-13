@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 Contrast และเกณฑ์ WCAG — ColorLab</title>
+  <meta name="description" content="เกณฑ์คอนทราสต์ของ WCAG 2.2 ทั้งข้อความและองค์ประกอบที่ไม่ใช่ข้อความ พร้อมเครื่องวัดในหน้า">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/breakpoints.css">
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="../../assets/css/app-shell.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory-figures.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/color-theory.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="topbar">
+      <div class="topbar__side">
+        <a class="topbar__brand" href="../../">
+          <span class="topbar__logo" aria-hidden="true"></span>
+          <span class="topbar__name">ColorLab</span>
+        </a>
+
+        <nav class="groundnav" aria-label="เมนูหลัก">
+          <a class="groundnav__item" href="../../" style="--dot-h:8" aria-current="page">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-book"/></svg>Color Theory
+          </a>
+          <a class="groundnav__item" href="../../component-style/" style="--dot-h:92">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-layers"/></svg>Component Style
+          </a>
+          <a class="groundnav__item" href="../../layout/" style="--dot-h:150">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
+          </a>
+        </nav>
+      </div>
+
+      <div class="topbar__side topbar__side--end">
+        <div class="topbar__actions">
+          <span class="topbar__status" id="read-status" role="status" aria-live="polite"></span>
+          <button type="button" class="btn btn--icon btn--sm toc-toggle" id="toc-toggle"
+                  aria-controls="toc" aria-expanded="false" aria-label="เปิดสารบัญ">
+            <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm btn--guide" id="guide-open"
+                  aria-haspopup="dialog" aria-label="เปิดคู่มือใช้งาน" title="คู่มือใช้งาน">
+            <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm" id="theme-toggle" aria-label="สลับโหมดสีของหน้าเว็บ">
+            <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+          </button>
+
+          <a class="topnav__item topnav__item--hero" href="../../workspace/" aria-label="Colorground" title="Colorground">
+            <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+            <span class="topnav__label">Colorground</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="read-progress" aria-hidden="true"><div class="read-progress__bar" id="progress-bar"></div></div>
+    <div class="toc-scrim" id="toc-scrim"></div>
+
+    <div class="reader">
+
+      <nav class="toc" id="toc" aria-label="สารบัญทั้งคอร์ส">
+        <a class="toc__home" href="../"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg> สารบัญทั้งหมด</a>
+        <div class="toc__group">พื้นฐาน</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-first/" style="--dot-h:8"><span class="toc__no">01</span> <span class="toc__text">สีทำงานก่อนตัวหนังสือ</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../three-axes/" style="--dot-h:28"><span class="toc__no">02</span> <span class="toc__text">สามแกนของสี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../color-models/" style="--dot-h:45"><span class="toc__no">03</span> <span class="toc__text">Color Models</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ทฤษฎีสี</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../harmony/" style="--dot-h:92"><span class="toc__no">04</span> <span class="toc__text">วงล้อสี & Harmony</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../psychology/" style="--dot-h:150"><span class="toc__no">05</span> <span class="toc__text">สีกับความรู้สึก</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ระบบสีใน UI</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-roles/" style="--dot-h:172"><span class="toc__no">06</span> <span class="toc__text">สี่บทบาทของสี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../scales/" style="--dot-h:196"><span class="toc__no">07</span> <span class="toc__text">จากสีเดียวสู่สเกล</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">การเข้าถึง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link is-current" href="../contrast/" style="--dot-h:214" aria-current="page"><span class="toc__no">08</span> <span class="toc__text">Contrast & WCAG</span></a>
+            <ul class="toc__sub">
+              <li><a class="toc__link toc__link--sub" href="#why">ทำไมต้องรู้</a></li>
+              <li><a class="toc__link toc__link--sub" href="#core">หลักการ</a></li>
+              <li><a class="toc__link toc__link--sub" href="#deep">ตัวเลขนี้คำนวณมาจากอะไร</a></li>
+              <li><a class="toc__link toc__link--sub" href="#pitfalls">ข้อผิดที่เจอบ่อย</a></li>
+              <li><a class="toc__link toc__link--sub" href="#wrap">สรุป</a></li>
+            </ul>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../dark-mode/" style="--dot-h:248"><span class="toc__no">09</span> <span class="toc__text">Dark Mode</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ลงมือใช้จริง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../proportion/" style="--dot-h:286"><span class="toc__no">10</span> <span class="toc__text">สัดส่วนการใช้สี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../fixes/" style="--dot-h:322"><span class="toc__no">11</span> <span class="toc__text">ก่อนแก้ / หลังแก้</span></a>
+          </li>
+        </ul>
+      </nav>
+
+      <main class="reader__main" id="reader-main">
+        <div class="prose">
+
+          <header class="topic-head">
+            <span class="topic-head__eyebrow">ตอนที่ 08 · การเข้าถึง</span>
+            <h1 class="topic-head__title">Contrast และเกณฑ์ WCAG</h1>
+            <p class="topic-head__lead">เรื่องนี้เป็นส่วนเดียวของทฤษฎีสีที่มีผิดมีถูกชัดเจน เพราะวัดออกมาเป็นตัวเลขได้ ค่าอยู่ระหว่าง 1:1 ถึง 21:1 และมีเส้นขั้นต่ำที่ห้ามต่ำกว่า</p>
+          </header>
+
+          <section class="section" id="why">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">01</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ทำไมต้องรู้เรื่องนี้</h2>
+            </div>
+
+              <p>เรื่องนี้ต่างจากทุกเรื่องในคอร์สตรงที่มันไม่ใช่ความเห็น — ถ้าไม่ผ่านคือไม่ผ่าน
+                และในหลายประเทศมันเป็นข้อกำหนดทางกฎหมายสำหรับบริการสาธารณะ</p>
+
+              <div class="case">
+                <div class="case__item">
+                  <span class="case__tag">สิ่งที่มักเกิดขึ้น</span>
+                  <p>งานผ่านรีวิวดีไซน์สวยงาม แล้วไปตกตอน accessibility audit ก่อนขึ้นระบบ
+                    ต้องกลับมาแก้สีทั้งระบบในสัปดาห์สุดท้าย</p>
+                </div>
+                <div class="case__item">
+                  <span class="case__tag">ทางที่ควรเป็น</span>
+                  <p>ล็อกค่าขั้นต่ำไว้ตั้งแต่ตอนวาง token แล้วทุกอย่างที่สร้างจาก token นั้นจะผ่านโดยอัตโนมัติ
+                    เหลือแค่กรณีพิเศษไม่กี่จุดที่ต้องตรวจมือ</p>
+                </div>
+              </div>
+          </section>
+
+          <section class="section" id="core">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">02</span><span class="section__rule"></span></div>
+              <h2 class="section__title">หลักการ</h2>
+            </div>
+
+            <figure class="figure figure--fixed">
+              <div class="figure__stage">
+                <div class="legibility">
+                  <div class="legibility__row legibility__row--1">
+                    <span>ข้อความรองที่เห็นบ่อยในงานดีไซน์</span>
+                    <code class="legibility__hex">#94A3B8</code>
+                    <span class="badge badge--fail">ไม่ผ่าน</span>
+                    <span class="legibility__ratio u-num">2.56:1</span>
+                  </div>
+                  <div class="legibility__row legibility__row--2">
+                    <span>ข้อความรองที่เห็นบ่อยในงานดีไซน์</span>
+                    <code class="legibility__hex">#8694A7</code>
+                    <span class="badge badge--neutral">เฉพาะตัวใหญ่</span>
+                    <span class="legibility__ratio u-num">3.08:1</span>
+                  </div>
+                  <div class="legibility__row legibility__row--3">
+                    <span>ข้อความรองที่เห็นบ่อยในงานดีไซน์</span>
+                    <code class="legibility__hex">#64748B</code>
+                    <span class="badge badge--pass">ผ่าน AA</span>
+                    <span class="legibility__ratio u-num">4.76:1</span>
+                  </div>
+                  <div class="legibility__row legibility__row--4">
+                    <span>ข้อความรองที่เห็นบ่อยในงานดีไซน์</span>
+                    <code class="legibility__hex">#475569</code>
+                    <span class="badge badge--pass">ผ่าน AAA</span>
+                    <span class="legibility__ratio u-num">7.58:1</span>
+                  </div>
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>
+                <span>ทั้งสี่แถวเป็นสีเทาบนพื้นขาว <code>#FFFFFF</code> สามในสี่แถวคือสี
+                  <code>neutral-400 / 500 / 600</code> ที่โปรเจกต์นี้ใช้อยู่จริง ตัวเลขทุกตัวคำนวณด้วยสูตรของ WCAG ไม่ได้กะเอา
+                  สองแถวบนคือสีที่ดูดีบนจอดีไซเนอร์ แต่พอไปอยู่บนมือถือกลางแดดจะหายไปเลย</span>
+              </figcaption>
+            </figure>
+
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th>องค์ประกอบ</th><th>เกณฑ์</th><th>AA</th><th>AAA</th></tr></thead>
+                <tbody>
+                  <tr><td>ข้อความปกติ (เล็กกว่า 24px หรือ 18.66px แบบไม่หนา)</td><td><code>1.4.3</code></td><td class="u-num u-num-end">4.5:1</td><td class="u-num u-num-end">7:1</td></tr>
+                  <tr><td>ข้อความตัวใหญ่ (24px ขึ้นไป หรือ 18.66px ตัวหนา)</td><td><code>1.4.3</code></td><td class="u-num u-num-end">3:1</td><td class="u-num u-num-end">4.5:1</td></tr>
+                  <tr><td>ไอคอน เส้นขอบช่องกรอก และของที่กดได้</td><td><code>1.4.11</code></td><td class="u-num u-num-end">3:1</td><td class="u-num u-num-end">—</td></tr>
+                  <tr><td>ตัวชี้โฟกัสของคีย์บอร์ด</td><td><code>1.4.11</code></td><td class="u-num u-num-end">3:1</td><td class="u-num u-num-end">—</td></tr>
+                  <tr><td>โลโก้ และตัวหนังสือที่เป็นส่วนหนึ่งของภาพ</td><td><code>1.4.3</code></td><td class="u-num u-num-end">ยกเว้น</td><td class="u-num u-num-end">ยกเว้น</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- ลองคู่สีเองได้ — ผลทุกบรรทัดมาจาก contrastRatio() + wcagResults()
+                 ตัวเดียวกับที่หน้า Colorground ใช้ตรวจ palette จริง ไม่ใช่ตารางที่พิมพ์ค่าไว้ -->
+            <div class="tool">
+              <div class="tool__header">
+                <svg class="icon icon--lg" aria-hidden="true"><use href="#i-contrast"/></svg> วัดคู่สีของคุณเอง
+                <span class="tool__tag">เปลี่ยนสีแล้วดูว่าตกข้อไหน</span>
+              </div>
+              <div class="tool__body">
+                <div class="wcag-demo" data-wcag-demo>
+
+                  <div class="wcag-demo__controls">
+                    <div class="wcag-demo__field">
+                      <label class="field__label" for="wcag-fg">สีตัวอักษร</label>
+                      <input type="color" class="wcag-demo__swatch" id="wcag-fg" data-wcag-fg value="#8694a7">
+                      <code data-wcag-fg-hex>#8694A7</code>
+                    </div>
+                    <div class="wcag-demo__field">
+                      <label class="field__label" for="wcag-bg">สีพื้นหลัง</label>
+                      <input type="color" class="wcag-demo__swatch" id="wcag-bg" data-wcag-bg value="#ffffff">
+                      <code data-wcag-bg-hex>#FFFFFF</code>
+                    </div>
+                    <button type="button" class="btn btn--sm" data-wcag-swap>
+                      <svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg> สลับ
+                    </button>
+                  </div>
+
+                  <div class="wcag-demo__presets">
+                      <button type="button" class="wcag-demo__preset" data-wcag-preset="#94a3b8|#ffffff">เทาอ่อนบนขาว</button>
+                      <button type="button" class="wcag-demo__preset" data-wcag-preset="#ffffff|#4f46e5">ปุ่มแบรนด์ของหน้านี้</button>
+                      <button type="button" class="wcag-demo__preset" data-wcag-preset="#143069|#e7edfa">ข้อความบนพื้นสีอ่อน</button>
+                      <button type="button" class="wcag-demo__preset" data-wcag-preset="#e2e8f0|#0f1729">ธีมมืดของหน้านี้</button>
+                  </div>
+
+                  <div class="wcag-demo__body">
+                    <div class="wcag-demo__preview">
+                      <p class="wcag-demo__sample wcag-demo__sample--sm">ข้อความปกติ 15px · เกณฑ์ 4.5:1</p>
+                      <p class="wcag-demo__sample wcag-demo__sample--lg">ข้อความตัวใหญ่ 24px · เกณฑ์ 3:1</p>
+                      <div class="wcag-demo__ui">
+                        <span class="wcag-demo__icon"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg></span>
+                        <span class="wcag-demo__input">เส้นขอบช่องกรอก · เกณฑ์ 3:1</span>
+                      </div>
+                    </div>
+
+                    <div class="wcag-demo__score" aria-live="polite">
+                      <div class="wcag-demo__ratio u-num" data-wcag-ratio>3.08:1</div>
+                      <span class="badge wcag-demo__verdict" data-wcag-verdict></span>
+                      <ul class="wcag-demo__levels" data-wcag-levels></ul>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="note note--tip">
+              <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+              <p>คอนทราสต์คืออัตราส่วนความสว่างของสองสี ไม่ใช่ความต่างของเนื้อสี
+                  สีคู่ตรงข้ามที่สดทั้งคู่จึงได้ค่าต่ำมากได้ ทั้งที่มองแล้วเหมือนอยู่คนละขั้วกันเลย
+                  (ย้อนไปลากดูได้ที่<a href="../harmony/#core">ตัวอย่างขอบสีสั่นในตอนที่ 04</a>)</p>
+            </div>
+          </section>
+
+          <section class="section" id="deep">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">03</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ตัวเลขนี้คำนวณมาจากอะไร</h2>
+            </div>
+
+              <p>คอนทราสต์ตาม WCAG ไม่ได้วัดจากความต่างของค่า RGB ตรง ๆ แต่คำนวณผ่าน
+                “ความสว่างสัมพัทธ์” (relative luminance) ซึ่งให้น้ำหนักสีเขียวมากที่สุด
+                เพราะตาคนไวต่อเขียวที่สุด</p>
+
+              <figure class="figure" data-reveal>
+                <div class="figure__stage">
+                  <pre class="snippet"><code>// 1. แปลงแต่ละช่องสีให้เป็นค่าเชิงเส้นก่อน
+c = channel / 255
+linear = c &lt;= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+
+// 2. ถ่วงน้ำหนักตามความไวของสายตา — เขียวมากที่สุด น้ำเงินน้อยที่สุด
+L = 0.2126 * R + 0.7152 * G + 0.0722 * B
+
+// 3. อัตราส่วนของสองสี บวก 0.05 กันไม่ให้หารด้วยศูนย์
+ratio = (Lสว่าง + 0.05) / (Lมืด + 0.05)</code></pre>
+                </div>
+                <figcaption class="figure__caption">
+                  <svg class="icon" aria-hidden="true"><use href="#i-calculator"/></svg>
+                  <span>นี่คือโค้ดชุดเดียวกับที่ <code>color-utils.js</code> ของโปรเจกต์นี้ใช้จริง
+                    น้ำหนัก 0.7152 ของช่องเขียวคือเหตุผลที่สีเขียวสดกับสีน้ำเงินสดที่ “ดูสดเท่ากัน”
+                    ให้คอนทราสต์ต่างกันคนละโลก</span>
+                </figcaption>
+              </figure>
+
+              <p>ข้อยกเว้นที่คนมักไม่รู้ มีสามข้อ</p>
+              <ul>
+                <li><b>องค์ประกอบที่ปิดใช้งาน</b> ไม่ต้องผ่านเกณฑ์ แต่ยังต้องบอกให้รู้ว่าปิดอยู่ด้วยวิธีอื่น</li>
+                <li><b>โลโก้และชื่อแบรนด์</b> ได้รับการยกเว้นตามสเปก</li>
+                <li><b>ตัวหนังสือที่เป็นส่วนหนึ่งของภาพประกอบ</b> เช่น ป้ายในรูปถ่าย ไม่ถูกนับ</li>
+              </ul>
+              <p>ทั้งสามข้อเป็นข้อยกเว้นทางเทคนิค ไม่ใช่ใบอนุญาตให้ทำให้อ่านไม่ออก</p>
+          </section>
+
+          <section class="section" id="pitfalls">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">04</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ข้อผิดที่เจอบ่อย</h2>
+            </div>
+
+              <ul class="pitfalls">
+                <li class="pitfall">
+                  <b class="pitfall__name">ตรวจเฉพาะข้อความ ลืมองค์ประกอบอื่น</b>
+                  <span class="pitfall__body">เส้นขอบช่องกรอก ไอคอน วงแหวนโฟกัส และแท่งกราฟ ล้วนอยู่ใต้เกณฑ์ 3:1 ของ SC 1.4.11</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">ใช้สีเทาอ่อนกับ placeholder</b>
+                  <span class="pitfall__body">placeholder คือข้อความที่ผู้ใช้ต้องอ่านตอนยังไม่รู้ว่าต้องกรอกอะไร จึงยิ่งต้องอ่านออก</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">วัดคอนทราสต์บนพื้นที่ไม่ใช่พื้นจริง</b>
+                  <span class="pitfall__body">ถ้าปุ่มลอยอยู่บนภาพ ต้องวัดกับสีที่อยู่ใต้ปุ่มจริง ๆ ไม่ใช่กับสีพื้นของหน้า</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">คิดว่าธีมมืดผ่านอัตโนมัติ</b>
+                  <span class="pitfall__body">ต้องวัดใหม่ทั้งชุด สีแบรนด์ที่ผ่านบนพื้นขาวมักตกทันทีเมื่อไปอยู่บนพื้นเข้ม</span>
+                </li>
+              </ul>
+          </section>
+
+          <section class="section" id="wrap">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">05</span><span class="section__rule"></span></div>
+              <h2 class="section__title">สรุปและแหล่งอ้างอิง</h2>
+            </div>
+
+              <h3 class="wrap__title">สรุปสามข้อ</h3>
+
+              <ul class="takeaway">
+                <li>คอนทราสต์เป็นอัตราส่วนของความสว่าง ไม่ใช่ความต่างของเนื้อสี</li>
+                <li>เกณฑ์มีสองกลุ่ม — ข้อความตาม SC 1.4.3 และองค์ประกอบอื่นตาม SC 1.4.11</li>
+                <li>ล็อกค่าขั้นต่ำไว้ใน token ตั้งแต่ต้น จะไม่ต้องไล่แก้ทีหลัง</li>
+              </ul>
+
+              <h3 class="wrap__title">อ่านต่อจากต้นทาง</h3>
+
+              <ul class="refs">
+                <li><a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">WCAG 2.2 · SC 1.4.3 Contrast (Minimum)</a><span>เกณฑ์ของข้อความ พร้อมนิยามของ “ข้อความตัวใหญ่”</span></li>
+                <li><a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html" target="_blank" rel="noopener noreferrer">WCAG 2.2 · SC 1.4.11 Non-text Contrast</a><span>เกณฑ์ 3:1 ของไอคอน เส้นขอบ และตัวชี้โฟกัส</span></li>
+                <li><a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener noreferrer">WebAIM Contrast Checker</a><span>เครื่องมือภายนอกสำหรับตรวจซ้ำ</span></li>
+              </ul>
+          </section>
+
+          <nav class="pager" aria-label="ไปตอนก่อนหน้าหรือตอนถัดไป">
+            <a class="pager__link pager__link--prev" href="../scales/"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg><span><small>ตอนก่อนหน้า</small>จากสีเดียวสู่สเกล 11 ขั้น</span></a>
+            <a class="pager__link pager__link--next" href="../dark-mode/"><span><small>ตอนถัดไป</small>Dark Mode ที่ทำถูกวิธี</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          </nav>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../../assets/js/pages/theory.js"></script>
+</body>
+</html>

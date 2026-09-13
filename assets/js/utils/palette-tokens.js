@@ -22,6 +22,27 @@ export const ROLE_LABELS = {
 
 export const MAX_ACCENTS = 8;
 
+/**
+ * ความโค้งของมุม — ผู้ใช้ปรับได้ค่าเดียว แล้วทั้งสเกลขยับตามกัน
+ *
+ * เก็บเป็นค่าฐานตัวเดียวแทนที่จะให้ตั้งทีละขนาด เพราะสัดส่วนระหว่างขนาดคือสิ่งที่
+ * ทำให้ทั้งระบบดูเป็นชุดเดียวกัน ถ้าปล่อยให้ตั้งอิสระ มุมของปุ่มกับการ์ดจะหลุดจากกันทันที
+ *
+ * --radius-full ไม่ขยับตามค่านี้ เพราะมันไม่ใช่ "ขนาดของมุม" แต่เป็นรูปทรง —
+ * รูปโปรไฟล์กับจุดสถานะต้องกลมเสมอ ต่อให้ผู้ใช้เลือกดีไซน์แบบเหลี่ยมทั้งระบบ
+ */
+export const RADIUS = { min: 0, max: 24, step: 1, base: 10 };
+
+export function buildRadiusTokens(base = RADIUS.base) {
+  const px = clamp(Math.round(Number(base) || 0), RADIUS.min, RADIUS.max);
+  return {
+    '--pv-radius-sm': `${Math.round(px * 0.6)}px`,
+    '--pv-radius-md': `${px}px`,
+    '--pv-radius-lg': `${Math.round(px * 1.4)}px`,
+    '--pv-radius-full': '999px',
+  };
+}
+
 export const DEFAULT_PALETTE = {
   primary: '#4f46e5',
   neutral: '#64748b',
@@ -147,13 +168,19 @@ export function buildPaletteTokens(palette, theme = 'light') {
 
   const surface = tokens['--pv-surface'];
 
+  /* เทียบกับ surface-alt ไม่ใช่ surface — เพราะ surface-alt คือพื้นที่ "ยากกว่า" เสมอ
+     (ธีมสว่างมันเข้มกว่าพื้นขาว ธีมมืดมันสว่างกว่าพื้นการ์ด) และคอมโพเนนต์อย่าง
+     ตัวนับใน sidenav กับ breadcrumb ในแถบเครื่องมือก็ไปนั่งอยู่บนพื้นนั้น
+     ของเดิมเทียบกับ surface อย่างเดียว ตัวอักษรรองจึงเหลือ 4.13:1 เมื่อไปอยู่บน surface-alt */
+  const hardestSurface = tokens['--pv-surface-alt'];
+
   // ตัวอักษรรองและขอบช่องกรอกต้องอ่านออกจริง จึงเลือกขั้นที่ผ่านเกณฑ์แทนการล็อกตัวเลขไว้
   tokens['--pv-text-muted'] = pickAccessibleStep(
-    scales.neutral, surface, 4.5, isDark ? 400 : 600,
+    scales.neutral, hardestSurface, 4.5, isDark ? 400 : 600,
   ).hex;
   tokens['--pv-text-subtle'] = isDark ? at('neutral', 500) : at('neutral', 400);
   tokens['--pv-border-strong'] = pickAccessibleStep(
-    scales.neutral, surface, 3, isDark ? 600 : 400,
+    scales.neutral, hardestSurface, 3, isDark ? 600 : 400,
   ).hex;
 
   ROLES.filter((role) => role !== 'neutral').forEach((role) => {

@@ -1,0 +1,105 @@
+<!-- @card -->
+<div class="ui-drop">
+  <svg class="ui-icon ui-drop__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 16v2.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>
+  <p class="ui-drop__text"><b>ลากไฟล์มาวาง</b><small>PDF หรือ PNG ไม่เกิน 10 MB</small></p>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <div class="ui-drop" data-part="p1">
+    <svg class="ui-icon ui-drop__icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/>
+      <path d="M4 16v2.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/>
+    </svg>
+    <p class="ui-drop__text">
+      <b>ลากไฟล์มาวางที่นี่</b>
+      <small>PDF หรือ PNG ขนาดไม่เกิน 10 MB ต่อไฟล์ สูงสุด 5 ไฟล์</small>
+    </p>
+    <button type="button" class="ui-btn ui-btn--sm ui-btn--secondary" data-part="p2">เลือกไฟล์จากเครื่อง</button>
+  </div>
+
+  <ul class="ui-files">
+    <li class="ui-file">
+      <span class="ui-file__mark" aria-hidden="true">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+      </span>
+      <span class="ui-file__text">
+        <b>สัญญาฉบับลงนาม.pdf</b>
+        <small>2.4 MB · อัปโหลดแล้ว</small>
+      </span>
+      <span class="ui-file__state ui-file__state--done">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+        เสร็จ
+      </span>
+      <button type="button" class="ui-file__remove" aria-label="เอาไฟล์ สัญญาฉบับลงนาม.pdf ออก">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </li>
+
+    <li class="ui-file">
+      <span class="ui-file__mark" aria-hidden="true">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+      </span>
+      <span class="ui-file__text">
+        <b>แผนผังหน้าร้าน.png</b>
+        <small>6.1 MB · กำลังอัปโหลด 62%</small>
+        <span class="ui-bar" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="ความคืบหน้าการอัปโหลด">
+          <span class="ui-bar__fill" style="width:62%"></span>
+        </span>
+      </span>
+      <button type="button" class="ui-file__remove" aria-label="ยกเลิกการอัปโหลด แผนผังหน้าร้าน.png">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </li>
+
+    <li class="ui-file ui-file--error">
+      <span class="ui-file__mark" aria-hidden="true">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+      </span>
+      <span class="ui-file__text">
+        <b>ภาพสแกน.tiff</b>
+        <small class="ui-file__error">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/></svg>
+          นามสกุลนี้ยังไม่รองรับ แปลงเป็น PDF ก่อนแล้วลองใหม่
+        </small>
+      </span>
+      <button type="button" class="ui-btn ui-btn--sm ui-btn--ghost" data-part="p3">เอาออก</button>
+    </li>
+  </ul>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="พร้อมรับไฟล์ — ขอบประต้องเห็นได้ 3:1">
+  <div class="ui-drop">
+    <p class="ui-drop__text"><b>ลากไฟล์มาวาง</b><small>PDF หรือ PNG ไม่เกิน 10 MB</small></p>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="กำลังลากไฟล์ผ่าน — เปลี่ยนทั้งขอบและพื้น">
+  <div class="ui-drop" data-state="over">
+    <p class="ui-drop__text"><b>ปล่อยไฟล์ได้เลย</b><small>ระบบจะเริ่มอัปโหลดทันที</small></p>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="อัปโหลดเสร็จ — บอกด้วยไอคอนคู่คำว่าเสร็จ">
+  <span class="ui-file__state ui-file__state--done">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+    เสร็จ
+  </span>
+</div>
+
+<div class="cs-variant" data-variant-label="กำลังอัปโหลด — แถบพร้อมตัวเลขเปอร์เซ็นต์">
+  <span class="ui-bar" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="ตัวอย่าง">
+    <span class="ui-bar__fill" style="width:62%"></span>
+  </span>
+</div>
+
+<div class="cs-variant" data-variant-label="ไฟล์ผิดเงื่อนไข — บอกเหตุผลและวิธีแก้ ไม่ใช่แค่ว่าไม่ผ่าน">
+  <small class="ui-file__error">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/></svg>
+    นามสกุลนี้ยังไม่รองรับ แปลงเป็น PDF ก่อนแล้วลองใหม่
+  </small>
+</div>
+<!-- @end -->

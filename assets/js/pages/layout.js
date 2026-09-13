@@ -14,7 +14,7 @@ import { createSavedPaletteList } from '../modules/saved-palette-list.js';
 import { askConfirm } from '../modules/confirm-dialog.js';
 import { initOrbitDock } from '../modules/orbit-dock.js';
 import { createPaletteStore } from '../modules/palette-store.js';
-import { buildPaletteTokens } from '../utils/palette-tokens.js';
+import { buildPaletteTokens, buildRadiusTokens } from '../utils/palette-tokens.js';
 import { COMPONENTS, GROUPS, bySlug, loadMarkup, loadCatalogCss } from '../modules/component-catalog.js';
 import { createCodeBlock } from '../modules/code-block.js';
 import { createLayoutCanvas } from '../modules/layout-canvas.js';
@@ -61,7 +61,10 @@ const ZOOM_MAX = 1.6;
 const ZOOM_STEP = 0.1;
 
 const icon = (id, cls = 'icon') => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
-const toPublic = (name) => name.replace('--pv-', '--color-');
+/* มุมโค้งเป็นคนละตระกูลกับสี ชื่อสาธารณะจึงเป็น --radius-* ไม่ใช่ --color-radius-* */
+const toPublic = (name) => (name.startsWith('--pv-radius-')
+  ? name.replace('--pv-radius-', '--radius-')
+  : name.replace('--pv-', '--color-'));
 
 /* --------------------------------------------------------------------------
    สีจาก palette — ใส่ลงเฉพาะพื้นที่ผัง ไม่ให้เครื่องมือเปลี่ยนสีตาม
@@ -76,6 +79,16 @@ function refreshTokens() {
   if (!publicTokens['--color-danger-hover']) {
     publicTokens['--color-danger-hover'] = tokens['--pv-danger-hover'] ?? tokens['--pv-danger'];
   }
+
+  /* มุมโค้งที่ผู้ใช้ตั้งไว้ — ใส่สองชื่อ
+     --radius-*    ชื่อสาธารณะที่ส่งออกไปกับชุด token
+     --cs-radius-* ชื่อที่ CSS ของคาตาล็อกอ่านจริง ต้องตั้งบน element ของพรีวิวโดยตรง
+                   เพราะ custom property ที่ประกาศไว้ที่ :root ถูกคำนวณค่าตั้งแต่ตรงนั้น
+                   การเขียน var() ซ้อนใน :root จึงไม่ไหลตามค่าที่ตั้งทีหลังบน scope */
+  Object.entries(buildRadiusTokens(store.getRadius())).forEach(([name, value]) => {
+    publicTokens[toPublic(name)] = value;
+    publicTokens[name.replace('--pv-radius-', '--cs-radius-')] = value;
+  });
 }
 
 function applyTokens(scope) {
@@ -85,10 +98,13 @@ function applyTokens(scope) {
 
 function tokensCssBlock() {
   const line = ([name, value]) => `  ${name}: ${value};`;
-  const light = Object.entries(publicTokens).map(line).join('\n');
+  // --cs-* เป็นชื่อภายในของคาตาล็อก ผู้ใช้ไม่ต้องเอาไปวางในโปรเจกต์
+  const light = Object.entries(publicTokens)
+    .filter(([name]) => !name.startsWith('--cs-'))
+    .map(line).join('\n');
 
   const darkTokens = buildPaletteTokens(store.getPalette(), 'dark').tokens;
-  const dark = Object.entries(darkTokens)
+  const dark = Object.entries({ ...darkTokens, ...buildRadiusTokens(store.getRadius()) })
     .filter(([name]) => name !== '--pv-accent-count')
     .map(([name, value]) => line([toPublic(name), value]))
     .join('\n');
@@ -311,8 +327,28 @@ function renderVariant(meta, index) {
   return meta.matrix.render(variant.cls, 'default');
 }
 
-function commit(next, addToHistory = true) {
+/**
+ * @param {'all'|'live'} mode
+ *   'live' ใช้ระหว่างลากหรือยืดขนาดเท่านั้น — ขยับเฉพาะกล่องที่เปลี่ยน
+ *   ไม่วาดแผงขวา แผงเลเยอร์ รายการหน้า และไม่เขียนลงเครื่อง
+ *
+ *   ที่ต้องแยกเพราะโปรไฟล์ CPU ระหว่างลากบอกว่า renderInspector() กินไป 42.6%
+ *   ทั้งที่เนื้อหาในแผงไม่ได้เปลี่ยนเลยนอกจากตัวเลขสี่ตัว และ canvas.render()
+ *   รื้อทุกชิ้นทิ้งสร้างใหม่ทุกเฟรม วัดได้ 20 ms ต่อเฟรมที่ผัง 30 ชิ้น
+ */
+function commit(next, addToHistory = true, mode = 'all') {
   history.set(next, addToHistory);
+
+  if (mode === 'live' && !isBoard()) {
+    const moved = liveIds.map((id) => itemsOf(history.get()).find((entry) => entry.id === id)).filter(Boolean);
+    // ถ้ากล่องไหนหาไม่เจอ (เพิ่งถูกสร้าง/ลบ) ให้ถอยไปวาดใหม่ทั้งแคนวาสเพื่อความถูกต้อง
+    if (moved.length && canvas.updateBoxes(moved)) {
+      syncInspectorNumbers();
+      renderHud();
+      return;
+    }
+  }
+
   writeLayout(history.get());
   if (isBoard()) { board.render(); syncBoardSize(); } else { canvas.render(); }
   renderInspector();
@@ -321,7 +357,110 @@ function commit(next, addToHistory = true) {
   renderHud();
   renderLayers();
   updateHistoryButtons();
+  markOverflow();
 }
+
+/** id ของชิ้นที่กำลังถูกลากอยู่ตอนนี้ — commit โหมด live ใช้รู้ว่าต้องขยับกล่องไหน */
+let liveIds = [];
+
+/**
+ * อัปเดตเฉพาะตัวเลขในแผงขวา ไม่สร้าง DOM ใหม่
+ * ช่องที่ผู้ใช้กำลังพิมพ์อยู่ต้องไม่ถูกเขียนทับ ไม่งั้นเคอร์เซอร์จะกระโดด
+ */
+function syncInspectorNumbers() {
+  const id = canvas?.getSelected();
+  const item = itemsOf(history.get()).find((entry) => entry.id === id);
+  if (!item || !el.inspector) return;
+
+  const sub = el.inspector.querySelector('.lay-insp__sub');
+  if (sub) sub.textContent = `${item.w} × ${item.h} ช่อง · คอลัมน์ ${item.col} แถว ${item.row}`;
+
+  ['col', 'row', 'w', 'h'].forEach((field) => {
+    const input = el.inspector.querySelector(`[data-field="${field}"]`);
+    if (input && document.activeElement !== input) input.value = item[field];
+  });
+}
+
+/**
+ * ติดธงให้ชิ้นที่เนื้อหาสูงเกินกล่องจนถูกตัด
+ *
+ * .lay-item__stage ตัด overflow ทิ้ง ของที่ล้นจึงหายไปโดยไม่มีอะไรบอก
+ * ผังที่เห็นบนจอจะไม่ตรงกับไฟล์ที่ส่งออก ซึ่งเป็นปัญหาที่ร้ายแรงที่สุดของเครื่องมือนี้
+ * ต้องเรียกหลังวาดเสร็จ เพราะก่อนหน้านั้นกล่องยังไม่อยู่ใน DOM ความสูงจึงเป็นศูนย์
+ */
+function markOverflow() {
+  requestAnimationFrame(() => {
+    el.canvas?.querySelectorAll('.lay-item').forEach((box) => {
+      const stage = box.querySelector('.lay-item__stage');
+      if (!stage) return;
+      const over = overflowOf(stage);
+      if (over > 2) box.dataset.overflow = String(over);
+      else box.removeAttribute('data-overflow');
+    });
+
+    // แถวเตือนในแผงขวาใช้ผลการวัดชุดเดียวกัน จะได้ไม่ขัดกับป้ายบนผัง
+    const fit = el.inspector?.querySelector('[data-fit]');
+    if (!fit) return;
+    const id = canvas?.getSelected();
+    const selected = id && el.canvas?.querySelector(`.lay-item[data-id="${id}"]`);
+    const over = selected?.dataset.overflow;
+    fit.hidden = !over;
+    if (over) {
+      const rows = rowsToFit(id);
+      const label = fit.querySelector('[data-fit-rows]');
+      if (label) label.textContent = rows ? `(${rows} แถว)` : '';
+    }
+  });
+}
+
+/**
+ * ส่วนที่ล้นออกนอกกล่องเป็นพิกเซล
+ *
+ * เทียบ scrollHeight อย่างเดียวไม่พอ — คอมโพเนนต์ที่ตั้งธง fill ไว้จะยืดตัวเองเต็มกล่อง
+ * ทำให้ scrollHeight เท่ากับ clientHeight เสมอ ทั้งที่เนื้อหาข้างในถูกบีบจนล้น
+ * จึงต้องดูว่ากล่องลูกที่อยู่ต่ำสุด "ถูกจัดวาง" เลยขอบล่างไปเท่าไร
+ * (การตัด overflow ไม่เปลี่ยนผลการจัดวาง rect จึงยังบอกความจริง)
+ */
+function overflowOf(stage) {
+  const box = stage.getBoundingClientRect();
+  let lowest = box.top;
+  stage.querySelectorAll('*').forEach((node) => {
+    const rect = node.getBoundingClientRect();
+    if (rect.height > 0) lowest = Math.max(lowest, rect.bottom);
+  });
+  return Math.round(Math.max(lowest - box.bottom, stage.scrollHeight - stage.clientHeight));
+}
+
+/**
+ * จำนวนแถวที่ชิ้นนี้ต้องมีถึงจะไม่ถูกตัด
+ *
+ * วัดจากกล่องทดสอบนอกจอที่กว้างเท่ากล่องจริง ไม่ใช่วัดจากกล่องบนผังโดยตรง
+ * เพราะคอมโพเนนต์ที่ตั้งธง fill จะถูกบีบให้พอดีกล่องที่เล็กอยู่แล้ว
+ * ค่าที่วัดได้จึงต่ำกว่าความเป็นจริงและกดขยายทีเดียวไม่พอ ต้องกดซ้ำหลายรอบ
+ * วิธีนี้เป็นวิธีเดียวกับที่ใช้คำนวณ DEFAULT_SIZE ผลจึงตรงกัน
+ */
+function rowsToFit(itemId) {
+  const layout = history.get();
+  const item = itemsOf(layout).find((entry) => entry.id === itemId);
+  const cached = item && markupCache.get(item.slug);
+  if (!cached || !el.canvas) return null;
+
+  const inner = el.canvas.clientWidth - layout.gap * 2;
+  const colWidth = (inner - layout.gap * (layout.cols - 1)) / layout.cols;
+  const boxWidth = Math.round(colWidth * item.w + layout.gap * (item.w - 1));
+
+  const probe = document.createElement('div');
+  probe.className = 'lay-fit-probe';
+  probe.style.width = `${boxWidth}px`;
+  probe.innerHTML = cached.preview;
+  applyTokens(probe);
+  el.canvas.appendChild(probe);
+  const needPx = probe.scrollHeight;
+  probe.remove();
+
+  return Math.max(1, Math.ceil((needPx + layout.gap) / (layout.rowHeight + layout.gap)));
+}
+
 
 /**
  * ตำแหน่งที่ผู้ใช้คลิกไว้ล่าสุดบนที่ว่างของแคนวาส
@@ -943,6 +1082,14 @@ function renderInspector() {
       <span class="lay-insp__value u-mono" id="lay-real-size"></span>
     </div>
 
+    <div class="lay-insp__fit" data-fit hidden>
+      <span class="lay-insp__fit-text">
+        ${icon('i-alert-triangle')}
+        เนื้อหาสูงเกินกล่อง ส่วนที่ล้นจะถูกตัดทิ้งและไม่ตรงกับไฟล์ที่ส่งออก
+      </span>
+      <button type="button" class="btn btn--sm" data-act="fit">ขยายให้พอดี <b data-fit-rows></b></button>
+    </div>
+
     ${variants.length > 1 ? `
       <div class="field">
         <label class="field__label" for="lay-variant">รูปแบบ</label>
@@ -995,6 +1142,13 @@ function renderInspector() {
     const py = item.h * layout.rowHeight + GRID.gap * (item.h - 1);
     realSize.textContent = `${px} × ${py} px`;
   }
+
+  el.inspector.querySelector('[data-act="fit"]')?.addEventListener('click', () => {
+    const rows = rowsToFit(item.id);
+    if (!rows || rows <= item.h) return;
+    commit(updateItem(history.get(), item.id, { h: rows }));
+    el.status.textContent = `ขยาย ${bySlug(item.slug)?.name ?? item.slug} เป็น ${rows} แถว เนื้อหาครบแล้ว`;
+  });
 
   el.inspector.querySelector('[data-act="remove"]')?.addEventListener('click', () => {
     commit(removeItem(history.get(), item.id));
@@ -2067,13 +2221,16 @@ async function init() {
       const next = Object.keys(patch).length === 0
         ? moveItemToEnd(history.get(), id)
         : updateItem(history.get(), id, patch);
-      commit(next, addToHistory);
+      // addToHistory = false มาจาก pointermove ของการลากเท่านั้น จบการลากจะส่ง true มาปิดท้าย
+      liveIds = [id];
+      commit(next, addToHistory, addToHistory ? 'all' : 'live');
     },
     // ลากหลายชิ้นพร้อมกันต้องลงเป็นขั้นเดียวของ undo ไม่ใช่ขั้นละชิ้น
     onChangeMany: (patches, addToHistory) => {
       let next = history.get();
       Object.entries(patches).forEach(([id, patch]) => { next = updateItem(next, id, patch); });
-      commit(next, addToHistory);
+      liveIds = Object.keys(patches);
+      commit(next, addToHistory, addToHistory ? 'all' : 'live');
     },
   });
 
@@ -2137,7 +2294,10 @@ async function init() {
     el.status.textContent = 'เรียงลำดับเนื้อหาตามตำแหน่งบนผังแล้ว — ไฟล์ที่ส่งออกจะกด Tab ไล่ตามสายตา';
   });
 
-  await Promise.all(COMPONENTS.map((meta) => markupOf(meta.slug)));
+  // คลังต้องขึ้นก่อน ไม่รอ markup ครบทุกชิ้น
+  // ของเดิมรอ markup ทั้งคลังก่อนวาดอะไรเลย พอคลังโตขึ้นเป็นสี่สิบกว่าชิ้น
+  // ผู้ใช้จึงเห็นหน้าว่างอยู่หลายวินาทีก่อนกดอะไรได้
+  // ตัววาดกล่องมีทางสำรองอยู่แล้ว (renderItemContent โหลดเองถ้ายังไม่มีใน cache)
   await renderPalette();
 
   canvas.render();
@@ -2146,6 +2306,14 @@ async function init() {
   renderScreens();
   renderLayers();
   updateHistoryButtons();
+
+  // โหลด markup เฉพาะของที่อยู่บนผังจริง ไม่ใช่ทั้งคลัง
+  // คลังมีสี่สิบกว่าชิ้น การดึงทุกไฟล์ตอนเปิดหน้าคือสี่สิบกว่าคำขอที่ส่วนใหญ่ไม่ได้ใช้
+  // ของที่ยังไม่มีใน cache จะถูกโหลดตอนถูกวาง (renderItemContent มีทางสำรองอยู่แล้ว)
+  const usedSlugs = [...new Set(itemsOf(history.get()).map((item) => item.slug))];
+  if (usedSlugs.length) {
+    Promise.all(usedSlugs.map((slug) => markupOf(slug))).then(() => canvas.render());
+  }
 
 
   // ดับเบิลคลิกที่ว่างบนผัง = เพิ่มของตรงนั้นด้วยการพิมพ์ชื่อ

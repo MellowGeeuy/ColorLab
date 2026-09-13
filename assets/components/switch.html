@@ -1,0 +1,80 @@
+<!-- @card -->
+<div class="ui-switch-row">
+  <span class="ui-switch-row__text"><b>เผยแพร่หน้านี้</b><small>มีผลทันทีที่กด</small></span>
+  <button type="button" class="ui-switch" role="switch" aria-checked="true" aria-label="เผยแพร่หน้านี้">
+    <span class="ui-switch__knob"></span>
+  </button>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <div class="ui-switch-row" data-part="p1">
+    <span class="ui-switch-row__text">
+      <b>เผยแพร่หน้านี้</b>
+      <small>เปิดแล้วคนนอกทีมเห็นได้ทันที ไม่ต้องกดบันทึกซ้ำ</small>
+    </span>
+    <button type="button" class="ui-switch" role="switch" aria-checked="true" aria-label="เผยแพร่หน้านี้">
+      <span class="ui-switch__knob"></span>
+    </button>
+  </div>
+
+  <div class="ui-switch-row">
+    <span class="ui-switch-row__text">
+      <b>ให้คนอื่นแสดงความเห็นได้</b>
+      <small>ปิดอยู่ ผู้ที่มีลิงก์จะอ่านได้อย่างเดียว</small>
+    </span>
+    <button type="button" class="ui-switch" role="switch" aria-checked="false" aria-label="ให้คนอื่นแสดงความเห็นได้">
+      <span class="ui-switch__knob"></span>
+    </button>
+  </div>
+
+  <div class="ui-switch-row" data-state="disabled">
+    <span class="ui-switch-row__text">
+      <b>ให้ดาวน์โหลดไฟล์ต้นฉบับ</b>
+      <small>ต้องเปิดการเผยแพร่ก่อนจึงจะตั้งค่านี้ได้</small>
+    </span>
+    <button type="button" class="ui-switch" role="switch" aria-checked="false" disabled aria-label="ให้ดาวน์โหลดไฟล์ต้นฉบับ">
+      <span class="ui-switch__knob"></span>
+    </button>
+  </div>
+
+  <div class="ui-switch-row" data-part="p2">
+    <span class="ui-switch-row__text">
+      <b>ซิงก์กับปฏิทิน</b>
+      <small class="ui-switch-row__busy">
+        <span class="ui-spinner ui-spinner--xs" aria-hidden="true"></span>
+        กำลังเชื่อมต่อ ยังยกเลิกได้
+      </small>
+    </span>
+    <button type="button" class="ui-switch" role="switch" aria-checked="true" data-state="busy" aria-label="ซิงก์กับปฏิทิน">
+      <span class="ui-switch__knob"></span>
+    </button>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ปิด — พื้นต้องต่างจากพื้นหลังพอให้เห็นว่ามีสวิตช์">
+  <button type="button" class="ui-switch" role="switch" aria-checked="false" aria-label="ตัวอย่าง"><span class="ui-switch__knob"></span></button>
+</div>
+
+<div class="cs-variant" data-variant-label="เปิด — ปุ่มเลื่อนไปอีกข้าง ไม่ได้บอกด้วยสีอย่างเดียว">
+  <button type="button" class="ui-switch" role="switch" aria-checked="true" aria-label="ตัวอย่าง"><span class="ui-switch__knob"></span></button>
+</div>
+
+<div class="cs-variant" data-variant-label="กำลังโฟกัส">
+  <button type="button" class="ui-switch" role="switch" aria-checked="true" data-state="focus" aria-label="ตัวอย่าง"><span class="ui-switch__knob"></span></button>
+</div>
+
+<div class="cs-variant" data-variant-label="กดไม่ได้ — ต้องบอกในข้อความด้วยว่าทำไม">
+  <button type="button" class="ui-switch" role="switch" aria-checked="false" disabled aria-label="ตัวอย่าง"><span class="ui-switch__knob"></span></button>
+</div>
+
+<div class="cs-variant" data-variant-label="มีข้อความกำกับ — สวิตช์เปล่าไม่บอกว่าเปิดแล้วเกิดอะไร">
+  <div class="ui-switch-row">
+    <span class="ui-switch-row__text"><b>เผยแพร่หน้านี้</b><small>มีผลทันทีที่กด</small></span>
+    <button type="button" class="ui-switch" role="switch" aria-checked="true" aria-label="เผยแพร่หน้านี้"><span class="ui-switch__knob"></span></button>
+  </div>
+</div>
+<!-- @end -->

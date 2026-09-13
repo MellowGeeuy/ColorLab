@@ -1,0 +1,74 @@
+<!-- @card -->
+<nav class="ui-bnav">
+  <span class="ui-bnav__item" aria-current="page">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-7 9 7v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>หน้าแรก</span>
+  <span class="ui-bnav__item">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.7-3.7"/></svg>ค้นหา</span>
+  <span class="ui-bnav__item">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>ฉัน</span>
+</nav>
+<!-- @end -->
+
+<!-- @preview -->
+<nav class="ui-bnav" aria-label="เมนูหลัก" data-part="p1">
+  <a class="ui-bnav__item" href="#" aria-current="page">
+    <span class="ui-bnav__icon" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+    </span>
+    หน้าแรก
+  </a>
+
+  <a class="ui-bnav__item" href="#">
+    <span class="ui-bnav__icon" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.7-3.7"/></svg>
+    </span>
+    ค้นหา
+  </a>
+
+  <a class="ui-bnav__item" href="#" data-part="p2">
+    <span class="ui-bnav__icon" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 18a2 2 0 0 0 4 0"/></svg>
+      <span class="ui-bnav__badge">3</span>
+    </span>
+    แจ้งเตือน
+  </a>
+
+  <a class="ui-bnav__item" href="#">
+    <span class="ui-bnav__icon" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+    </span>
+    ฉัน
+  </a>
+</nav>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="หน้าที่เปิดอยู่ — สีคู่กับแถบใต้ไอคอน ไม่ใช่สีอย่างเดียว">
+  <nav class="ui-bnav"><span class="ui-bnav__item" aria-current="page">
+    <span class="ui-bnav__icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+    หน้าแรก</span></nav>
+</div>
+
+<div class="cs-variant" data-variant-label="หน้าอื่น — ต้องอ่านออก 4.5:1 ไม่จางจนเหมือนกดไม่ได้">
+  <nav class="ui-bnav"><span class="ui-bnav__item">
+    <span class="ui-bnav__icon"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.7-3.7"/></svg></span>
+    ค้นหา</span></nav>
+</div>
+
+<div class="cs-variant" data-variant-label="มีจำนวนค้าง — ตัวเลขบนไอคอน ไม่ใช่จุดสีเปล่า">
+  <span class="ui-bnav__icon">
+    <svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 18a2 2 0 0 0 4 0"/></svg>
+    <span class="ui-bnav__badge">3</span>
+  </span>
+</div>
+
+<div class="cs-variant" data-variant-label="ห้าช่องคือขีดจำกัด — มากกว่านี้ตัวอักษรจะถูกตัด">
+  <nav class="ui-bnav" style="max-width:320px">
+    <span class="ui-bnav__item" aria-current="page">หน้าแรก</span>
+    <span class="ui-bnav__item">ค้นหา</span>
+    <span class="ui-bnav__item">แจ้งเตือน</span>
+    <span class="ui-bnav__item">รายการ</span>
+    <span class="ui-bnav__item">ฉัน</span>
+  </nav>
+</div>
+<!-- @end -->

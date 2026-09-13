@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05 สีกับความรู้สึก — ColorLab</title>
+  <meta name="description" content="ความหมายของสีมาจากบริบทและวัฒนธรรม ไม่ใช่กฎสากล พร้อมตารางเทียบรายภูมิภาค">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/breakpoints.css">
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="../../assets/css/app-shell.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory-figures.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/color-theory.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="topbar">
+      <div class="topbar__side">
+        <a class="topbar__brand" href="../../">
+          <span class="topbar__logo" aria-hidden="true"></span>
+          <span class="topbar__name">ColorLab</span>
+        </a>
+
+        <nav class="groundnav" aria-label="เมนูหลัก">
+          <a class="groundnav__item" href="../../" style="--dot-h:8" aria-current="page">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-book"/></svg>Color Theory
+          </a>
+          <a class="groundnav__item" href="../../component-style/" style="--dot-h:92">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-layers"/></svg>Component Style
+          </a>
+          <a class="groundnav__item" href="../../layout/" style="--dot-h:150">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
+          </a>
+        </nav>
+      </div>
+
+      <div class="topbar__side topbar__side--end">
+        <div class="topbar__actions">
+          <span class="topbar__status" id="read-status" role="status" aria-live="polite"></span>
+          <button type="button" class="btn btn--icon btn--sm toc-toggle" id="toc-toggle"
+                  aria-controls="toc" aria-expanded="false" aria-label="เปิดสารบัญ">
+            <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm btn--guide" id="guide-open"
+                  aria-haspopup="dialog" aria-label="เปิดคู่มือใช้งาน" title="คู่มือใช้งาน">
+            <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm" id="theme-toggle" aria-label="สลับโหมดสีของหน้าเว็บ">
+            <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+          </button>
+
+          <a class="topnav__item topnav__item--hero" href="../../workspace/" aria-label="Colorground" title="Colorground">
+            <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+            <span class="topnav__label">Colorground</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="read-progress" aria-hidden="true"><div class="read-progress__bar" id="progress-bar"></div></div>
+    <div class="toc-scrim" id="toc-scrim"></div>
+
+    <div class="reader">
+
+      <nav class="toc" id="toc" aria-label="สารบัญทั้งคอร์ส">
+        <a class="toc__home" href="../"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg> สารบัญทั้งหมด</a>
+        <div class="toc__group">พื้นฐาน</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-first/" style="--dot-h:8"><span class="toc__no">01</span> <span class="toc__text">สีทำงานก่อนตัวหนังสือ</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../three-axes/" style="--dot-h:28"><span class="toc__no">02</span> <span class="toc__text">สามแกนของสี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../color-models/" style="--dot-h:45"><span class="toc__no">03</span> <span class="toc__text">Color Models</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ทฤษฎีสี</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../harmony/" style="--dot-h:92"><span class="toc__no">04</span> <span class="toc__text">วงล้อสี & Harmony</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link is-current" href="../psychology/" style="--dot-h:150" aria-current="page"><span class="toc__no">05</span> <span class="toc__text">สีกับความรู้สึก</span></a>
+            <ul class="toc__sub">
+              <li><a class="toc__link toc__link--sub" href="#why">ทำไมต้องรู้</a></li>
+              <li><a class="toc__link toc__link--sub" href="#core">หลักการ</a></li>
+              <li><a class="toc__link toc__link--sub" href="#deep">เลือกหมวดธุรกิจ แล้วดูว่าสีอะไรถูกใช้เพราะอะไร</a></li>
+              <li><a class="toc__link toc__link--sub" href="#pitfalls">ข้อผิดที่เจอบ่อย</a></li>
+              <li><a class="toc__link toc__link--sub" href="#wrap">สรุป</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="toc__group">ระบบสีใน UI</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-roles/" style="--dot-h:172"><span class="toc__no">06</span> <span class="toc__text">สี่บทบาทของสี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../scales/" style="--dot-h:196"><span class="toc__no">07</span> <span class="toc__text">จากสีเดียวสู่สเกล</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">การเข้าถึง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../contrast/" style="--dot-h:214"><span class="toc__no">08</span> <span class="toc__text">Contrast & WCAG</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../dark-mode/" style="--dot-h:248"><span class="toc__no">09</span> <span class="toc__text">Dark Mode</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ลงมือใช้จริง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../proportion/" style="--dot-h:286"><span class="toc__no">10</span> <span class="toc__text">สัดส่วนการใช้สี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../fixes/" style="--dot-h:322"><span class="toc__no">11</span> <span class="toc__text">ก่อนแก้ / หลังแก้</span></a>
+          </li>
+        </ul>
+      </nav>
+
+      <main class="reader__main" id="reader-main">
+        <div class="prose">
+
+          <header class="topic-head">
+            <span class="topic-head__eyebrow">ตอนที่ 05 · ทฤษฎีสี</span>
+            <h1 class="topic-head__title">สีกับความรู้สึก</h1>
+            <p class="topic-head__lead">สีไม่ได้มีความหมายตายตัว ความหมายขึ้นกับวัฒนธรรมและขึ้นกับว่าเป็นแอปแบบไหน อย่าเลือกสีจากตารางความหมาย ให้เลือกจากงานที่สีนั้นต้องไปทำ</p>
+          </header>
+
+          <section class="section" id="why">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">01</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ทำไมต้องรู้เรื่องนี้</h2>
+            </div>
+
+              <p>คำถามที่ได้ยินบ่อยที่สุดคือ “แอปการเงินควรใช้สีอะไร” ซึ่งเป็นคำถามที่ตอบตรง ๆ ไม่ได้
+                เพราะคำตอบเปลี่ยนตามสามอย่าง</p>
+
+              <div class="case">
+                <div class="case__item">
+                  <span class="case__tag">คู่แข่งในตลาดเดียวกัน</span>
+                  <p>ถ้าแอปธนาคารทุกเจ้าในประเทศเป็นสีน้ำเงิน การใช้น้ำเงินแปลว่าปลอดภัยแต่จำไม่ได้
+                    ส่วนการใช้สีอื่นแปลว่าจำได้แต่ต้องทำงานหนักขึ้นเพื่อสร้างความน่าเชื่อถือ</p>
+                </div>
+                <div class="case__item">
+                  <span class="case__tag">ผู้ใช้อยู่ที่ไหน</span>
+                  <p>สีเดียวกันอ่านไม่เหมือนกันข้ามภูมิภาค ดูตารางท้ายเรื่องนี้</p>
+                </div>
+              </div>
+          </section>
+
+          <section class="section" id="core">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">02</span><span class="section__rule"></span></div>
+              <h2 class="section__title">หลักการ</h2>
+            </div>
+
+            <figure class="figure">
+              <div class="figure__stage">
+                <div class="mood">
+                  <div class="mood__picker" role="radiogroup" aria-label="เลือกสีแบรนด์ของตัวอย่าง">
+                    <input class="mood__radio" type="radio" name="mood" id="mood-blue" checked>
+                    <label class="mood__option" for="mood-blue" style="--mood-h:225"><span class="mood__dot"></span> น้ำเงิน</label>
+
+                    <input class="mood__radio" type="radio" name="mood" id="mood-green">
+                    <label class="mood__option" for="mood-green" style="--mood-h:150"><span class="mood__dot"></span> เขียว</label>
+
+                    <input class="mood__radio" type="radio" name="mood" id="mood-red">
+                    <label class="mood__option" for="mood-red" style="--mood-h:5"><span class="mood__dot"></span> แดง</label>
+
+                    <input class="mood__radio" type="radio" name="mood" id="mood-purple">
+                    <label class="mood__option" for="mood-purple" style="--mood-h:280"><span class="mood__dot"></span> ม่วง</label>
+                  </div>
+
+                  <div class="mood__card">
+                    <span class="mood__eyebrow">บัญชีของคุณ</span>
+                    <div class="mood__title">โอนเงิน 12,400 บาท</div>
+                    <p class="mood__text u-mb-0">ตรวจสอบปลายทางอีกครั้งก่อนยืนยัน รายการนี้ยกเลิกไม่ได้หลังจากกดแล้ว</p>
+                    <div class="mood__actions">
+                      <span class="mood__btn">ยืนยันการโอน</span>
+                      <span class="mood__btn mood__btn--ghost">ย้อนกลับ</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+                <span>ข้อความเหมือนกันทุกตัว เปลี่ยนแค่เนื้อสี น้ำเงินอ่านว่าปลอดภัย เขียวอ่านว่าผ่านแล้ว
+                  แดงอ่านว่าอันตราย ทั้งที่เป็นปุ่มยืนยันเหมือนกันหมด</span>
+              </figcaption>
+            </figure>
+
+            <div class="steps__use">
+              <div class="steps__use-item"><b>น้ำเงิน</b> ไว้ใจได้ มั่นคง · ธนาคาร ซอฟต์แวร์องค์กร<br>ระวัง: ใช้กันเยอะจนไม่ค่อยต่างจากใคร และไม่ชวนให้หิว</div>
+              <div class="steps__use-item"><b>เขียว</b> สำเร็จ ปลอดภัย · การเงิน สุขภาพ ปุ่มยืนยัน<br>ระวัง: อย่าใช้สื่อ “ผ่าน” โดยไม่มีไอคอนกำกับ</div>
+              <div class="steps__use-item"><b>แดง</b> อันตราย เร่งด่วน · error การลบ ป้ายลดราคา<br>ระวัง: ใช้เยอะแล้วผู้ใช้จะเครียด</div>
+              <div class="steps__use-item"><b>เหลือง / ส้ม</b> ระวัง เป็นกันเอง · คำเตือน อีคอมเมิร์ซ<br>ระวัง: คอนทราสต์ต่ำมากบนพื้นขาว</div>
+              <div class="steps__use-item"><b>ม่วง</b> สร้างสรรค์ พรีเมียม · แอป AI สินค้าหรู<br>ระวัง: เข้มไปดูหม่น อ่อนไปดูเป็นของเล่น</div>
+              <div class="steps__use-item"><b>เทา</b> เป็นกลาง เงียบ · โครงหน้าจอ ข้อความรอง<br>ระวัง: เทาอ่อนเกินไปคือสาเหตุอันดับหนึ่งที่ทำให้อ่านไม่ออก</div>
+            </div>
+
+            <!-- ภาพบนของตอนนี้คือ "เนื้อหาเดิม เปลี่ยนสี" ภาพนี้จงใจทำกลับด้าน
+                 คือ "สีเดิมเป๊ะ เปลี่ยนบริบท" — ทั้งสามใบใช้ #DC2626 ค่าเดียวกันหมด -->
+            <figure class="figure figure--fixed" data-reveal>
+              <div class="figure__stage">
+                <div class="context">
+
+                  <div class="context__case">
+                    <span class="fig-label">แอปธนาคาร</span>
+                    <div class="context__card">
+                      <span class="context__badge">แจ้งเตือน</span>
+                      <p class="context__title">ยอดคงเหลือติดลบ 1,240 บาท</p>
+                      <p class="context__body">มีรายการหักบัญชีที่ทำให้ยอดต่ำกว่าศูนย์</p>
+                      <span class="context__link">ดูรายการที่หัก</span>
+                    </div>
+                    <p class="ramp-row__note">อ่านว่า <b>อันตราย — หยุดแล้วตรวจก่อน</b></p>
+                  </div>
+
+                  <div class="context__case">
+                    <span class="fig-label">แอปช้อปปิ้ง</span>
+                    <div class="context__card context__card--sale">
+                      <span class="context__badge context__badge--solid">วันสุดท้าย</span>
+                      <p class="context__title">ลดทั้งร้าน 50%</p>
+                      <p class="context__body">เหลือเวลาอีก 4 ชั่วโมง 12 นาที</p>
+                      <span class="context__cta">ช้อปเลย</span>
+                    </div>
+                    <p class="ramp-row__note">อ่านว่า <b>เร่งด่วน — คว้าไว้ก่อนหมด</b></p>
+                  </div>
+
+                  <div class="context__case">
+                    <span class="fig-label">แอปสั่งอาหาร</span>
+                    <div class="context__card">
+                      <p class="context__title">ต้มยำกุ้งน้ำข้น</p>
+                      <div class="context__spice">
+                        <span class="context__chili is-on"></span>
+                        <span class="context__chili is-on"></span>
+                        <span class="context__chili is-on"></span>
+                        <span class="context__chili"></span>
+                        <span class="context__spice-label">เผ็ดระดับ 3</span>
+                      </div>
+                      <p class="context__body">รสจัด เปรี้ยวนำ เผ็ดตาม</p>
+                    </div>
+                    <p class="ramp-row__note">อ่านว่า <b>รสจัด — น่ากิน</b></p>
+                  </div>
+
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-palette"/></svg>
+                <span>ทั้งสามใบใช้สีเดียวกันหมด คือ <code>#DC2626</code> สิ่งที่ทำให้ความหมายเปลี่ยนคือของที่สีไปอยู่ด้วย
+                  จะเป็นป้ายเตือน พื้นโปรโมชัน หรือไอคอนพริกก็ได้
+                  ฉะนั้นอย่าเลือกสีจากตารางความหมาย ให้เลือกจากงานที่สีนั้นต้องไปทำ</span>
+              </figcaption>
+            </figure>
+
+            <div class="table-wrap">
+              <table class="table">
+                <caption class="table__caption">สีเดียวกัน แต่ละประเทศอ่านความหมายไม่เหมือนกัน</caption>
+                <thead><tr><th>สี</th><th>ตะวันตก</th><th>จีน / เอเชียตะวันออก</th><th>ตะวันออกกลาง / เอเชียใต้</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>แดง</strong></td><td>อันตราย หยุด ป้ายลดราคา</td><td>มงคล โชคดี งานฉลอง</td><td>เจ้าสาวและงานแต่งในอินเดีย</td></tr>
+                  <tr><td><strong>ขาว</strong></td><td>สะอาด เรียบ งานแต่งงาน</td><td>ไว้ทุกข์ งานศพ</td><td>ความบริสุทธิ์ สันติ</td></tr>
+                  <tr><td><strong>เขียว</strong></td><td>ผ่าน ปลอดภัย เรื่องการเงิน</td><td>เจริญงอกงาม โชคดี</td><td>สีศักดิ์สิทธิ์ในศาสนาอิสลาม</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="note">
+              <svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg>
+              <p>ตารางนี้ไม่ได้มีไว้ท่องจำ แต่มีไว้เตือนว่าถ้าผู้ใช้อยู่หลายประเทศ
+                  ความหมายที่เราคิดว่าใคร ๆ ก็เข้าใจตรงกัน อาจไม่ใช่แบบนั้น
+                  ทางแก้ก็ข้อเดิมกับ<a href="../color-first/">ตอนที่ 01</a> คืออย่าให้สีเป็นตัวเดียวที่บอกความหมาย</p>
+            </div>
+          </section>
+
+          <section class="section" id="deep">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">03</span><span class="section__rule"></span></div>
+              <h2 class="section__title">เลือกหมวดธุรกิจ แล้วดูว่าสีอะไรถูกใช้เพราะอะไร</h2>
+            </div>
+
+              <p>ตารางข้างล่างไม่ใช่กฎ แต่เป็นสิ่งที่เจอจริงในตลาด ใช้เป็นจุดตั้งต้นแล้วค่อยตัดสินใจเอง
+                ว่าจะทำตามหรือจะฉีก</p>
+
+              <figure class="figure figure--fixed">
+                <div class="figure__stage">
+                  <div class="sector">
+                    <div class="sector__picker" role="radiogroup" aria-label="เลือกหมวดธุรกิจ">
+                      <input class="sector__radio" type="radio" name="sector" id="sector-fin" checked>
+                      <label class="sector__option" for="sector-fin">การเงิน</label>
+                      <input class="sector__radio" type="radio" name="sector" id="sector-health">
+                      <label class="sector__option" for="sector-health">สุขภาพ</label>
+                      <input class="sector__radio" type="radio" name="sector" id="sector-food">
+                      <label class="sector__option" for="sector-food">อาหาร</label>
+                      <input class="sector__radio" type="radio" name="sector" id="sector-ai">
+                      <label class="sector__option" for="sector-ai">ซอฟต์แวร์ / AI</label>
+                    </div>
+
+                    <div class="sector__panels">
+                      <div class="sector__panel" data-sector="fin">
+                        <div class="sector__swatches">
+                          <span style="background-color:#1e3a8a"></span>
+                          <span style="background-color:#0f766e"></span>
+                          <span style="background-color:#334155"></span>
+                        </div>
+                        <p><b>ที่เจอบ่อย</b> น้ำเงินเข้ม เขียวอมน้ำเงิน และเทาเข้ม</p>
+                        <p><b>เพราะ</b> ต้องการสื่อความมั่นคงและความเป็นสถาบัน สีเย็นทำให้หน้าจอที่มีตัวเลขเยอะดูสงบ</p>
+                        <p><b>ข้อควรระวัง</b> เขียวกับแดงถูกจองไว้แล้วสำหรับกำไรกับขาดทุน ห้ามหยิบไปใช้ตกแต่ง</p>
+                      </div>
+                      <div class="sector__panel" data-sector="health">
+                        <div class="sector__swatches">
+                          <span style="background-color:#0e7490"></span>
+                          <span style="background-color:#15803d"></span>
+                          <span style="background-color:#f8fafc"></span>
+                        </div>
+                        <p><b>ที่เจอบ่อย</b> ฟ้าอมเขียว เขียวใบไม้ และพื้นขาวสะอาด</p>
+                        <p><b>เพราะ</b> สื่อความสะอาดและการฟื้นตัว พื้นที่ว่างเยอะช่วยลดความกังวลของผู้ใช้</p>
+                        <p><b>ข้อควรระวัง</b> สีแดงในบริบทนี้อ่านว่าฉุกเฉินจริง ๆ อย่าใช้กับโปรโมชัน</p>
+                      </div>
+                      <div class="sector__panel" data-sector="food">
+                        <div class="sector__swatches">
+                          <span style="background-color:#dc2626"></span>
+                          <span style="background-color:#ea580c"></span>
+                          <span style="background-color:#facc15"></span>
+                        </div>
+                        <p><b>ที่เจอบ่อย</b> แดง ส้ม เหลือง</p>
+                        <p><b>เพราะ</b> สีอุ่นกระตุ้นความอยากอาหารและความเร่งด่วน เหมาะกับการตัดสินใจเร็ว</p>
+                        <p><b>ข้อควรระวัง</b> เหลืองบนพื้นขาวคอนทราสต์ต่ำมาก ใช้เป็นพื้นได้ แต่อย่าใช้เป็นตัวหนังสือ</p>
+                      </div>
+                      <div class="sector__panel" data-sector="ai">
+                        <div class="sector__swatches">
+                          <span style="background-color:#6d28d9"></span>
+                          <span style="background-color:#0ea5e9"></span>
+                          <span style="background-color:#0f172a"></span>
+                        </div>
+                        <p><b>ที่เจอบ่อย</b> ม่วง ฟ้าสด และพื้นเข้ม</p>
+                        <p><b>เพราะ</b> สื่อความใหม่และความเป็นเทคโนโลยี พื้นเข้มทำให้สีเน้นดูเรืองแสง</p>
+                        <p><b>ข้อควรระวัง</b> ม่วงกับฟ้าสดบนพื้นเข้มมักตกเกณฑ์คอนทราสต์ ต้องยกความสว่างขึ้น</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <figcaption class="figure__caption">
+                  <svg class="icon" aria-hidden="true"><use href="#i-palette"/></svg>
+                  <span>สังเกตว่าทุกหมวดมีบรรทัด “ข้อควรระวัง” ที่เป็นเรื่องเดียวกันหมด —
+                    สีที่ถูกจองไว้สำหรับความหมายเฉพาะ ห้ามหยิบไปใช้ตกแต่ง</span>
+                </figcaption>
+              </figure>
+          </section>
+
+          <section class="section" id="pitfalls">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">04</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ข้อผิดที่เจอบ่อย</h2>
+            </div>
+
+              <ul class="pitfalls">
+                <li class="pitfall">
+                  <b class="pitfall__name">หยิบสีจากตารางความหมายมาใช้ตรง ๆ</b>
+                  <span class="pitfall__body">ตารางบอกได้แค่แนวโน้ม ความหมายจริงเกิดตอนสีไปเกาะกับของบางอย่างในหน้าจอ</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">ใช้สี semantic ไปตกแต่ง</b>
+                  <span class="pitfall__body">ถ้าเขียวแปลว่าสำเร็จ ก็ห้ามเอาเขียวไปทำพื้นการ์ดทั่วไป ไม่งั้นผู้ใช้จะอ่านว่าการ์ดนั้นสำเร็จแล้ว</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">ลืมว่าผู้ใช้อยู่หลายประเทศ</b>
+                  <span class="pitfall__body">ขาวคือแต่งงานในตะวันตก แต่คือไว้ทุกข์ในเอเชียตะวันออก ถ้าทำตลาดหลายที่ต้องเช็กก่อน</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">ทดสอบสีบนพื้นขาวเปล่า</b>
+                  <span class="pitfall__body">สีจะให้ความรู้สึกคนละแบบเมื่ออยู่กับเนื้อหาจริง เอาไปวางบนหน้าจอจริงเสมอ</span>
+                </li>
+              </ul>
+          </section>
+
+          <section class="section" id="wrap">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">05</span><span class="section__rule"></span></div>
+              <h2 class="section__title">สรุปและแหล่งอ้างอิง</h2>
+            </div>
+
+              <h3 class="wrap__title">สรุปสามข้อ</h3>
+
+              <ul class="takeaway">
+                <li>ความหมายของสีเกิดจากคู่ของสี กับสิ่งที่สีนั้นไปเกาะอยู่</li>
+                <li>ปริมาณที่ใช้เปลี่ยนความหมายได้พอ ๆ กับตัวสีเอง</li>
+                <li>ความหมายไม่ข้ามพรมแดนอัตโนมัติ ต้องเช็กเมื่อผู้ใช้อยู่หลายที่</li>
+              </ul>
+
+              <h3 class="wrap__title">อ่านต่อจากต้นทาง</h3>
+
+              <ul class="refs">
+                <li><a href="https://colorarchive.org/guides/cultural-color-meanings-guide/" target="_blank" rel="noopener noreferrer">Cultural color meanings guide</a><span>สรุปความหมายของสีรายภูมิภาคสำหรับงานออกแบบ</span></li>
+                <li><a href="https://www.ecinnovations.com/blog/the-role-of-color-in-cultural-identity-and-symbolism/" target="_blank" rel="noopener noreferrer">Color meanings across cultures — EC Innovations</a><span>มุมมองด้านการแปลและการปรับให้เข้ากับท้องถิ่น</span></li>
+              </ul>
+          </section>
+
+          <nav class="pager" aria-label="ไปตอนก่อนหน้าหรือตอนถัดไป">
+            <a class="pager__link pager__link--prev" href="../harmony/"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg><span><small>ตอนก่อนหน้า</small>วงล้อสีและชุดสีที่เข้ากัน</span></a>
+            <a class="pager__link pager__link--next" href="../color-roles/"><span><small>ตอนถัดไป</small>สี่บทบาทของสีในหน้าจอเดียว</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          </nav>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../../assets/js/pages/theory.js"></script>
+</body>
+</html>

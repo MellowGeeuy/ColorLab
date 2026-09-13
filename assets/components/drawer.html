@@ -1,0 +1,88 @@
+<!-- @card -->
+<div class="ui-drawer">
+  <div class="ui-drawer__head"><b>ตัวกรอง</b>
+    <span class="ui-drawer__x" aria-hidden="true">
+      <svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+  </div>
+  <div class="ui-drawer__body"><span class="ui-drawer__line"></span><span class="ui-drawer__line"></span></div>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-drawer-demo">
+  <div class="ui-drawer-demo__page" aria-hidden="true">
+    <span class="ui-drawer__line"></span>
+    <span class="ui-drawer__line ui-drawer__line--short"></span>
+    <span class="ui-drawer__line"></span>
+  </div>
+
+  <aside class="ui-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" data-part="p1">
+    <header class="ui-drawer__head">
+      <b class="ui-drawer__title" id="drawer-title">ตัวกรองรายการ</b>
+      <button type="button" class="ui-drawer__x" aria-label="ปิดแผงตัวกรอง">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="ui-drawer__body">
+      <fieldset class="ui-choice-set">
+        <legend class="ui-choice-set__legend">สถานะ</legend>
+        <label class="ui-check">
+          <span class="ui-box" data-state="checked" aria-hidden="true">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+          </span>
+          <span class="ui-check__text"><b>รอตรวจสอบ</b><small>128 รายการ</small></span>
+        </label>
+        <label class="ui-check">
+          <span class="ui-box" aria-hidden="true"></span>
+          <span class="ui-check__text"><b>อนุมัติแล้ว</b><small>96 รายการ</small></span>
+        </label>
+      </fieldset>
+
+      <div class="ui-field">
+        <label class="ui-field__label" for="drawer-owner">ผู้รับผิดชอบ</label>
+        <select class="ui-select" id="drawer-owner">
+          <option>ทุกคน</option>
+          <option>ผู้ใช้ ก.</option>
+        </select>
+      </div>
+    </div>
+
+    <footer class="ui-drawer__foot">
+      <button type="button" class="ui-btn ui-btn--ghost" data-part="p2">ล้างตัวกรอง</button>
+      <button type="button" class="ui-btn">ใช้ตัวกรอง (128)</button>
+    </footer>
+  </aside>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="หัวแผง — ชื่อคู่ปุ่มปิดที่มีคำอธิบาย">
+  <div class="ui-drawer__head">
+    <b class="ui-drawer__title">ตัวกรองรายการ</b>
+    <button type="button" class="ui-drawer__x" aria-label="ปิดแผง">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ท้ายแผง — ปุ่มยืนยันบอกผลที่จะเกิด ไม่ใช่แค่คำว่าตกลง">
+  <div class="ui-drawer__foot">
+    <button type="button" class="ui-btn ui-btn--ghost">ล้างตัวกรอง</button>
+    <button type="button" class="ui-btn">ใช้ตัวกรอง (128)</button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="เงาและขอบ — ขอบซ้ายทำให้แผงไม่จมไปกับหน้าในธีมมืด">
+  <div class="ui-drawer" style="position:static;width:200px;height:110px">
+    <div class="ui-drawer__body"><span class="ui-drawer__line"></span><span class="ui-drawer__line ui-drawer__line--short"></span></div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ฉากหลัง — หน้าเดิมยังเห็นอยู่ แต่กดไม่ได้">
+  <div class="ui-drawer-demo" style="height:110px">
+    <div class="ui-drawer-demo__page"><span class="ui-drawer__line"></span></div>
+    <div class="ui-drawer" style="width:96px"><div class="ui-drawer__body"><span class="ui-drawer__line"></span></div></div>
+  </div>
+</div>
+<!-- @end -->

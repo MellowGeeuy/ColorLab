@@ -23,8 +23,11 @@
   --cs-space-5: 1.25rem;
   --cs-space-6: 1.5rem;
 
+  /* ค่าตั้งต้นของมุมโค้ง — หน้า Colorground เขียนทับสามค่านี้ลงบนกล่องพรีวิวโดยตรง
+     เวลาผู้ใช้ลากสไลเดอร์ ส่วน --cs-radius-full เป็นรูปทรง ไม่ใช่ขนาด จึงไม่ขยับตาม */
   --cs-radius-sm: 6px;
   --cs-radius-md: 10px;
+  --cs-radius-lg: 14px;
   --cs-radius-full: 999px;
 
   --cs-h-sm: 28px;
@@ -236,6 +239,61 @@
 @media (prefers-reduced-motion: reduce) {
   .ui-iconbtn { transition: none; }
 }
+
+/* ขนาดอื่นของรูปโปรไฟล์ — ใช้ในรายการที่แถวเตี้ย และในหัวโปรไฟล์ */
+.ui-avatar--xs { width: 22px; height: 22px; font-size: 0.625rem; }
+.ui-avatar--lg { width: 40px; height: 40px; font-size: 0.875rem; }
+
+/* ตัวหมุนรอ — เป็น primitive เพราะหลาย component ต้องใช้ตอนกำลังทำงาน
+   prefers-reduced-motion หยุดหมุนให้เป็นวงนิ่ง ยังบอกได้ว่ากำลังรอ */
+.ui-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border: 2px solid var(--color-border-strong);
+  border-top-color: var(--color-primary);
+  border-radius: var(--cs-radius-full);
+  animation: ui-spin 700ms linear infinite;
+}
+
+.ui-spinner--xs { width: 13px; height: 13px; border-width: 2px; }
+.ui-spinner--lg { width: 28px; height: 28px; border-width: 3px; }
+
+@keyframes ui-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-spinner { animation-duration: 2400ms; }
+}
+
+/* คำที่ตรงกับสิ่งที่ผู้ใช้พิมพ์ ใช้พื้นอ่อนคู่สีอักษรที่ผ่าน 4.5:1 กับพื้นนั้น */
+.ui-mark {
+  background-color: var(--color-warning-soft);
+  color: var(--color-on-warning-soft);
+  border-radius: 3px;
+  padding-inline: 2px;
+}
+
+
+/* แถบความคืบหน้าแบบเส้น — เป็น primitive เพราะทั้งรายการไฟล์ ขั้นตอน และการ์ดใช้ร่วมกัน
+   ตัวเลขเปอร์เซ็นต์ต้องเขียนกำกับไว้ข้างนอกเสมอ แถบอย่างเดียวบอกได้แค่คร่าว ๆ */
+.ui-bar {
+  display: block;
+  position: relative;
+  height: 6px;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-surface-alt);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+  overflow: hidden;
+}
+
+.ui-bar__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-primary);
+}
+
 /* @end */
 
 /* @component button */
@@ -1448,7 +1506,8 @@
   color: var(--color-text);
   font-size: 1.75rem;
   font-weight: var(--cs-weight-semibold);
-  line-height: 2.25rem;
+  /* 28px ต้องการ 42px สำหรับสระซ้อนของไทย ของเดิม 36px เฉือนยอดสระ */
+  line-height: 2.75rem;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
@@ -1575,7 +1634,8 @@
   color: var(--color-text);
   font-size: 1.25rem;
   font-weight: var(--cs-weight-semibold);
-  line-height: 1.75rem;
+  /* 20px ต้องการ 30px ของเดิม 28px ยังเฉือน */
+  line-height: 2rem;
   letter-spacing: -0.01em;
 }
 
@@ -2441,5 +2501,2546 @@
   padding: var(--cs-space-3) var(--cs-space-5);
   border-top: 1px solid var(--color-border);
   background-color: var(--color-surface-alt);
+}
+/* @end */
+
+/* @component select */
+/* รายการตัวเลือกที่เปิดค้างไว้ — ใช้เมื่อต้องเห็นข้อมูลประกอบของแต่ละตัวเลือก
+   ซึ่ง select ของเบราว์เซอร์ทำไม่ได้ ตัวที่เลือกต้องมีเครื่องหมายถูก ไม่ใช่พื้นสีอย่างเดียว */
+.ui-listbox {
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+  padding: var(--cs-space-1);
+  max-height: 15rem;
+  overflow-y: auto;
+}
+
+.ui-listbox__group {
+  padding: var(--cs-space-2) var(--cs-space-3) var(--cs-space-1);
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  font-weight: var(--cs-weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.ui-listbox__opt {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-3);
+  min-height: var(--cs-h-lg);
+  padding: var(--cs-space-2) var(--cs-space-3);
+  border-radius: var(--cs-radius-sm);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.ui-listbox__opt:hover,
+.ui-listbox__opt[data-state="hover"] { background-color: var(--color-surface-alt); }
+
+.ui-listbox__opt[aria-selected="true"] { background-color: var(--color-primary-soft); }
+
+.ui-listbox__opt[aria-disabled="true"] {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.ui-listbox__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-sm);
+}
+
+.ui-listbox__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-listbox__opt[aria-selected="true"] .ui-listbox__text small { color: var(--color-text); }
+
+.ui-listbox__tick {
+  margin-inline-start: auto;
+  color: var(--color-primary-text);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* ค่าที่เลือกไว้หลายค่า แสดงเป็นป้ายที่ถอดออกได้ทีละอัน */
+.ui-multi {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cs-space-2);
+  min-height: var(--cs-h-md);
+  padding: var(--cs-space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-sm);
+  background-color: var(--color-surface);
+}
+
+.ui-chip--value {
+  gap: var(--cs-space-2);
+  background-color: var(--color-primary-soft);
+  border-color: transparent;
+  color: var(--color-on-primary-soft);
+}
+
+.ui-chip--value .ui-icon {
+  width: 0.75em;
+  height: 0.75em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+
+.ui-multi__more {
+  font-size: var(--cs-text-xs);
+  color: var(--color-text-muted);
+}
+/* @end */
+
+/* @component checkbox */
+/* กล่องติ๊กและวงกลมตัวเลือก — ทั้งคู่ต้องมีขอบที่ได้ 3:1 ตอนยังไม่ถูกเลือก
+   ไม่งั้นผู้ใช้ที่แยกสีอ่อนไม่ออกจะไม่เห็นว่ามีช่องให้กด (WCAG 1.4.11) */
+.ui-choice-set {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-3);
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.ui-choice-set__legend {
+  padding: 0 0 var(--cs-space-1);
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  font-weight: var(--cs-weight-semibold);
+  color: var(--color-text);
+}
+
+.ui-box,
+.ui-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border: 1px solid var(--color-border-strong);
+  background-color: var(--color-surface);
+}
+
+.ui-box { border-radius: var(--cs-radius-sm); }
+.ui-dot { border-radius: var(--cs-radius-full); }
+
+.ui-box .ui-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+
+.ui-box[data-state="checked"],
+.ui-box[data-state="mixed"] {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.ui-box__dash {
+  width: 10px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: currentColor;
+}
+
+.ui-dot[data-state="checked"] {
+  border-color: var(--color-primary);
+  border-width: 6px;
+}
+
+.ui-box[data-state="focus"],
+.ui-dot[data-state="focus"] {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+}
+
+.ui-box[data-state="disabled"],
+.ui-dot[data-state="disabled"] {
+  background-color: var(--color-surface-alt);
+  border-color: var(--color-border);
+}
+
+.ui-check { align-items: flex-start; }
+
+.ui-check[data-state="disabled"] {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.ui-check__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: var(--cs-lh-sm);
+}
+
+.ui-check__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+/* ตัวเลือกแบบการ์ด ใช้เมื่อแต่ละทางเลือกต้องอธิบายยาวกว่าหนึ่งบรรทัด
+   พื้นที่กดจึงเป็นทั้งการ์ด ไม่ใช่แค่วงกลมเล็ก ๆ */
+.ui-choice-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--cs-space-3);
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.ui-choice-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cs-space-3);
+  padding: var(--cs-space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+  cursor: pointer;
+}
+
+.ui-choice-card[data-state="checked"] {
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.ui-choice-card__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text);
+}
+
+.ui-choice-card__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+/* @end */
+
+/* @component switch */
+/* สวิตช์มีผลทันทีที่กด ต่างจาก checkbox ที่รอกดบันทึก
+   ตำแหน่งของปุ่มเลื่อนคือสิ่งที่บอกสถานะ สีเป็นตัวช่วยเท่านั้น */
+.ui-switch {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  flex: none;
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-surface-alt);
+  cursor: pointer;
+  transition: background-color var(--cs-duration) ease;
+}
+
+.ui-switch__knob {
+  position: absolute;
+  top: 2px;
+  inset-inline-start: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-surface);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.25);
+  transition: transform var(--cs-duration) ease;
+}
+
+.ui-switch[aria-checked="true"] {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.ui-switch[aria-checked="true"] .ui-switch__knob {
+  transform: translateX(18px);
+  background-color: var(--color-on-primary);
+}
+
+.ui-switch:focus-visible,
+.ui-switch[data-state="focus"] {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 2px;
+}
+
+.ui-switch:disabled {
+  background-color: var(--color-surface-alt);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+}
+
+.ui-switch:disabled .ui-switch__knob {
+  background-color: var(--color-border);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-switch,
+  .ui-switch__knob { transition: none; }
+}
+
+/* แถวของสวิตช์: ข้อความอยู่ซ้าย สวิตช์อยู่ขวาสุด เพราะตาไล่จากชื่อไปหาสถานะ */
+.ui-switch-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cs-space-4);
+  padding: var(--cs-space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+}
+
+.ui-switch-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-switch-row__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-switch-row__busy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+}
+
+.ui-switch-row[data-state="disabled"] .ui-switch-row__text { color: var(--color-text-muted); }
+/* @end */
+
+/* @component combobox */
+/* ช่องที่พิมพ์แล้วกรองรายการให้ ใช้เมื่อตัวเลือกเยอะเกินกว่าจะเลื่อนหา
+   ผลลัพธ์ต้องบอกว่าตรงกับคำค้นตรงไหน และตอนไม่พบต้องเสนอทางออกต่อ */
+.ui-combo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-2);
+  min-width: 0;
+}
+
+.ui-combo__control {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+  height: var(--cs-h-md);
+  padding-inline: var(--cs-space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.ui-combo__control[data-state="focus"] {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 1px;
+  border-color: var(--color-primary);
+}
+
+.ui-combo__control .ui-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.ui-combo__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--cs-text-base);
+  outline: none;
+}
+
+.ui-combo__value {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--cs-text-base);
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-combo__value--empty { color: var(--color-text-muted); }
+
+.ui-combo__clear {
+  display: inline-flex;
+  padding: 2px;
+  border: 0;
+  border-radius: var(--cs-radius-full);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.ui-combo__clear:hover { background-color: var(--color-surface-alt); }
+
+.ui-combo__list {
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+  padding: var(--cs-space-1);
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+.ui-combo__group {
+  padding: var(--cs-space-2) var(--cs-space-3) var(--cs-space-1);
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  font-weight: var(--cs-weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.ui-combo__opt {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-3);
+  min-height: var(--cs-h-lg);
+  padding: var(--cs-space-2) var(--cs-space-3);
+  border-radius: var(--cs-radius-sm);
+  /* ต้องประกาศสีข้อความเองทุกที่ที่มีพื้นของตัวเอง ไม่งั้นข้อความที่ไม่ได้อยู่ใน
+     .ui-combo__text จะสืบสีจากหน้าเว็บ แล้วพังทันทีเมื่อธีมหน้ากับธีมพรีวิวต่างกัน */
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.ui-combo__opt small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+/* ตัวที่ลูกศรชี้อยู่ ต่างจากตัวที่เลือกไว้แล้ว — สองสถานะนี้เกิดพร้อมกันได้ */
+.ui-combo__opt[data-state="active"] { background-color: var(--color-surface-alt); }
+
+.ui-combo__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text);
+}
+
+.ui-combo__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-combo__tick {
+  margin-inline-start: auto;
+  width: 16px;
+  height: 16px;
+  color: var(--color-primary-text);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.ui-combo__empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cs-space-3);
+  padding: var(--cs-space-4);
+  margin: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text-muted);
+}
+/* @end */
+
+/* @component upload */
+/* พื้นที่รับไฟล์ กับรายการไฟล์ที่ตามมา ต้องอยู่ด้วยกันเสมอ
+   เพราะผู้ใช้ต้องเห็นทันทีว่าไฟล์ที่เพิ่งวางเข้าไปสำเร็จหรือไม่ */
+.ui-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cs-space-3);
+  padding: var(--cs-space-6) var(--cs-space-4);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+  text-align: center;
+}
+
+.ui-drop[data-state="over"] {
+  border-color: var(--color-primary);
+  border-style: solid;
+  background-color: var(--color-primary-soft);
+}
+
+.ui-drop__icon {
+  width: 28px;
+  height: 28px;
+  color: var(--color-text-muted);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+}
+
+.ui-drop__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-drop__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-files {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ui-file {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cs-space-3);
+  padding: var(--cs-space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+}
+
+.ui-file--error { border-color: var(--color-danger); }
+
+.ui-file__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: var(--cs-radius-sm);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+}
+
+.ui-file__mark .ui-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+.ui-file__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-1);
+  min-width: 0;
+  flex: 1;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text);
+}
+
+.ui-file__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+/* สถานะเสร็จต้องมีทั้งไอคอนและคำ ไม่ใช้เครื่องหมายถูกสีเขียวลอย ๆ (WCAG 1.4.1) */
+.ui-file__state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-1);
+  flex: none;
+  padding: 2px var(--cs-space-2);
+  border-radius: var(--cs-radius-full);
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+}
+
+.ui-file__state--done {
+  background-color: var(--color-success-soft);
+  color: var(--color-on-success-soft);
+}
+
+.ui-file__state .ui-icon {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+
+.ui-file__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cs-space-2);
+  color: var(--color-danger-text);
+}
+
+.ui-file__error .ui-icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  margin-top: 2px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.ui-file__remove {
+  display: inline-flex;
+  flex: none;
+  padding: var(--cs-space-1);
+  border: 0;
+  border-radius: var(--cs-radius-sm);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.ui-file__remove:hover { background-color: var(--color-surface-alt); }
+
+.ui-file__remove .ui-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+/* @end */
+
+/* @component stepper */
+/* ปรับจำนวนทีละหนึ่ง โดยยังพิมพ์ตัวเลขเองได้ ช่องกลางจึงเป็น input จริง
+   ไม่ใช่ข้อความ เพราะการพิมพ์ 48 เร็วกว่าการกดปุ่มบวก 47 ครั้ง */
+.ui-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+  min-width: 0;
+}
+
+.ui-stepper__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cs-h-md);
+  height: var(--cs-h-md);
+  flex: none;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.ui-stepper__btn:hover { background-color: var(--color-surface-alt); }
+
+.ui-stepper__btn:focus-visible {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 1px;
+}
+
+.ui-stepper__btn:disabled {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+}
+
+.ui-stepper__btn .ui-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.ui-stepper__input {
+  width: 4rem;
+  height: var(--cs-h-md);
+  padding-inline: var(--cs-space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--cs-text-base);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.ui-stepper__input:focus-visible {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 1px;
+  border-color: var(--color-primary);
+}
+
+.ui-stepper[data-state="error"] .ui-stepper__input { border-color: var(--color-danger); }
+
+.ui-stepper__unit {
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+/* @end */
+
+/* @component slider */
+/* ค่าที่เลือกต้องเขียนเป็นตัวเลขกำกับไว้เสมอ ตำแหน่งของปุ่มบอกได้แค่คร่าว ๆ
+   รางส่วนที่ยังไม่ถูกเลือกต้องเห็นชัด ไม่งั้นไม่รู้ว่าเลื่อนได้ถึงไหน */
+.ui-slider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-2);
+  min-width: 0;
+  padding-block: var(--cs-space-2);
+}
+
+.ui-slider__value {
+  margin-inline-start: var(--cs-space-2);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--cs-weight-medium);
+  color: var(--color-primary-text);
+}
+
+.ui-slider__track {
+  position: relative;
+  display: block;
+  height: 6px;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-surface-alt);
+  box-shadow: inset 0 0 0 1px var(--color-border-strong);
+}
+
+.ui-slider__fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-primary);
+}
+
+.ui-slider__thumb {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  margin-inline-start: -10px;
+  transform: translateY(-50%);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-surface);
+}
+
+.ui-slider__track[data-state="focus"] .ui-slider__thumb {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 2px;
+}
+
+.ui-slider__tick {
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 10px;
+  margin-inline-start: -1px;
+  transform: translateY(-50%);
+  border-radius: 1px;
+  background-color: var(--color-border-strong);
+}
+
+.ui-slider__scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-slider[data-state="disabled"] .ui-slider__fill { background-color: var(--color-border-strong); }
+.ui-slider[data-state="disabled"] .ui-slider__thumb { border-color: var(--color-border-strong); }
+/* @end */
+
+/* @component tag-input */
+/* ใส่ค่าได้หลายค่าในช่องเดียว ค่าที่ใส่แล้วกลายเป็นป้ายที่ถอดออกได้
+   วงแหวนโฟกัสต้องอยู่รอบกล่องทั้งใบ ไม่ใช่รอบช่องพิมพ์ที่ซ่อนอยู่ข้างใน */
+.ui-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cs-space-2);
+  min-height: var(--cs-h-lg);
+  padding: var(--cs-space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-sm);
+  background-color: var(--color-surface);
+}
+
+.ui-tags[data-state="focus"] {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 1px;
+  border-color: var(--color-primary);
+}
+
+.ui-tags__input {
+  flex: 1;
+  min-width: 6rem;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--cs-text-sm);
+  outline: none;
+}
+
+.ui-tags__input::placeholder { color: var(--color-text-subtle); }
+
+.ui-tags__ghost {
+  font-size: var(--cs-text-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-1);
+  padding: 2px var(--cs-space-1) 2px var(--cs-space-2);
+  border-radius: var(--cs-radius-sm);
+  background-color: var(--color-primary-soft);
+  color: var(--color-on-primary-soft);
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+}
+
+/* ป้ายที่ยังไม่มีในระบบ ใช้ขอบประบอกความต่าง ไม่ใช้สีอย่างเดียว */
+.ui-tag--invalid {
+  background-color: var(--color-danger-soft);
+  color: var(--color-on-danger-soft);
+  border: 1px dashed var(--color-danger);
+}
+
+.ui-tag__x {
+  display: inline-flex;
+  padding: 2px;
+  border: 0;
+  border-radius: var(--cs-radius-full);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.ui-tag__x:hover { background-color: rgb(0 0 0 / 0.08); }
+
+.ui-tag__x .ui-icon {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+/* @end */
+
+/* @component toast */
+/* ข้อความสั้นที่ขึ้นมาแล้วหายไปเอง ใช้ยืนยันสิ่งที่ผู้ใช้เพิ่งทำ
+   อันที่บอกความล้มเหลวต้องไม่หายเอง เพราะผู้ใช้ยังไม่ได้แก้อะไรเลย */
+.ui-toast-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-2);
+  align-items: flex-start;
+}
+
+.ui-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-3);
+  max-width: 30rem;
+  padding: var(--cs-space-3) var(--cs-space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+  box-shadow: 0 6px 20px rgb(15 23 42 / 0.14);
+}
+
+.ui-toast--danger { border-color: var(--color-danger); }
+
+.ui-toast__icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--color-primary-text);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.ui-toast--danger .ui-toast__icon { color: var(--color-danger-text); }
+
+.ui-toast__text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-toast__meta {
+  flex: none;
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+/* ปุ่มในข้อความนี้เป็นทางกลับ ต้องเด่นพอให้กดทันก่อนข้อความหายไป */
+.ui-toast__action {
+  flex: none;
+  padding: var(--cs-space-1) var(--cs-space-2);
+  border: 0;
+  border-radius: var(--cs-radius-sm);
+  background: none;
+  color: var(--color-primary-text);
+  font: inherit;
+  font-size: var(--cs-text-sm);
+  font-weight: var(--cs-weight-semibold);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.ui-toast__action:hover { background-color: var(--color-primary-soft); }
+
+.ui-toast__close {
+  display: inline-flex;
+  flex: none;
+  padding: var(--cs-space-1);
+  border: 0;
+  border-radius: var(--cs-radius-sm);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.ui-toast__close:hover { background-color: var(--color-surface-alt); }
+
+.ui-toast__close .ui-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+/* @end */
+
+/* @component progress */
+/* แถบความคืบหน้า สามแบบ: รู้ปลายทาง ยังไม่รู้ปลายทาง และแบบวง
+   ตัวเลขต้องเขียนกำกับไว้เสมอ เพราะความยาวแถบอย่างเดียวอ่านเป็นตัวเลขไม่ได้ */
+.ui-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-2);
+  min-width: 0;
+}
+
+.ui-progress__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--cs-space-3);
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-progress__num {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--cs-weight-semibold);
+  color: var(--color-primary-text);
+}
+
+.ui-progress__note {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-progress__note--done {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+  color: var(--color-success-text);
+}
+
+.ui-progress__note--done .ui-icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.ui-progress--done .ui-bar__fill { background-color: var(--color-success); }
+
+/* ยังบอกเปอร์เซ็นต์ไม่ได้ จึงวิ่งไปมา ไม่แสร้งบอกตัวเลขที่ไม่มีจริง */
+.ui-bar--indeterminate .ui-bar__fill {
+  width: 35%;
+  animation: ui-bar-run 1400ms ease-in-out infinite;
+}
+
+@keyframes ui-bar-run {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-bar--indeterminate .ui-bar__fill { animation-duration: 3600ms; }
+}
+
+.ui-progress-ring {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-4);
+}
+
+/* conic-gradient ทำให้วงนี้ไม่ต้องพึ่ง SVG และยังคุมสีด้วย token ชุดเดียวกัน */
+.ui-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  flex: none;
+  border-radius: var(--cs-radius-full);
+  background: conic-gradient(var(--color-primary) calc(var(--ui-ring-value, 0) * 1%),
+                             var(--color-surface-alt) 0);
+}
+
+.ui-ring::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-surface);
+}
+
+.ui-ring__num {
+  position: relative;
+  font-size: var(--cs-text-sm);
+  font-weight: var(--cs-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+/* @end */
+
+/* @component spinner */
+/* ตัวหมุนรอ ใช้เมื่อรอไม่เกินสิบวินาที ถ้านานกว่านั้นต้องบอกความคืบหน้าแทน
+   ทุกตัวต้องมีข้อความว่ากำลังรออะไร วงหมุนเปล่าไม่บอกว่าเกิดอะไรขึ้น */
+.ui-loading {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-3);
+  min-width: 0;
+}
+
+.ui-loading__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-loading__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-loading--block {
+  flex-direction: column;
+  gap: var(--cs-space-3);
+  padding: var(--cs-space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+  text-align: center;
+}
+
+.ui-loading--block .ui-loading__text { align-items: center; }
+
+/* รอนานกว่าที่ควร ต้องมีทางออกให้กด ไม่ปล่อยให้หมุนไปเรื่อย ๆ */
+.ui-loading--slow {
+  padding: var(--cs-space-3);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-warning-soft);
+}
+
+.ui-loading--slow .ui-loading__text { color: var(--color-on-warning-soft); }
+.ui-loading--slow .ui-loading__text small { color: var(--color-on-warning-soft); }
+.ui-loading--slow .ui-spinner { border-color: var(--color-on-warning-soft); border-top-color: var(--color-warning); }
+
+.ui-loading__row {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+}
+
+/* ปุ่มที่กำลังทำงานต้องกว้างเท่าเดิม ไม่งั้นปุ่มข้าง ๆ ขยับตอนกด */
+.ui-btn[data-state="loading"] {
+  gap: var(--cs-space-2);
+  pointer-events: none;
+}
+
+.ui-btn[data-state="loading"] .ui-spinner {
+  border-color: rgb(255 255 255 / 0.45);
+  border-top-color: var(--color-on-primary);
+}
+/* @end */
+
+/* @component tooltip */
+/* คำอธิบายสั้นที่ขึ้นเมื่อชี้หรือโฟกัส ห้ามใส่ข้อมูลที่ขาดไม่ได้ไว้ในนี้
+   เพราะบนจอสัมผัสไม่มีการชี้ ผู้ใช้จำนวนมากจะไม่เคยเห็นเลย */
+.ui-tip-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cs-space-2);
+}
+
+.ui-tip {
+  display: inline-block;
+  max-width: 18rem;
+  padding: var(--cs-space-2) var(--cs-space-3);
+  border-radius: var(--cs-radius-sm);
+  /* กลับสีกับพื้นหน้า จึงผ่านคอนทราสต์พร้อมกับคู่ text/surface เสมอทั้งสองธีม */
+  background-color: var(--color-text);
+  color: var(--color-surface);
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+}
+
+.ui-tip--wide { max-width: 24rem; }
+
+.ui-tip-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-tip-row__label { color: var(--color-text-muted); }
+
+.ui-tip-row__value {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--cs-weight-semibold);
+}
+
+.ui-tip-row__hint {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-tip-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cs-h-sm);
+  height: var(--cs-h-sm);
+  flex: none;
+  border: 0;
+  border-radius: var(--cs-radius-full);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.ui-tip-trigger:hover { background-color: var(--color-surface-alt); }
+
+.ui-tip-trigger:focus-visible {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 1px;
+}
+
+.ui-tip-trigger .ui-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* ปุ่มที่ disabled รับโฟกัสไม่ได้ คำอธิบายจึงต้องแขวนไว้กับตัวครอบแทน */
+.ui-tip-wrap {
+  display: inline-flex;
+  border-radius: var(--cs-radius-sm);
+}
+
+.ui-tip-wrap:focus-visible {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 2px;
+}
+/* @end */
+
+/* @component rating */
+/* คะแนนดาว ทั้งแบบอ่านอย่างเดียวและแบบให้กด
+   ดาวที่ยังไม่เลือกต้องเห็นว่ามีอยู่ ไม่งั้นไม่รู้ว่าเต็มกี่ดาว */
+.ui-rating {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+  flex-wrap: wrap;
+}
+
+.ui-rating__stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.ui-rating__star {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.ui-rating__star--on {
+  fill: var(--color-warning);
+  stroke: var(--color-warning);
+}
+
+.ui-rating__score {
+  font-size: var(--cs-text-sm);
+  font-weight: var(--cs-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.ui-rating__count {
+  font-size: var(--cs-text-xs);
+  color: var(--color-text-muted);
+}
+
+.ui-rating-input {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.ui-rating-input__legend {
+  padding: 0 0 var(--cs-space-2);
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  font-weight: var(--cs-weight-semibold);
+  color: var(--color-text);
+}
+
+.ui-rating-input__row {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-1);
+  flex-wrap: wrap;
+}
+
+/* แต่ละดาวเป็นปุ่มของตัวเอง จึงกดด้วยคีย์บอร์ดได้และมีคำอธิบายของตัวเอง */
+.ui-rating-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cs-h-sm);
+  height: var(--cs-h-sm);
+  padding: 0;
+  border: 0;
+  border-radius: var(--cs-radius-sm);
+  background: none;
+  cursor: pointer;
+}
+
+.ui-rating-btn .ui-rating__star {
+  width: 22px;
+  height: 22px;
+}
+
+.ui-rating-btn:hover { background-color: var(--color-surface-alt); }
+
+.ui-rating-btn:focus-visible,
+.ui-rating-btn[data-state="focus"] {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 1px;
+}
+
+.ui-rating__picked {
+  margin-inline-start: var(--cs-space-2);
+  font-size: var(--cs-text-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-rating-bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-2);
+}
+
+.ui-rating-bar {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 2.5rem;
+  align-items: center;
+  gap: var(--cs-space-3);
+}
+
+.ui-rating-bar__label {
+  font-size: var(--cs-text-xs);
+  color: var(--color-text-muted);
+}
+
+.ui-rating-bar__num {
+  font-size: var(--cs-text-xs);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  color: var(--color-text-muted);
+}
+
+.ui-rating-bar .ui-bar__fill { background-color: var(--color-warning); }
+/* @end */
+
+/* @component avatar */
+/* รูปแทนตัวคน ใช้ตัวอักษรย่อเมื่อไม่มีรูป และใช้ไอคอนเมื่อยังไม่รู้ว่าเป็นใคร
+   สีพื้นมาจากชุดสีเสริมของ palette ไม่ได้สุ่มเอง ทีมเดียวกันจึงได้สีคงที่ */
+.ui-avatar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cs-space-4);
+}
+
+.ui-avatar .ui-icon {
+  width: 60%;
+  height: 60%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+.ui-avatar--more {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  font-size: 0.625rem;
+}
+
+/* ซ้อนกันเพื่อประหยัดที่ ขอบสีพื้นหน้าเป็นตัวแยกว่าแต่ละวงจบตรงไหน */
+.ui-avatar-stack {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ui-avatar-stack > * {
+  margin-inline-start: -8px;
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+.ui-avatar-stack > :first-child { margin-inline-start: 0; }
+
+.ui-avatar-person {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-3);
+  min-width: 0;
+}
+
+.ui-avatar-person__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text);
+}
+
+.ui-avatar-person__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+/* สถานะต้องมีคำกำกับ จุดสีอย่างเดียวคือการบอกด้วยสีล้วน (WCAG 1.4.1) */
+.ui-avatar-person__state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+  margin-inline-start: auto;
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-dot-state {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-border-strong);
+}
+
+.ui-dot-state--online { background-color: var(--color-success); }
+
+.ui-avatar-team {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-3);
+}
+
+.ui-avatar-team__text {
+  font-size: var(--cs-text-sm);
+  color: var(--color-text-muted);
+}
+/* @end */
+
+/* @component kv-list */
+/* คู่ชื่อกับค่า ใช้ในหน้ารายละเอียดที่ข้อมูลไม่ได้เทียบกันข้ามแถวเหมือนตาราง
+   ค่าที่ยังไม่มีต้องเขียนว่ายังไม่มี ไม่ปล่อยว่างให้เดาว่าโหลดไม่ขึ้นหรือไม่มีจริง */
+.ui-kv {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-1);
+  margin: 0;
+  min-width: 0;
+}
+
+.ui-kv__row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 12rem) 1fr;
+  gap: var(--cs-space-4);
+  align-items: baseline;
+  padding: var(--cs-space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ui-kv__row:last-child { border-bottom: 0; }
+
+.ui-kv--stack .ui-kv__row {
+  grid-template-columns: 1fr;
+  gap: var(--cs-space-1);
+}
+
+.ui-kv__key {
+  margin: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text-muted);
+}
+
+.ui-kv__val {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cs-space-2);
+  margin: 0;
+  min-width: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-kv__val--num { font-variant-numeric: tabular-nums; }
+
+.ui-kv__val--empty { color: var(--color-text-muted); }
+/* @end */
+
+/* @component timeline */
+/* ลำดับสิ่งที่เกิดขึ้นกับงานหนึ่ง เรียงใหม่สุดไว้บน
+   ขั้นที่กำลังค้างคือสิ่งที่ผู้ใช้มาดู จึงต้องเด่นและมีปุ่มแก้ปัญหาอยู่ในขั้นนั้น */
+.ui-time {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: 0;
+}
+
+.ui-time__item {
+  position: relative;
+  display: flex;
+  gap: var(--cs-space-3);
+  padding: 0 0 var(--cs-space-4) 0;
+}
+
+/* เส้นเชื่อมวาดจากจุด ไม่ใช่ border ของรายการ จึงไม่โผล่เลยจุดสุดท้าย */
+.ui-time__item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 11px;
+  top: 24px;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--color-border);
+}
+
+.ui-time__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.ui-time__dot .ui-icon {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+
+.ui-time__item--done .ui-time__dot {
+  border-color: var(--color-success);
+  color: var(--color-success-text);
+}
+
+.ui-time__item--now .ui-time__dot {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+  color: var(--color-on-primary-soft);
+}
+
+.ui-time__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-1);
+  min-width: 0;
+  padding-top: 2px;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-time__text small {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-time__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cs-space-2);
+  padding-top: var(--cs-space-1);
+}
+/* @end */
+
+/* @component chart */
+/* กราฟที่วาดด้วย CSS ล้วน ใช้เมื่อข้อมูลไม่กี่ค่าและไม่ต้องโต้ตอบ
+   ทุกค่าต้องมีตัวเลขกำกับ และทุกสีต้องมีคำอธิบาย ไม่ให้อ่านจากสีอย่างเดียว */
+.ui-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-3);
+  margin: 0;
+  min-width: 0;
+}
+
+.ui-chart__head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-chart__sub {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-chart__plot {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--cs-space-2);
+  height: 120px;
+  padding-top: var(--cs-space-4);
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+/* แท่งเป็นสองชั้น: ตัวคอลัมน์สูงเต็มกรอบเสมอ ส่วนที่ระบายสีคือ __fill ข้างใน
+   ทำแบบนี้เพราะตัวเลขต้องอยู่เหนือส่วนที่ระบายสี บนพื้นการ์ด ไม่ใช่ทับบนสีแท่ง
+   ถ้าให้ตัวเลขเป็นลูกของกล่องที่ระบายสี เครื่องมือตรวจคอนทราสต์จะอ่านพื้นผิดตัว */
+.ui-chart__col {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  flex: 1;
+  height: 100%;
+}
+
+.ui-chart__fill {
+  display: block;
+  width: 100%;
+  height: var(--ui-col, 50%);
+  border-radius: var(--cs-radius-sm) var(--cs-radius-sm) 0 0;
+  background-color: var(--color-accent-1, var(--color-primary));
+}
+
+/* ช่วงที่ยังไม่จบต้องต่างด้วยลาย ไม่ใช่แค่สีจางกว่า */
+.ui-chart__col--now .ui-chart__fill {
+  background-color: var(--color-surface-alt);
+  background-image: repeating-linear-gradient(135deg,
+    var(--color-primary) 0 4px, transparent 4px 9px);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.ui-chart__num {
+  position: absolute;
+  inset-inline: 0;
+  bottom: calc(var(--ui-col, 50%) + 2px);
+  text-align: center;
+  font-size: var(--cs-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.ui-chart__axis {
+  display: flex;
+  gap: var(--cs-space-2);
+  font-size: var(--cs-text-xs);
+  color: var(--color-text-muted);
+}
+
+.ui-chart__axis > * {
+  flex: 1;
+  text-align: center;
+}
+
+.ui-chart__bar {
+  display: flex;
+  height: 14px;
+  border-radius: var(--cs-radius-full);
+  overflow: hidden;
+}
+
+.ui-chart__seg { display: block; }
+
+.ui-chart__seg[data-tone="1"] { background-color: var(--color-accent-1, var(--color-primary)); }
+.ui-chart__seg[data-tone="2"] { background-color: var(--color-accent-2, var(--color-info)); }
+.ui-chart__seg[data-tone="3"] { background-color: var(--color-accent-3, var(--color-warning)); }
+
+.ui-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cs-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ui-chart__key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-chart__key b {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.ui-chart__swatch {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border-radius: 3px;
+  background-color: var(--color-accent-1, var(--color-primary));
+}
+
+.ui-chart__swatch[data-tone="2"] { background-color: var(--color-accent-2, var(--color-info)); }
+.ui-chart__swatch[data-tone="3"] { background-color: var(--color-accent-3, var(--color-warning)); }
+
+.ui-chart__swatch--now {
+  background-color: var(--color-surface-alt);
+  background-image: repeating-linear-gradient(135deg,
+    var(--color-primary) 0 3px, transparent 3px 6px);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+/* @end */
+
+/* @component tree */
+/* โครงสร้างที่ซ้อนกันเป็นชั้น เช่น โฟลเดอร์หรือหมวดหมู่
+   ลูกศรบอกสถานะพับหรือกางด้วยการหมุน จึงไม่ต้องพึ่งสี */
+.ui-tree,
+.ui-tree__kids {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: 0;
+}
+
+.ui-tree__kids {
+  margin-inline-start: 11px;
+  padding-inline-start: var(--cs-space-4);
+  border-inline-start: 1px solid var(--color-border);
+}
+
+.ui-tree__row {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-2);
+  min-height: var(--cs-h-sm);
+  padding: var(--cs-space-1) var(--cs-space-2);
+  border-radius: var(--cs-radius-sm);
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.ui-tree__row:hover,
+.ui-tree__row[data-state="hover"] { background-color: var(--color-surface-alt); }
+
+/* ตัวที่เปิดอยู่บอกด้วยแถบซ้ายคู่กับพื้น ไม่ใช้พื้นสีอย่างเดียว */
+.ui-tree__row[aria-current="true"] {
+  background-color: var(--color-primary-soft);
+  box-shadow: inset 2px 0 0 var(--color-primary);
+  font-weight: var(--cs-weight-medium);
+}
+
+.ui-tree__caret {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--color-text-muted);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  transition: transform var(--cs-duration) ease;
+}
+
+.ui-tree__node[aria-expanded="true"] > .ui-tree__row > .ui-tree__caret { transform: rotate(90deg); }
+
+/* รายการปลายทางไม่มีลูกศร แต่ต้องเว้นที่ให้ข้อความตรงกับชั้นเดียวกัน */
+.ui-tree__row--leaf { padding-inline-start: calc(var(--cs-space-2) + 14px + var(--cs-space-2)); }
+
+.ui-tree__kind {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--color-text-muted);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+.ui-tree__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-tree__count {
+  margin-inline-start: auto;
+  font-size: var(--cs-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-tree__caret { transition: none; }
+}
+/* @end */
+
+/* @component calendar */
+/* เลือกวัน วันนี้กับวันที่เลือกต้องต่างกันคนละวิธี เพราะเกิดพร้อมกันได้
+   วันนี้ใช้ขอบวง ส่วนวันที่เลือกใช้พื้นทึบ */
+.ui-cal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-3);
+  padding: var(--cs-space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+  min-width: 0;
+}
+
+.ui-cal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cs-space-2);
+  font-size: var(--cs-text-sm);
+  color: var(--color-text);
+}
+
+.ui-cal__title { font-weight: var(--cs-weight-semibold); }
+
+.ui-cal__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cs-h-sm);
+  height: var(--cs-h-sm);
+  flex: none;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.ui-cal__nav:hover { background-color: var(--color-surface-alt); }
+
+.ui-cal__nav .ui-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+
+.ui-cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.ui-cal__dow {
+  padding-bottom: var(--cs-space-1);
+  text-align: center;
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-cal__day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: var(--cs-h-sm);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--cs-radius-sm);
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--cs-text-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.ui-cal__day:hover { background-color: var(--color-surface-alt); }
+
+.ui-cal__day:focus-visible {
+  outline: 2px solid var(--color-primary-ring);
+  outline-offset: 1px;
+}
+
+/* วันของเดือนอื่นและวันที่เลือกไม่ได้ยังเป็นข้อความที่ต้องอ่านออก จึงใช้ระดับ muted
+   ที่ผ่าน 4.5:1 ความต่างมาจากตำแหน่งและขีดฆ่า ไม่ใช่จากการทำให้จางจนอ่านไม่ออก */
+.ui-cal__day--out { color: var(--color-text-muted); }
+.ui-cal__dow--off,
+.ui-cal__day--off { color: var(--color-text-muted); }
+
+.ui-cal__day--today { border-color: var(--color-primary); }
+
+.ui-cal__day--picked {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--cs-weight-semibold);
+}
+
+.ui-cal__day:disabled {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+/* จุดบอกว่าวันนั้นมีนัด ต้องมีคำอธิบายใต้ปฏิทินเสมอ */
+.ui-cal__mark {
+  position: absolute;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-primary);
+}
+
+.ui-cal__note {
+  margin: 0;
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-cal-range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cs-space-3);
+  padding: var(--cs-space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+}
+
+.ui-cal-range__label {
+  font-size: var(--cs-text-xs);
+  color: var(--color-text-muted);
+}
+
+.ui-cal-range__value {
+  font-size: var(--cs-text-sm);
+  font-weight: var(--cs-weight-medium);
+  color: var(--color-text);
+}
+/* @end */
+
+/* @component menu */
+/* เมนูการกระทำที่เปิดจากปุ่ม ต่างจาก Select ตรงที่นี่คือ "ทำอะไร" ไม่ใช่ "เลือกค่าไหน"
+   การกระทำที่ทำลายอยู่ล่างสุดและแยกด้วยเส้น เพื่อไม่ให้กดพลาดจากความเคยชิน */
+.ui-menu-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cs-space-2);
+}
+
+.ui-menu {
+  min-width: 14rem;
+  padding: var(--cs-space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.16);
+}
+
+.ui-menu__label {
+  padding: var(--cs-space-2) var(--cs-space-3);
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-3);
+  min-height: var(--cs-h-md);
+  padding: var(--cs-space-2) var(--cs-space-3);
+  border-radius: var(--cs-radius-sm);
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.ui-menu__item:hover,
+.ui-menu__item[data-state="hover"] { background-color: var(--color-surface-alt); }
+
+.ui-menu__item[aria-disabled="true"] {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.ui-menu__item[aria-disabled="true"]:hover { background-color: transparent; }
+
+.ui-menu__item--danger { color: var(--color-danger-text); }
+
+/* พอพื้นเปลี่ยนเป็นพื้นอ่อนของสีอันตราย สีข้อความต้องเปลี่ยนตามเป็นคู่ของพื้นนั้น
+   เพราะ --color-danger-text ถูกคำนวณให้อ่านออกบนพื้นการ์ด ไม่ใช่บนพื้นอ่อน */
+.ui-menu__item--danger:hover,
+.ui-menu__item--danger[data-state="hover"] {
+  background-color: var(--color-danger-soft);
+  color: var(--color-on-danger-soft);
+}
+
+.ui-menu__item .ui-icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+.ui-menu__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.ui-menu__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+/* ปุ่มลัดเขียนไว้ในเมนู เพราะเป็นที่เดียวที่ผู้ใช้จะเจอมันโดยไม่ต้องไปอ่านคู่มือ */
+.ui-menu__key {
+  flex: none;
+  padding: 1px var(--cs-space-2);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: var(--cs-text-xs);
+}
+
+.ui-menu__more {
+  margin-inline-start: auto;
+  color: var(--color-text-muted);
+  stroke-width: 2.5;
+}
+
+.ui-menu__sep {
+  height: 1px;
+  margin: var(--cs-space-1) 0;
+  background-color: var(--color-border);
+}
+/* @end */
+
+/* @component steps */
+/* ขั้นตอนที่รู้ปลายทางล่วงหน้า ต่างจาก Timeline ที่เป็นสิ่งที่เกิดขึ้นแล้ว
+   ทุกสถานะมีรูปทรงของตัวเอง: ถูก เลข และไอคอนเตือน จึงไม่ต้องอ่านจากสี */
+.ui-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cs-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: 0;
+}
+
+.ui-steps--vertical {
+  flex-direction: column;
+  gap: var(--cs-space-3);
+}
+
+.ui-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cs-space-3);
+  flex: 1;
+  min-width: 9rem;
+}
+
+.ui-steps--vertical .ui-step { flex: none; }
+
+.ui-step__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--cs-text-xs);
+  font-weight: var(--cs-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.ui-step__mark .ui-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+
+.ui-step--done .ui-step__mark {
+  border-color: var(--color-success);
+  color: var(--color-success-text);
+}
+
+.ui-step--now .ui-step__mark {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.ui-step--error .ui-step__mark {
+  border-color: var(--color-danger);
+  color: var(--color-danger-text);
+}
+
+.ui-step__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-step__text small {
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-step--error .ui-step__text small { color: var(--color-danger-text); }
+/* @end */
+
+/* @component bottom-nav */
+/* แถบนำทางล่างของมือถือ สูงสุดห้าช่อง มากกว่านี้ตัวอักษรไทยจะถูกตัด
+   ช่องที่เปิดอยู่บอกด้วยทั้งสีและแถบใต้ไอคอน ไม่พึ่งสีอย่างเดียว */
+.ui-bnav {
+  display: flex;
+  align-items: stretch;
+  gap: var(--cs-space-1);
+  padding: var(--cs-space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+}
+
+.ui-bnav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+  padding: var(--cs-space-2) var(--cs-space-1);
+  border-radius: var(--cs-radius-sm);
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ui-bnav__item:hover { background-color: var(--color-surface-alt); }
+
+.ui-bnav__item[aria-current="page"] {
+  color: var(--color-primary-text);
+  font-weight: var(--cs-weight-semibold);
+}
+
+/* แถบใต้ไอคอนคือสัญญาณที่สองของหน้าที่เปิดอยู่ */
+.ui-bnav__item[aria-current="page"] .ui-bnav__icon::before {
+  content: "";
+  position: absolute;
+  inset-inline: 2px;
+  bottom: -3px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--color-primary);
+}
+
+.ui-bnav__icon {
+  position: relative;
+  display: inline-flex;
+}
+
+.ui-bnav__icon .ui-icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+/* ตัวเลขบนไอคอน ไม่ใช้จุดสีเปล่า เพราะจุดไม่บอกว่าค้างกี่อย่าง */
+.ui-bnav__badge {
+  position: absolute;
+  top: -5px;
+  inset-inline-start: 11px;
+  min-width: 16px;
+  height: 16px;
+  padding-inline: 3px;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-danger);
+  color: var(--color-on-danger);
+  font-size: 0.625rem;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+/* @end */
+
+/* @component drawer */
+/* แผงที่เลื่อนออกจากขอบจอ ใช้กับงานข้างเคียงที่ต้องเห็นบริบทเดิมอยู่
+   ต่างจาก Modal ตรงที่ไม่ได้ขวางทั้งหน้า และมีพื้นที่ยาวพอสำหรับฟอร์ม */
+/* กล่องสาธิตยืดตามที่ที่มีจริง มี min-height ไว้กันแบนเมื่อวางในกล่องเตี้ย
+   ถ้าล็อกความสูงตายตัว กล่องนี้จะสูงเกินช่องบนผังแล้วเนื้อหาถูกตัด */
+.ui-drawer-demo {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 200px;
+  padding: var(--cs-space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface-alt);
+  overflow: hidden;
+}
+
+.ui-drawer-demo__page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-3);
+  flex: 1;
+  padding: var(--cs-space-3);
+}
+
+.ui-drawer__line {
+  display: block;
+  height: 10px;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--color-border);
+}
+
+.ui-drawer__line--short { width: 60%; }
+
+.ui-drawer {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(20rem, 70%);
+  border-inline-start: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  box-shadow: -8px 0 24px rgb(15 23 42 / 0.16);
+}
+
+.ui-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cs-space-3);
+  padding: var(--cs-space-4);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--cs-text-base);
+  color: var(--color-text);
+}
+
+.ui-drawer__title {
+  font-size: var(--cs-text-base);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-drawer__x {
+  display: inline-flex;
+  flex: none;
+  padding: var(--cs-space-1);
+  border: 0;
+  border-radius: var(--cs-radius-sm);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.ui-drawer__x:hover { background-color: var(--color-surface-alt); }
+
+.ui-drawer__x .ui-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.ui-drawer__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-4);
+  flex: 1;
+  padding: var(--cs-space-4);
+  overflow-y: auto;
+}
+
+/* ท้ายแผงติดอยู่กับที่ ปุ่มยืนยันจึงไม่หนีไปอยู่ใต้พื้นที่ที่ต้องเลื่อน */
+.ui-drawer__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--cs-space-2);
+  padding: var(--cs-space-4);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+/* @end */
+
+/* @component popover */
+/* กล่องลอยที่มีเนื้อหาและปุ่มให้กด ต่างจาก Tooltip ที่ห้ามมีอะไรให้กดข้างใน
+   ต้องมีปุ่มปิดเสมอ เพราะการกดข้างนอกเป็นความรู้ที่ไม่ได้มีทุกคน */
+.ui-pop-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cs-space-3);
+}
+
+.ui-pop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 20rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-md);
+  background-color: var(--color-surface);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.16);
+}
+
+/* ลูกศรวาดจากกล่องสี่เหลี่ยมหมุน 45 องศา จึงได้ขอบและพื้นชุดเดียวกับกล่อง */
+.ui-pop__arrow {
+  position: absolute;
+  top: -6px;
+  inset-inline-start: 22px;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  border-top: 1px solid var(--color-border);
+  border-inline-start: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.ui-pop__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cs-space-3);
+  padding: var(--cs-space-3) var(--cs-space-4);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-pop__x {
+  display: inline-flex;
+  flex: none;
+  padding: var(--cs-space-1);
+  border: 0;
+  border-radius: var(--cs-radius-sm);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.ui-pop__x:hover { background-color: var(--color-surface-alt); }
+
+.ui-pop__x .ui-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.ui-pop__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-3);
+  margin: 0;
+  padding: var(--cs-space-4);
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text);
+}
+
+.ui-pop__note {
+  margin: 0;
+  font-size: var(--cs-text-xs);
+  line-height: var(--cs-lh-sm);
+  color: var(--color-text-muted);
+}
+
+.ui-pop__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--cs-space-2);
+  padding: var(--cs-space-3) var(--cs-space-4);
+  border-top: 1px solid var(--color-border);
+}
+/* @end */
+
+/* @component login */
+/* ฟอร์มเข้าสู่ระบบ เป็นหน้าที่ผู้ใช้เจอบ่อยที่สุดและพังแล้วเจ็บที่สุด
+   ข้อความผิดพลาดบอกรวม ๆ ไม่ระบุว่าผิดช่องไหน เพื่อไม่ให้ใช้เดาว่ามีบัญชีนี้อยู่จริง */
+.ui-auth {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-4);
+  max-width: 24rem;
+  padding: var(--cs-space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--cs-radius-lg);
+  background-color: var(--color-surface);
+}
+
+.ui-auth__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-space-1);
+  color: var(--color-text);
+}
+
+.ui-auth__title {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--color-text);
+}
+
+.ui-auth__sub {
+  margin: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text-muted);
+}
+
+.ui-auth__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--cs-space-3);
+}
+
+.ui-auth__link {
+  font-size: var(--cs-text-sm);
+  color: var(--color-primary-text);
+  text-decoration: underline;
+}
+
+.ui-auth__pass {
+  position: relative;
+  display: flex;
+}
+
+.ui-auth__pass .ui-input { padding-inline-end: calc(var(--cs-h-md) + var(--cs-space-1)); }
+
+.ui-auth__peek {
+  position: absolute;
+  inset-inline-end: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cs-h-sm);
+  height: var(--cs-h-sm);
+  border: 0;
+  border-radius: var(--cs-radius-sm);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.ui-auth__peek:hover { background-color: var(--color-surface-alt); }
+
+.ui-auth__peek .ui-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+/* ปุ่มหลักกินเต็มความกว้างบนมือถือ ผู้ใช้จึงไม่ต้องเล็งด้วยนิ้วโป้ง */
+.ui-btn--block { width: 100%; }
+
+.ui-auth__or {
+  display: flex;
+  align-items: center;
+  gap: var(--cs-space-3);
+  font-size: var(--cs-text-xs);
+  color: var(--color-text-muted);
+}
+
+.ui-auth__or::before,
+.ui-auth__or::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+.ui-auth__foot {
+  margin: 0;
+  font-size: var(--cs-text-sm);
+  line-height: var(--cs-lh-base);
+  color: var(--color-text-muted);
+  text-align: center;
 }
 /* @end */

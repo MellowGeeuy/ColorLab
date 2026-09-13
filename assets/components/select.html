@@ -1,0 +1,94 @@
+<!-- @card -->
+<div class="ui-field">
+  <label class="ui-field__label" for="sel-card">สถานะเอกสาร</label>
+  <select class="ui-select" id="sel-card">
+    <option>รอตรวจสอบ</option>
+    <option>อนุมัติแล้ว</option>
+  </select>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <div class="ui-field">
+    <label class="ui-field__label" for="sel-basic">สถานะเอกสาร</label>
+    <select class="ui-select" id="sel-basic" data-part="p1">
+      <option>รอตรวจสอบ</option>
+      <option selected>อนุมัติแล้ว</option>
+      <option>ตีกลับให้แก้</option>
+    </select>
+    <p class="ui-field__helper">เปลี่ยนแล้วมีผลกับทุกคนที่เห็นเอกสารนี้</p>
+  </div>
+
+  <div class="ui-field">
+    <span class="ui-field__label" id="sel-listbox-label">ผู้รับผิดชอบ</span>
+    <div class="ui-listbox" role="listbox" aria-labelledby="sel-listbox-label" data-part="p2">
+      <div class="ui-listbox__group">ทีมตรวจสอบ</div>
+      <div class="ui-listbox__opt" role="option" aria-selected="true">
+        <span class="ui-avatar ui-avatar--xs" data-tone="1" aria-hidden="true">ก</span>
+        <span class="ui-listbox__text"><b>ผู้ใช้ ก.</b><small>งานค้าง 4 ชิ้น</small></span>
+        <svg class="ui-icon ui-listbox__tick" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+      </div>
+      <div class="ui-listbox__opt" role="option" aria-selected="false" data-state="hover">
+        <span class="ui-avatar ui-avatar--xs" data-tone="2" aria-hidden="true">ข</span>
+        <span class="ui-listbox__text"><b>ผู้ใช้ ข.</b><small>งานค้าง 1 ชิ้น</small></span>
+      </div>
+      <div class="ui-listbox__opt" role="option" aria-selected="false" aria-disabled="true">
+        <span class="ui-avatar ui-avatar--xs" data-tone="3" aria-hidden="true">ค</span>
+        <span class="ui-listbox__text"><b>ผู้ใช้ ค.</b><small>ลาถึงสิ้นเดือน</small></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui-field ui-field--error">
+    <label class="ui-field__label" for="sel-error">ประเภทงบประมาณ<span class="ui-field__required" aria-hidden="true">*</span></label>
+    <select class="ui-select" id="sel-error" data-state="error" data-part="p3">
+      <option>เลือกประเภท</option>
+    </select>
+    <p class="ui-field__error">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/></svg>
+      ต้องเลือกก่อนจึงจะบันทึกได้
+    </p>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ปกติ — ตัวเลือกไม่เกินเจ็ดอย่าง">
+  <select class="ui-select"><option>รอตรวจสอบ</option></select>
+</div>
+
+<div class="cs-variant" data-variant-label="กำลังโฟกัส — วงแหวนต้องเห็นชัด">
+  <select class="ui-select" data-state="focus"><option>รอตรวจสอบ</option></select>
+</div>
+
+<div class="cs-variant" data-variant-label="กดไม่ได้ — บอกด้วยพื้นและเคอร์เซอร์ ไม่ใช่แค่สีจาง">
+  <select class="ui-select" disabled><option>รอตรวจสอบ</option></select>
+</div>
+
+<div class="cs-variant" data-variant-label="ผิดพลาด — ขอบแดงต้องมีข้อความกำกับเสมอ">
+  <select class="ui-select" data-state="error"><option>เลือกประเภท</option></select>
+</div>
+
+<div class="cs-variant" data-variant-label="รายการที่เปิดอยู่ — ตัวที่เลือกมีเครื่องหมายถูก ไม่ใช่แค่พื้นสี">
+  <div class="ui-listbox" role="listbox" aria-label="ตัวอย่างรายการ">
+    <div class="ui-listbox__opt" role="option" aria-selected="true">
+      <span class="ui-listbox__text"><b>ผู้ใช้ ก.</b></span>
+      <svg class="ui-icon ui-listbox__tick" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+    </div>
+    <div class="ui-listbox__opt" role="option" aria-selected="false"><span class="ui-listbox__text"><b>ผู้ใช้ ข.</b></span></div>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="เลือกได้หลายค่า — ค่าที่เลือกกลายเป็นป้ายถอดออกได้">
+  <div class="ui-multi" data-part="p1">
+    <span class="ui-chip ui-chip--value">อนุมัติแล้ว
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </span>
+    <span class="ui-chip ui-chip--value">ตีกลับให้แก้
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </span>
+    <span class="ui-multi__more">+2</span>
+  </div>
+</div>
+<!-- @end -->

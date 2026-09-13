@@ -1,0 +1,79 @@
+<!-- @card -->
+<div class="ui-toast" role="status">
+  <svg class="ui-icon ui-toast__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/></svg>
+  <span class="ui-toast__text">ย้ายไปโฟลเดอร์ เอกสารเก่า แล้ว</span>
+  <button type="button" class="ui-toast__action">เลิกทำ</button>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-toast-stack">
+  <div class="ui-toast" role="status" data-part="p1">
+    <svg class="ui-icon ui-toast__icon" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/>
+    </svg>
+    <span class="ui-toast__text">ย้าย 3 รายการไปโฟลเดอร์ เอกสารเก่า แล้ว</span>
+    <button type="button" class="ui-toast__action" data-part="p2">เลิกทำ</button>
+    <button type="button" class="ui-toast__close" aria-label="ปิดข้อความนี้">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
+  <div class="ui-toast ui-toast--danger" role="alert">
+    <svg class="ui-icon ui-toast__icon" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/>
+    </svg>
+    <span class="ui-toast__text">บันทึกไม่สำเร็จ เพราะเน็ตหลุดตอนกดส่ง</span>
+    <button type="button" class="ui-toast__action">ลองอีกครั้ง</button>
+    <button type="button" class="ui-toast__close" aria-label="ปิดข้อความนี้">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
+  <div class="ui-toast" role="status">
+    <span class="ui-spinner ui-spinner--xs ui-toast__icon" aria-hidden="true"></span>
+    <span class="ui-toast__text">กำลังส่งออกไฟล์ 248 รายการ</span>
+    <span class="ui-toast__meta">เหลืออีกประมาณ 40 วินาที</span>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ยืนยันว่าเสร็จ — สั้น บอกว่าเกิดอะไรกับอะไร">
+  <div class="ui-toast" role="status">
+    <svg class="ui-icon ui-toast__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/></svg>
+    <span class="ui-toast__text">บันทึกแล้ว</span>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="มีปุ่มเลิกทำ — ให้ทางกลับแทนการถามยืนยันก่อน">
+  <div class="ui-toast" role="status">
+    <svg class="ui-icon ui-toast__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/></svg>
+    <span class="ui-toast__text">ย้าย 3 รายการแล้ว</span>
+    <button type="button" class="ui-toast__action">เลิกทำ</button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ล้มเหลว — ต้องไม่หายเอง ผู้ใช้ต้องได้อ่านและกดแก้">
+  <div class="ui-toast ui-toast--danger" role="alert">
+    <svg class="ui-icon ui-toast__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/></svg>
+    <span class="ui-toast__text">บันทึกไม่สำเร็จ</span>
+    <button type="button" class="ui-toast__action">ลองอีกครั้ง</button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="กำลังทำงานอยู่ — บอกความคืบหน้าแทนการขึ้นมาแล้วหาย">
+  <div class="ui-toast" role="status">
+    <span class="ui-spinner ui-spinner--xs ui-toast__icon" aria-hidden="true"></span>
+    <span class="ui-toast__text">กำลังส่งออกไฟล์</span>
+    <span class="ui-toast__meta">เหลืออีก 40 วินาที</span>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ซ้อนกันหลายอัน — อันใหม่อยู่บน และจำกัดจำนวนที่ค้างไว้">
+  <div class="ui-toast-stack">
+    <div class="ui-toast" role="status"><span class="ui-toast__text">ย้าย 3 รายการแล้ว</span></div>
+    <div class="ui-toast" role="status"><span class="ui-toast__text">ลบแบบร่างแล้ว</span></div>
+  </div>
+</div>
+<!-- @end -->

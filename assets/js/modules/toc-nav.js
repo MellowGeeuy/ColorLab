@@ -4,6 +4,11 @@
  *
  * ต่างจาก sidebar เดิมตรงที่หน้าไม่ได้ scroll ทั้งหน้าแล้ว — เนื้อหาเลื่อนอยู่ใน
  * .reader__main จึงต้องผูกทุกอย่างกับ container ตัวนั้นแทน window
+ *
+ * ตั้งแต่แยกเนื้อหาเป็น 11 หน้า สารบัญมีลิงก์สองชนิดปนกัน — ลิงก์ข้ามหน้า
+ * (`../harmony/`) กับลิงก์ในหน้า (`#core`) ทุกอย่างที่เกี่ยวกับการเลื่อนและ
+ * การไฮไลต์จึงต้องคัดเฉพาะชนิดหลังก่อนเสมอ ไม่งั้น querySelector จะได้
+ * selector ที่ไม่ถูกต้องแล้วโยน error ทิ้งทั้งฟังก์ชัน
  */
 
 /* อ่านค่าจาก assets/css/breakpoints.css แทนการฮาร์ดโค้ด — CSS กับ JS จะได้ไม่หลุดจากกัน
@@ -87,23 +92,30 @@ export function initTocNav() {
   if (!scroller || !toc) return;
 
   const links = Array.from(toc.querySelectorAll('.toc__link'));
+  const inPageLinks = links.filter((link) => link.getAttribute('href')?.startsWith('#'));
   const sections = Array.from(scroller.querySelectorAll('.section'));
   const bar = document.querySelector('#progress-bar');
   const status = document.querySelector('#read-status');
   const toggle = document.querySelector('#toc-toggle');
   const scrim = document.querySelector('#toc-scrim');
 
-  initScrollSpy(scroller, links, sections, (id, link) => {
-    if (!status) return;
-    const index = links.indexOf(link) + 1;
-    status.textContent = `หัวข้อ ${index} / ${links.length}`;
-  });
+  if (inPageLinks.length > 0) {
+    initScrollSpy(scroller, inPageLinks, sections, (id, link) => {
+      if (!status) return;
+      const index = inPageLinks.indexOf(link) + 1;
+      status.textContent = `${index} / ${inPageLinks.length} ในตอนนี้`;
+    });
+  } else if (status) {
+    /* หน้าสารบัญไม่มีหัวข้อย่อยให้ไล่ ปล่อยช่องสถานะว่างไว้ดีกว่าโชว์เลขที่ไม่มีความหมาย */
+    status.textContent = '';
+  }
 
   if (bar) initProgress(scroller, bar);
   if (toggle && scrim) initDrawer(toc, toggle, scrim, links);
 
   // เนื้อหาอยู่ใน container ที่ scroll เอง ลิงก์ #id ของเบราว์เซอร์จึงพาไปไม่ถูกที่
-  links.forEach((link) => {
+  // ส่วนลิงก์ข้ามหน้าปล่อยให้เบราว์เซอร์จัดการเองตามปกติ
+  inPageLinks.forEach((link) => {
     link.addEventListener('click', (event) => {
       const target = scroller.querySelector(link.getAttribute('href'));
       if (!target) return;

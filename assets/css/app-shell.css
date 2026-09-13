@@ -152,7 +152,9 @@
   min-width: 8.5rem;
   text-align: end;
   font-size: var(--text-xs);
-  line-height: var(--lh-xs);
+  /* กล่องนี้ตัด overflow เพื่อทำ ellipsis จึงเฉือนยอดสระไทยจริง ไม่ใช่แค่ล้นออกมา
+     12px ของ Anuphan ต้องการ 20px ส่วน --lh-xs (16px) ไม่พอ */
+  line-height: var(--lh-sm);
   color: var(--color-text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -595,8 +597,8 @@ body.is-nav-docked .dock {
    -------------------------------------------------------------------------- */
 
 /* ตัวเลขที่ต้องอ่านเทียบกันเป็นคอลัมน์ (contrast ratio, %, HEX)
-   IBM Plex Sans Thai ไม่มี glyph ชุด tnum ให้เรียก แต่ digit กว้างเท่ากันอยู่แล้ว
-   ประกาศไว้เพื่อกันกรณีตกไปใช้ fallback font ที่ digit กว้างไม่เท่ากัน */
+   ประกาศไว้เพื่อกันกรณีตกไปใช้ fallback font ที่ digit กว้างไม่เท่ากัน
+   ส่วนตัวเลขในตารางค่าสีใช้ JetBrains Mono อยู่แล้วจึงตรงคอลัมน์แน่นอน */
 .u-num {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;

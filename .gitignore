@@ -16,3 +16,10 @@ desktop.ini
 .DS_Store
 .vscode/
 .idea/
+
+# เครื่องมือทดสอบ (Playwright) — ติดตั้งใหม่ได้ด้วย npm install
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+.playwright/

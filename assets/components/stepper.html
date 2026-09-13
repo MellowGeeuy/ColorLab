@@ -1,0 +1,96 @@
+<!-- @card -->
+<div class="ui-stepper">
+  <button type="button" class="ui-stepper__btn" aria-label="ลดจำนวน">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg>
+  </button>
+  <input class="ui-stepper__input" type="text" inputmode="numeric" value="12" aria-label="จำนวน">
+  <button type="button" class="ui-stepper__btn" aria-label="เพิ่มจำนวน">
+    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>
+  </button>
+</div>
+<!-- @end -->
+
+<!-- @preview -->
+<div class="ui-stack">
+  <div class="ui-field">
+    <label class="ui-field__label" for="step-qty">จำนวนที่สั่ง</label>
+    <div class="ui-stepper" data-part="p1">
+      <button type="button" class="ui-stepper__btn" aria-label="ลดจำนวนลงหนึ่ง">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg>
+      </button>
+      <input class="ui-stepper__input" id="step-qty" type="text" inputmode="numeric" value="12">
+      <button type="button" class="ui-stepper__btn" aria-label="เพิ่มจำนวนขึ้นหนึ่ง">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>
+      </button>
+      <span class="ui-stepper__unit">กล่อง</span>
+    </div>
+    <p class="ui-field__helper">สั่งได้ครั้งละ 1 ถึง 48 กล่อง พิมพ์ตัวเลขเองได้</p>
+  </div>
+
+  <div class="ui-field">
+    <label class="ui-field__label" for="step-min">ถึงขีดต่ำสุดแล้ว</label>
+    <div class="ui-stepper">
+      <button type="button" class="ui-stepper__btn" disabled aria-label="ลดจำนวนลงหนึ่ง">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg>
+      </button>
+      <input class="ui-stepper__input" id="step-min" type="text" inputmode="numeric" value="1">
+      <button type="button" class="ui-stepper__btn" aria-label="เพิ่มจำนวนขึ้นหนึ่ง">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>
+      </button>
+    </div>
+    <p class="ui-field__helper">ปุ่มลดถูกปิดไว้ เพราะน้อยกว่านี้สั่งไม่ได้</p>
+  </div>
+
+  <div class="ui-field ui-field--error">
+    <label class="ui-field__label" for="step-over">เกินจำนวนที่มี</label>
+    <div class="ui-stepper" data-state="error" data-part="p2">
+      <button type="button" class="ui-stepper__btn" aria-label="ลดจำนวนลงหนึ่ง">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg>
+      </button>
+      <input class="ui-stepper__input" id="step-over" type="text" inputmode="numeric" value="60">
+      <button type="button" class="ui-stepper__btn" aria-label="เพิ่มจำนวนขึ้นหนึ่ง">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>
+      </button>
+    </div>
+    <p class="ui-field__error">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.5h.01"/></svg>
+      คลังเหลือ 48 กล่อง ลดจำนวนลงหรือแยกเป็นสองรอบส่ง
+    </p>
+  </div>
+</div>
+<!-- @end -->
+
+<!-- @variants -->
+<div class="cs-variant" data-variant-label="ปกติ — ปุ่มสองข้างสูง 36px กดด้วยนิ้วได้">
+  <div class="ui-stepper">
+    <button type="button" class="ui-stepper__btn" aria-label="ลด"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
+    <input class="ui-stepper__input" type="text" value="12" aria-label="จำนวน">
+    <button type="button" class="ui-stepper__btn" aria-label="เพิ่ม"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ถึงขีดจำกัด — ปิดปุ่มจริง ไม่ใช่ทำให้จางเฉย ๆ">
+  <div class="ui-stepper">
+    <button type="button" class="ui-stepper__btn" disabled aria-label="ลด"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
+    <input class="ui-stepper__input" type="text" value="1" aria-label="จำนวน">
+    <button type="button" class="ui-stepper__btn" aria-label="เพิ่ม"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="มีหน่วยกำกับ — ผู้ใช้ไม่ต้องเดาว่านับเป็นอะไร">
+  <div class="ui-stepper">
+    <button type="button" class="ui-stepper__btn" aria-label="ลด"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
+    <input class="ui-stepper__input" type="text" value="12" aria-label="จำนวน">
+    <button type="button" class="ui-stepper__btn" aria-label="เพิ่ม"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button>
+    <span class="ui-stepper__unit">กล่อง</span>
+  </div>
+</div>
+
+<div class="cs-variant" data-variant-label="ค่าผิดเงื่อนไข — ขอบแดงคู่ข้อความบอกทางแก้">
+  <div class="ui-stepper" data-state="error">
+    <button type="button" class="ui-stepper__btn" aria-label="ลด"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
+    <input class="ui-stepper__input" type="text" value="60" aria-label="จำนวน">
+    <button type="button" class="ui-stepper__btn" aria-label="เพิ่ม"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button>
+  </div>
+</div>
+<!-- @end -->

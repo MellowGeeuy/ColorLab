@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02 สามแกนของสี — ColorLab</title>
+  <meta name="description" content="เนื้อสี ความสด ความสว่าง — สามค่าที่อธิบายทุกสีได้ และแกนไหนตัดสินว่างานใช้ได้จริง">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/breakpoints.css">
+  <link rel="stylesheet" href="../../assets/css/design-system.css">
+  <link rel="stylesheet" href="../../assets/css/app-shell.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/theory-figures.css">
+  <link rel="stylesheet" href="../../assets/css/page-specific/color-theory.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="topbar">
+      <div class="topbar__side">
+        <a class="topbar__brand" href="../../">
+          <span class="topbar__logo" aria-hidden="true"></span>
+          <span class="topbar__name">ColorLab</span>
+        </a>
+
+        <nav class="groundnav" aria-label="เมนูหลัก">
+          <a class="groundnav__item" href="../../" style="--dot-h:8" aria-current="page">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-book"/></svg>Color Theory
+          </a>
+          <a class="groundnav__item" href="../../component-style/" style="--dot-h:92">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-layers"/></svg>Component Style
+          </a>
+          <a class="groundnav__item" href="../../layout/" style="--dot-h:150">
+            <svg class="icon groundnav__icon" aria-hidden="true"><use href="#i-grid"/></svg>Layout
+          </a>
+        </nav>
+      </div>
+
+      <div class="topbar__side topbar__side--end">
+        <div class="topbar__actions">
+          <span class="topbar__status" id="read-status" role="status" aria-live="polite"></span>
+          <button type="button" class="btn btn--icon btn--sm toc-toggle" id="toc-toggle"
+                  aria-controls="toc" aria-expanded="false" aria-label="เปิดสารบัญ">
+            <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm btn--guide" id="guide-open"
+                  aria-haspopup="dialog" aria-label="เปิดคู่มือใช้งาน" title="คู่มือใช้งาน">
+            <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+          </button>
+          <button type="button" class="btn btn--icon btn--sm" id="theme-toggle" aria-label="สลับโหมดสีของหน้าเว็บ">
+            <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+          </button>
+
+          <a class="topnav__item topnav__item--hero" href="../../workspace/" aria-label="Colorground" title="Colorground">
+            <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+            <span class="topnav__label">Colorground</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="read-progress" aria-hidden="true"><div class="read-progress__bar" id="progress-bar"></div></div>
+    <div class="toc-scrim" id="toc-scrim"></div>
+
+    <div class="reader">
+
+      <nav class="toc" id="toc" aria-label="สารบัญทั้งคอร์ส">
+        <a class="toc__home" href="../"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg> สารบัญทั้งหมด</a>
+        <div class="toc__group">พื้นฐาน</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-first/" style="--dot-h:8"><span class="toc__no">01</span> <span class="toc__text">สีทำงานก่อนตัวหนังสือ</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link is-current" href="../three-axes/" style="--dot-h:28" aria-current="page"><span class="toc__no">02</span> <span class="toc__text">สามแกนของสี</span></a>
+            <ul class="toc__sub">
+              <li><a class="toc__link toc__link--sub" href="#why">ทำไมต้องรู้</a></li>
+              <li><a class="toc__link toc__link--sub" href="#core">หลักการ</a></li>
+              <li><a class="toc__link toc__link--sub" href="#deep">Tint / Shade / Tone จากสีตั้งต้นของคุณเอง</a></li>
+              <li><a class="toc__link toc__link--sub" href="#pitfalls">ข้อผิดที่เจอบ่อย</a></li>
+              <li><a class="toc__link toc__link--sub" href="#wrap">สรุป</a></li>
+            </ul>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../color-models/" style="--dot-h:45"><span class="toc__no">03</span> <span class="toc__text">Color Models</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ทฤษฎีสี</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../harmony/" style="--dot-h:92"><span class="toc__no">04</span> <span class="toc__text">วงล้อสี & Harmony</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../psychology/" style="--dot-h:150"><span class="toc__no">05</span> <span class="toc__text">สีกับความรู้สึก</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ระบบสีใน UI</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../color-roles/" style="--dot-h:172"><span class="toc__no">06</span> <span class="toc__text">สี่บทบาทของสี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../scales/" style="--dot-h:196"><span class="toc__no">07</span> <span class="toc__text">จากสีเดียวสู่สเกล</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">การเข้าถึง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../contrast/" style="--dot-h:214"><span class="toc__no">08</span> <span class="toc__text">Contrast & WCAG</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../dark-mode/" style="--dot-h:248"><span class="toc__no">09</span> <span class="toc__text">Dark Mode</span></a>
+          </li>
+        </ul>
+        <div class="toc__group">ลงมือใช้จริง</div>
+        <ul class="toc__list">
+          <li class="toc__item"><a class="toc__link" href="../proportion/" style="--dot-h:286"><span class="toc__no">10</span> <span class="toc__text">สัดส่วนการใช้สี</span></a>
+          </li>
+          <li class="toc__item"><a class="toc__link" href="../fixes/" style="--dot-h:322"><span class="toc__no">11</span> <span class="toc__text">ก่อนแก้ / หลังแก้</span></a>
+          </li>
+        </ul>
+      </nav>
+
+      <main class="reader__main" id="reader-main">
+        <div class="prose">
+
+          <header class="topic-head">
+            <span class="topic-head__eyebrow">ตอนที่ 02 · พื้นฐาน</span>
+            <h1 class="topic-head__title">สามแกนของสี</h1>
+            <p class="topic-head__lead">ทุกสีบอกได้ด้วยค่าสามค่า หรือที่เรียกกันว่าสามแกน คือ เนื้อสี ความสด และความสว่าง รู้ว่าแกนไหนทำอะไร ก็เลิกสุ่มสีได้</p>
+          </header>
+
+          <section class="section" id="why">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">01</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ทำไมต้องรู้เรื่องนี้</h2>
+            </div>
+
+              <p>งานจริงที่เจอบ่อยที่สุดของเรื่องนี้คือ <b>ปุ่มหนึ่งปุ่มต้องมีห้าหน้าตา</b> —
+                ปกติ ชี้ค้าง กดอยู่ ปิดใช้งาน และตอนโฟกัสด้วยคีย์บอร์ด</p>
+
+              <div class="case">
+                <div class="case__item">
+                  <span class="case__tag">ถ้าไม่รู้ว่าขยับแกนไหน</span>
+                  <p>ก็จะเปิดตัวเลือกสีขึ้นมาสุ่มหยิบสีใหม่ทีละสถานะ สุดท้ายได้ห้าสีที่ดูไม่เข้าพวก
+                    และพอวันหนึ่งแบรนด์เปลี่ยนสีหลัก ต้องมานั่งสุ่มใหม่ทั้งห้าสถานะ</p>
+                </div>
+                <div class="case__item">
+                  <span class="case__tag">ถ้ารู้</span>
+                  <p>ทั้งห้าสถานะมาจากสีเดียวโดยขยับแค่ความสว่างทีละขั้น เปลี่ยนสีแบรนด์เมื่อไร
+                    อีกสี่สถานะก็เลื่อนตามเองทั้งชุด</p>
+                </div>
+              </div>
+          </section>
+
+          <section class="section" id="core">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">02</span><span class="section__rule"></span></div>
+              <h2 class="section__title">หลักการ</h2>
+            </div>
+
+            <figure class="figure" data-reveal>
+              <div class="figure__stage">
+                <div class="axes">
+                  <div class="axis axis--hue">
+                    <div class="axis__name">Hue <small>เนื้อสี 0–360</small></div>
+                    <div class="axis__track axis__track--hue"><span class="axis__knob"></span></div>
+                    <div class="axis__chip"></div>
+                  </div>
+                  <div class="axis axis--sat">
+                    <div class="axis__name">Saturation <small>ความสด 0–100%</small></div>
+                    <div class="axis__track axis__track--sat"><span class="axis__knob"></span></div>
+                    <div class="axis__chip"></div>
+                  </div>
+                  <div class="axis axis--light">
+                    <div class="axis__name">Lightness <small>ความสว่าง 0–100%</small></div>
+                    <div class="axis__track axis__track--light"><span class="axis__knob"></span></div>
+                    <div class="axis__chip"></div>
+                  </div>
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg>
+                <span>แต่ละแถวขยับทีละค่า แล้วล็อกอีกสองค่าไว้ เนื้อสีเปลี่ยนว่าเป็นสีอะไร
+                  ความสดเปลี่ยนว่าจัดจ้านแค่ไหน ส่วนความสว่างเปลี่ยนว่าอ่านออกหรือไม่</span>
+              </figcaption>
+            </figure>
+
+            <div class="tool">
+              <div class="tool__header">
+                <svg class="icon icon--lg" aria-hidden="true"><use href="#i-sliders"/></svg> ลองปรับเอง
+                <span class="tool__tag">ลากสไลเดอร์เพื่อดูผล</span>
+              </div>
+              <div class="tool__body">
+                <div class="hsl-demo">
+                  <div class="hsl-demo__controls">
+                    <div class="hsl-demo__row">
+                      <label class="field__label" for="hsl-hue">Hue</label>
+                      <input type="range" class="range range--hue" id="hsl-hue" min="0" max="360" value="220">
+                      <span class="hsl-demo__value" id="hsl-hue-value">220</span>
+                    </div>
+                    <div class="hsl-demo__row">
+                      <label class="field__label" for="hsl-sat">Saturation</label>
+                      <input type="range" class="range" id="hsl-sat" min="0" max="100" value="75">
+                      <span class="hsl-demo__value" id="hsl-sat-value">75%</span>
+                    </div>
+                    <div class="hsl-demo__row">
+                      <label class="field__label" for="hsl-light">Lightness</label>
+                      <input type="range" class="range" id="hsl-light" min="0" max="100" value="52">
+                      <span class="hsl-demo__value" id="hsl-light-value">52%</span>
+                    </div>
+                    <p class="u-small u-muted u-mb-0">
+                      HEX: <code id="hsl-hex">#3B82F6</code> &nbsp;·&nbsp; CSS: <code id="hsl-value">hsl(220 75% 52%)</code>
+                    </p>
+                  </div>
+                  <div class="hsl-demo__preview" id="hsl-preview">#3B82F6</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- แกนเดียวกันบนปุ่มจริง — ทุกใบเป็นปุ่มเดียวกันเป๊ะ เปลี่ยนทีละแกนเท่านั้น
+                 ตัวเลขใต้ hex คือคอนทราสต์ของตัวอักษรขาวบนปุ่มใบนั้น วัดด้วย contrastRatio() -->
+            <figure class="figure figure--fixed" data-reveal>
+              <div class="figure__stage">
+                <div class="axis-lab">
+
+                  <div class="axis-lab__row">
+                    <div class="axis-lab__head"><b>ขยับ Hue</b><span>ล็อก S 75% · L 52%</span></div>
+                    <div class="axis-lab__chips">
+                      <span class="axis-lab__chip" style="--al-bg:#e02929">
+                        <b>บันทึก</b><code>#E02929</code><i>4.65:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#85e029">
+                        <b>บันทึก</b><code>#85E029</code><i>1.65:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#29e0e0">
+                        <b>บันทึก</b><code>#29E0E0</code><i>1.64:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#8529e0">
+                        <b>บันทึก</b><code>#8529E0</code><i>6.19:1</i>
+                      </span>
+                    </div>
+                    <p class="ramp-row__note">เปลี่ยนว่าเป็นสีอะไร ปุ่มยังทำหน้าที่เดิมทุกใบ
+                      แต่ตัวเลขกระโดดจาก 1.64 ไป 6.19 ทั้งที่ตั้ง L ไว้ 52% เท่ากันหมด
+                      จุดอ่อนข้อนี้จะเล่าต่อใน<a href="../color-models/">ตอนที่ 03</a></p>
+                  </div>
+
+                  <div class="axis-lab__row">
+                    <div class="axis-lab__head"><b>ขยับ Saturation</b><span>ล็อก H 220° · L 52%</span></div>
+                    <div class="axis-lab__chips">
+                      <span class="axis-lab__chip" style="--al-bg:#788191">
+                        <b>บันทึก</b><code>#788191</code><i>3.93:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#5a76af">
+                        <b>บันทึก</b><code>#5A76AF</code><i>4.52:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#3b6cce">
+                        <b>บันทึก</b><code>#3B6CCE</code><i>4.97:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#1d62ed">
+                        <b>บันทึก</b><code>#1D62ED</code><i>5.22:1</i>
+                      </span>
+                    </div>
+                    <p class="ramp-row__note">เปลี่ยนอารมณ์จากสุขุมไปจัดจ้าน ส่วนคอนทราสต์ขยับแค่ 3.93 ไป 5.22
+                      ค่านี้แทบไม่เกี่ยวกับว่าอ่านออกหรือไม่</p>
+                  </div>
+
+                  <div class="axis-lab__row">
+                    <div class="axis-lab__head"><b>ขยับ Lightness</b><span>ล็อก H 220° · S 75%</span></div>
+                    <div class="axis-lab__chips">
+                      <span class="axis-lab__chip" style="--al-bg:#c9d9f7">
+                        <b>บันทึก</b><code>#C9D9F7</code><i>1.42:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#8bacee">
+                        <b>บันทึก</b><code>#8BACEE</code><i>2.27:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#4c80e6">
+                        <b>บันทึก</b><code>#4C80E6</code><i>3.79:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#1d58cd">
+                        <b>บันทึก</b><code>#1D58CD</code><i>6.31:1</i>
+                      </span>
+                      <span class="axis-lab__chip" style="--al-bg:#143d8f">
+                        <b>บันทึก</b><code>#143D8F</code><i>10.03:1</i>
+                      </span>
+                    </div>
+                    <p class="ramp-row__note">ค่าเดียวที่ตัดสินว่าตัวหนังสือสีขาวบนปุ่มยังอ่านออกไหม
+                      สามใบแรกต่ำกว่า 4.5:1 เอาไปทำปุ่มที่มีข้อความไม่ได้</p>
+                  </div>
+
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-target"/></svg>
+                <span>อ่านภาพนี้ทีละแถว อย่ามองข้ามแถว แต่ละแถวตอบคำถามเดียวกันว่า
+                  ถ้าขยับค่านี้ค่าเดียว อะไรจะเปลี่ยนบ้าง คำตอบคือ เนื้อสีเปลี่ยนว่าเป็นสีอะไร
+                  ความสดเปลี่ยนอารมณ์ ส่วนความสว่างเปลี่ยนว่าใช้งานได้จริงหรือเปล่า</span>
+              </figcaption>
+            </figure>
+
+            <figure class="figure">
+              <div class="figure__stage">
+                <div class="steps__use">
+                  <div class="steps__use-item"><b>Tint</b> สี + ขาว · ความสว่างขึ้น ความสดมักลด<br>ใช้กับพื้นหลังอ่อนและสถานะ hover</div>
+                  <div class="steps__use-item"><b>Shade</b> สี + ดำ · ความสว่างลด<br>ใช้กับสีตัวอักษรและปุ่มตอนกด</div>
+                  <div class="steps__use-item"><b>Tone</b> สี + เทา · ความสดลด<br>ใช้เมื่ออยากได้สีที่สุขุม ไม่แสบตา</div>
+                </div>
+              </div>
+              <figcaption class="figure__caption">
+                <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+                <span>สามคำนี้ไม่ใช่สีใหม่ แต่คือการขยับค่าเดิมที่มีอยู่แล้ว ถ้ารู้ว่ากำลังขยับค่าไหน ก็เดาผลได้ทันที</span>
+              </figcaption>
+            </figure>
+          </section>
+
+          <section class="section" id="deep">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">03</span><span class="section__rule"></span></div>
+              <h2 class="section__title">Tint / Shade / Tone จากสีตั้งต้นของคุณเอง</h2>
+            </div>
+
+              <p>สามคำที่อยู่ในภาพข้างบนไม่ใช่ศัพท์เฉพาะทางศิลปะที่เอามาใช้ไม่ได้ —
+                มันคือสูตรตรง ๆ ว่าจะขยับแกนไหนกี่เปอร์เซ็นต์ ใส่สีตั้งต้นแล้วดูผลได้เลย</p>
+
+              <div class="tool">
+                <div class="tool__header">
+                  <svg class="icon icon--lg" aria-hidden="true"><use href="#i-palette"/></svg> สร้างชุดสีจากสีเดียว
+                  <span class="tool__tag">เปลี่ยนสีตั้งต้นได้</span>
+                </div>
+                <div class="tool__body">
+                  <div class="mixer" data-mixer>
+                    <div class="mixer__control">
+                      <label class="field__label" for="mixer-base">สีตั้งต้น</label>
+                      <input type="color" class="wcag-demo__swatch" id="mixer-base" data-mixer-base value="#4f46e5">
+                      <code data-mixer-hex>#4F46E5</code>
+                    </div>
+
+                    <div class="mixer__rows" data-mixer-rows></div>
+
+                    <p class="mixer__note u-mb-0">
+                      <b>Tint</b> เพิ่มความสว่างทีละ 12% · <b>Shade</b> ลดความสว่างทีละ 10% ·
+                      <b>Tone</b> ลดความสดทีละ 20% โดยไม่แตะความสว่าง
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="note note--tip">
+                <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+                <p>แถว Tone คือแถวที่คนมองข้ามบ่อยที่สุด เวลาสีดูแสบตาเกินไป คนส่วนใหญ่จะลดความสว่าง
+                  ซึ่งทำให้สีทึบลงแต่ยังแสบอยู่ ทั้งที่สิ่งที่ควรลดคือความสด</p>
+              </div>
+          </section>
+
+          <section class="section" id="pitfalls">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">04</span><span class="section__rule"></span></div>
+              <h2 class="section__title">ข้อผิดที่เจอบ่อย</h2>
+            </div>
+
+              <ul class="pitfalls">
+                <li class="pitfall">
+                  <b class="pitfall__name">ขยับสองแกนพร้อมกันแล้วคุมผลไม่ได้</b>
+                  <span class="pitfall__body">ลากตัวเลือกสีแบบสองมิติคือการขยับความสดกับความสว่างพร้อมกัน ถ้าต้องการผลที่เดาได้ ให้ขยับทีละแกน</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">คิดว่า Lightness เท่ากันแปลว่าสว่างเท่ากัน</b>
+                  <span class="pitfall__body">HSL ที่ L 52% ให้คอนทราสต์ตั้งแต่ 1.64 ถึง 6.19 ขึ้นกับเนื้อสี เรื่องนี้อยู่ใน<a href="../color-models/">ตอนที่ 03</a></span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">ทำ hover ด้วยการลด opacity</b>
+                  <span class="pitfall__body">พอโปร่งใสลง สีจะผสมกับพื้นข้างหลัง ปุ่มเดียวกันบนพื้นคนละสีจะได้ผลคนละแบบ และคอนทราสต์ตกโดยไม่รู้ตัว</span>
+                </li>
+                <li class="pitfall">
+                  <b class="pitfall__name">ใช้ความสด 100% กับพื้นที่กว้าง</b>
+                  <span class="pitfall__body">ขอบสีจะดูสั่นและตาล้าเร็ว พื้นที่กว้างใช้ความสด 10–30% แล้วเก็บสีสดไว้กับชิ้นเล็ก</span>
+                </li>
+              </ul>
+          </section>
+
+          <section class="section" id="wrap">
+            <div class="section__head">
+              <div class="section__kicker"><span class="section__no">05</span><span class="section__rule"></span></div>
+              <h2 class="section__title">สรุปและแหล่งอ้างอิง</h2>
+            </div>
+
+              <h3 class="wrap__title">สรุปสามข้อ</h3>
+
+              <ul class="takeaway">
+                <li>เนื้อสีเปลี่ยนว่าเป็นสีอะไร ความสดเปลี่ยนอารมณ์ ความสว่างเปลี่ยนว่าใช้งานได้จริงหรือไม่</li>
+                <li>Tint / Shade / Tone คือการขยับแกนเดิม ไม่ใช่การหาสีใหม่</li>
+                <li>ขยับทีละแกนแล้วผลลัพธ์จะเดาได้ ซึ่งเป็นสิ่งที่ระบบสีต้องการ</li>
+              </ul>
+
+              <h3 class="wrap__title">อ่านต่อจากต้นทาง</h3>
+
+              <ul class="refs">
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl" target="_blank" rel="noopener noreferrer">MDN · hsl()</a><span>ไวยากรณ์ HSL ใน CSS และช่วงค่าที่รองรับ</span></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value" target="_blank" rel="noopener noreferrer">MDN · CSS color values</a><span>ภาพรวมของทุกวิธีเขียนสีใน CSS</span></li>
+              </ul>
+          </section>
+
+          <nav class="pager" aria-label="ไปตอนก่อนหน้าหรือตอนถัดไป">
+            <a class="pager__link pager__link--prev" href="../color-first/"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg><span><small>ตอนก่อนหน้า</small>สีทำงานก่อนตัวหนังสือ</span></a>
+            <a class="pager__link pager__link--next" href="../color-models/"><span><small>ตอนถัดไป</small>Color Models เลือกให้ถูกงาน</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          </nav>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../../assets/js/pages/theory.js"></script>
+</body>
+</html>

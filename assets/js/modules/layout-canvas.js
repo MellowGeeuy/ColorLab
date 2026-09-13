@@ -149,6 +149,29 @@ export function createLayoutCanvas(options) {
     paintPart();
   };
 
+  /**
+   * ขยับเฉพาะกล่องที่เปลี่ยนตำแหน่ง โดยไม่แตะ DOM ข้างในเลย
+   *
+   * render() เต็มรูปแบบจะ replaceChildren() แล้วสร้างทุกชิ้นใหม่ พร้อม innerHTML ของ
+   * markup แต่ละตัว — วัดแล้วที่ 30 ชิ้นใช้เวลา 20 ms ต่อเฟรม ซึ่งพลาด 60fps ทุกเฟรม
+   * ระหว่างลากมีแค่ตำแหน่งกับขนาดที่เปลี่ยน เนื้อหาข้างในเหมือนเดิมทั้งหมด
+   * คืนค่า false ถ้าหากล่องไม่เจอ ให้ฝั่งเรียกถอยไปวาดใหม่ทั้งแคนวาสแทน
+   */
+  const updateBoxes = (items) => {
+    applyGridStyle();
+    return items.every((item) => {
+      const box = root.querySelector(`.lay-item[data-id="${item.id}"]`);
+      if (!box) return false;
+      box.style.gridColumn = `${item.col} / span ${item.w}`;
+      box.style.gridRow = `${item.row} / span ${item.h}`;
+      const size = box.querySelector('.lay-item__size');
+      if (size) size.textContent = `${item.w} × ${item.h}`;
+      box.setAttribute('aria-label',
+        `${item.slug} คอลัมน์ ${item.col} แถว ${item.row} ขนาด ${item.w} คูณ ${item.h}`);
+      return true;
+    });
+  };
+
   const paintPart = () => {
     root.querySelectorAll('[data-part].is-part-selected')
       .forEach((node) => node.classList.remove('is-part-selected'));
@@ -462,6 +485,7 @@ export function createLayoutCanvas(options) {
     },
 
     render,
+    updateBoxes,
     select,
     selectMany,
     toggleSelect,
